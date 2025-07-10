@@ -62,6 +62,10 @@
 .wizard .nav-tabs .nav-item .nav-link svg {
 	font-size: 25px;
 }
+
+.is-invalid {
+    border-color: #dc3545;
+}
 </style>
 
 <main>
@@ -77,7 +81,7 @@
                         <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                             <li class="nav-item flex-fill" role="presentation" data-bs-toggle="tooltip" data-bs-placement="top" title="Personal Information">
                                 <a class="nav-link active rounded-circle mx-auto d-flex align-items-center justify-content-center" href="#step1" id="step1-tab" data-bs-toggle="tab" role="tab" aria-controls="step1" aria-selected="true">
-                                    <i class="fas fa-folder-open"></i>
+                                    <i class="fas fa-user"></i>
                                 </a>
                             </li>
                             <li class="nav-item flex-fill" role="presentation" data-bs-toggle="tooltip" data-bs-placement="top" title="Document Uploads">
@@ -96,6 +100,7 @@
                                 </a>
                             </li>
                         </ul>
+
                         <div class="tab-content" id="myTabContent">
                             <!-- Step 1: User Form -->
                             <div class="tab-pane fade show active" role="tabpanel" id="step1" aria-labelledby="step1-tab">
@@ -104,10 +109,13 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="surname">Surname</label>
                                         <input type="text" class="form-control" name="surname"  id="surname" required>
+                                        <div class="invalid-feedback">Please enter your surname.</div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="first_name">First Name</label>
                                         <input type="text" class="form-control" name="first_name" id="first_name" required>
+                                        <div class="invalid-feedback">Please enter your first name.</div>
+
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="middle_name">Middle Name</label>
@@ -116,10 +124,12 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="email">Email</label>
                                         <input type="email" class="form-control" name="email"  id="email" required>
+                                        <div class="invalid-feedback">Please enter your email.</div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="phone_number">Phone Number</label>
                                         <input type="text" class="form-control" name="phone_number" id="phone_number" required>
+                                        <div class="invalid-feedback">Please enter your phone number.</div>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -135,31 +145,38 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="id_number">ID Number</label>
                                         <input type="text" class="form-control" name="id_number" id="id_number" required>
+                                        <div class="invalid-feedback">Please enter your id number.</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label for="passport_number">Passport Number</label>
                                         <input type="text" class="form-control" name="passport_number"  id="passport_number"  required>
+                                        <div class="invalid-feedback">Please enter your passport number.</div>
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label>National ID - (Back And Front)</label>
                                         <input type="file" class="form-control" name="id_card" required>
+                                        <div class="invalid-feedback">Please upload a copy of your national id.</div>
+
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label>Passport Copy (6 Months Valid)</label>
-                                        <input type="file" class="form-control" name="passport_copy">
+                                        <input type="file" class="form-control" name="passport_copy" required>
+                                        <div class="invalid-feedback">Please upload a copy of your passport.</div>
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label>Passport Expiry Date</label>
-                                        <input type="date" class="form-control" name="passport_expiry">
+                                        <input type="date" class="form-control"  id="passport_expiry" name="passport_expiry" required>
+                                        <div class="invalid-feedback">Passport must be valid for at least 6 more months.</div>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
                                         <label>Good Conduct Certificate</label>
-                                        <input type="file" class="form-control" name="good_conduct">
+                                        <input type="file" class="form-control" name="good_conduct" required>
+                                        <div class="invalid-feedback">Please upload a copy of your passport.</div>
                                     </div>
 
                                 </div>
@@ -181,15 +198,25 @@
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
+                                        <div class="invalid-feedback">Please select job category.</div>
                                     </div>
+{{--                                    <div class="col-md-6 mb-3">--}}
+{{--                                        <label for="job_title">Job Title</label>--}}
+{{--                                        <select class="form-select" name="job_title" id="job_title" required>--}}
+{{--                                            <option value="">-- Select Job Title --</option>--}}
+{{--                                            @foreach($careers as $career)--}}
+{{--                                                <option value="{{ $career->id }}">{{ $career->name }}</option>--}}
+{{--                                            @endforeach--}}
+{{--                                        </select>--}}
+{{--                                        <div class="invalid-feedback">Please select job.</div>--}}
+{{--                                    </div>--}}
                                     <div class="col-md-6 mb-3">
                                         <label for="job_title">Job Title</label>
                                         <select class="form-select" name="job_title" id="job_title" required>
                                             <option value="">-- Select Job Title --</option>
-                                            @foreach($careers as $career)
-                                                <option value="{{ $career->id }}">{{ $career->name }}</option>
-                                            @endforeach
+                                            <!-- Options will be populated by AJAX -->
                                         </select>
+                                        <div class="invalid-feedback">Please select job.</div>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <label>Notes</label>
@@ -198,6 +225,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label>Curriculum Vitae (CV)</label>
                                         <input type="file" class="form-control" name="cv" required>
+                                        <div class="invalid-feedback">Please upload your  curriculum vitae.</div>
                                     </div>
                                 </div>
 
@@ -224,7 +252,6 @@
                                                 <p><strong>Email:</strong> <span id="confirm_email"></span></p>
                                                 <p><strong>Phone Number:</strong> <span id="confirm_phone_number"></span></p>
                                                 <p><strong>ID Number:</strong> <span id="confirm_id_number"></span></p>
-                                                <p><strong>Passport Number:</strong> <span id="confirm_passport_number"></span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -234,6 +261,8 @@
                                         <div class="card shadow-sm border-0">
                                             <div class="card-header bg-success text-white fw-bold">Job Information</div>
                                             <div class="card-body">
+                                                <p><strong>Passport Number:</strong> <span id="confirm_passport_number"></span></p>
+                                                <p><strong>Passport Expiry Date:</strong> <span id="confirm_passport_expiry"></span></p>
                                                 <p><strong>Job Category:</strong> <span id="confirm_job_category"></span></p>
                                                 <p><strong>Job Title:</strong> <span id="confirm_job_title"></span></p>
                                                 <p><strong>Short Summary:</strong><br>
@@ -262,35 +291,99 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+
+
     $(document).ready(function () {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+
+        $('#job_category').on('change', function () {
+            const categoryId = $(this).val();
+            const $jobTitle = $('#job_title');
+
+            let options = '<option value="">-- Select Job Title --</option>';
+
+            if (categoryId) {
+                $.get(`/api/job-titles/${categoryId}`, function (jobs) {
+                    jobs.forEach(job => {
+                        options += `<option value="${job.id}">${job.name}</option>`;
+                    });
+
+                    $jobTitle.html(options); // ✅ replaces entire options content
+                }).fail(function () {
+                    alert('Failed to fetch job titles.');
+                });
+            } else {
+                $jobTitle.html(options); // Reset if no category
+            }
         });
+        
+        $('.next').click(function (e) {
+            e.preventDefault();
 
-        $(".next").click(function () {
-            const nextTabLinkEl = $(".nav-tabs .active").closest("li").next("li").find("a")[0];
-            const nextTab = new bootstrap.Tab(nextTabLinkEl);
-            nextTab.show();
+            let $currentTab = $(this).closest('.tab-pane');
+            let isValid = true;
 
-            if ($(nextTabLinkEl).attr('href') === '#step4') {
-                $("#confirm_surname").text($("#surname").val());
-                $("#confirm_first_name").text($("#first_name").val());
-                $("#confirm_middle_name").text($("#middle_name").val());
-                $("#confirm_email").text($("#email").val());
-                $("#confirm_phone_number").text($("#phone_number").val());
-                $("#confirm_id_number").text($("#id_number").val());
-                $("#confirm_passport_number").text($("#confirm_passport_number").val());
-                $("#confirm_job_category").text($("[name='job_category']").val());
-                $("#confirm_job_title").text($("[name='job_title']").val());
-                $("#confirm_experience_brief").text($("[name='experience_brief']").val());
+            // Validate required fields
+            $currentTab.find('input[required], select[required], textarea[required]').each(function () {
+                if (!$(this).val()) {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Passport expiry validation (6 months ahead)
+            const expiryInput = $currentTab.find('#passport_expiry');
+            if (expiryInput.length) {
+                const rawVal = expiryInput.val();
+                if (rawVal) {
+                    const expiryDate = new Date(rawVal);
+                    const today = new Date();
+                    const sixMonthsLater = new Date();
+                    sixMonthsLater.setMonth(today.getMonth() + 6);
+
+                    if (expiryDate < sixMonthsLater) {
+                        expiryInput.addClass('is-invalid');
+                        isValid = false;
+                    } else {
+                        expiryInput.removeClass('is-invalid');
+                    }
+                } else {
+                    expiryInput.addClass('is-invalid');
+                    isValid = false;
+                }
+            }
+
+            // Move to next tab if valid
+            if (isValid) {
+
+                const $nextTab = $('.nav-tabs .nav-link.active').parent().next('li').find('.nav-link');
+                $nextTab.tab('show');
+
+
+                if ($($nextTab).attr('href') === '#step4') {
+                    $("#confirm_surname").text($("#surname").val());
+                    $("#confirm_first_name").text($("#first_name").val());
+                    $("#confirm_middle_name").text($("#middle_name").val());
+                    $("#confirm_email").text($("#email").val());
+                    $("#confirm_phone_number").text($("#phone_number").val());
+                    $("#confirm_id_number").text($("#id_number").val());
+                    $("#confirm_passport_number").text($("#confirm_passport_number").val());
+                    $("#confirm_job_category").text($("[name='job_category']").val());
+                    $("#confirm_job_title").text($("[name='job_title']").val());
+                    $("#confirm_experience_brief").text($("[name='experience_brief']").val());
+                }
+            } else {
+                // Optional: Hide tooltip for the current tab to avoid interference
+                $('.nav-tabs .nav-link.active').tooltip('dispose');
             }
         });
 
-        $(".previous").click(function () {
-            const prevTabLinkEl = $(".nav-tabs .active").closest("li").prev("li").find("a")[0];
-            const prevTab = new bootstrap.Tab(prevTabLinkEl);
-            prevTab.show();
+        $('.previous').click(function (e) {
+            e.preventDefault();
+            const $prevTab = $('.nav-tabs .nav-link.active').parent().prev('li').find('.nav-link');
+            $prevTab.tab('show');
         });
     });
 </script>

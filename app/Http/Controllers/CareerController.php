@@ -70,8 +70,8 @@ class CareerController extends Controller
         return JobCategory::select('id', 'name')->get();
     }
 
-    public function getJobsByCategory($id)
+    public function getJobsByCategory($categoryId)
     {
-        return Career::where('job_category_id', $id)->select('id', 'name')->get();
-    }
+        $jobs = Career::where('job_category_id', $categoryId)->get(['id', 'name']);
+        return response()->json($jobs);    }
 }
