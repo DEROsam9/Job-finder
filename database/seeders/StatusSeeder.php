@@ -16,6 +16,7 @@ class StatusSeeder extends Seeder
     {
         $statuses = [
             'Draft',
+            'Active',
             'Open',
             'Closed',
             'Under Review',

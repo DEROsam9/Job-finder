@@ -40,7 +40,7 @@ class AppBaseModel extends Model
             };
 
             if (in_array('application_code', $model->fillable) && empty($model->application_code)) {
-                $model->application_code = $generateUniqueCode('application_code', 'EMP');
+                $model->application_code = $generateUniqueCode('application_code', 'APC');
             }
 
             if (in_array('status_id',$model->fillable) && empty($model->status_id))

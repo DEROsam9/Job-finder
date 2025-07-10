@@ -81,7 +81,6 @@ class ClientController extends Controller
                 'remarks' => $request->get('experience_brief'),
             ]);
 
-
             DB::commit();
 
             return redirect()->back()->with('success', 'Your information has been submitted successfully.');
