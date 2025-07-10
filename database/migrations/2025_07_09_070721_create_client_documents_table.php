@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->string('remarks')->nullable();
-            $table->enum('document_type', ['id_copy', 'passport_copy', 'curriculum_vitae', 'good_conduct_certificate']);
+            $table->enum('document_type', ['id_card', 'passport_copy', 'cv', 'good_conduct']);
             $table->date('passport_expiry_date')->nullable();
             $table->string('document_url')->nullable();
-
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
             $table->timestamps();

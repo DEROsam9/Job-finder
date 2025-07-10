@@ -30,10 +30,13 @@ class StatusSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
-            Status::create([
+            Status::updateOrCreate(
+                [
+                    'code' => strtoupper(Str::slug($status))
+                ],
+                [
                 'name' => $status,
-                'slug' => Str::slug($status),
-                'description' => $status . ' status in the application process.'
+                'code' => strtoupper(Str::slug($status))
             ]);
         }
     }

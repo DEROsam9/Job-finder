@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Models\Application;
 use App\Models\Career;
 use App\Models\Client;
+use App\Models\ClientDocument;
+use DB;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -32,24 +35,60 @@ class ClientController extends Controller
     public function store(Request $request)
     {
 
-//        $data = $request->validated();
+        try {
+            DB::beginTransaction();
+            $input = $request->all();
 
-        dd($request->all());
+            $client = Client::create([
+                'surname' => $input['surname'],
+                'first_name' => $input['first_name'],
+                'middle_name' => $input['middle_name'],
+                'email' => $input['email'],
+                'phone_number' => $input['phone_number'],
+                'passport_number' => $input['passport_number'],
+                'id_number' => $input['id_number'],
+            ]);
 
-        // Store files
-        $data['id_front'] = $request->file('id_front')->store('uploads/id_cards', 'public');
-        $data['passport_copy'] = $request->file('passport_copy')?->store('uploads/passports', 'public');
-        $data['good_conduct'] = $request->file('good_conduct')?->store('uploads/good_conducts', 'public');
-        $data['cv'] = $request->file('cv')->store('uploads/cvs', 'public');
+            $docFields = [
+                'cv'            => null,
+                'good_conduct'  => null,
+                'passport_copy' => 'passport_expiry_date',
+                'id_card'       => null,
+            ];
 
-        Client::create([
-            'surname', 'first_name', 'middle_name', 'email', 'phone_number', 'passport_number', 'id_number',
-        ]);
+            foreach ($docFields as $field => $expiryField) {
+                $uploadedFile = $request->file($field);
 
-        // Save to the jobs table
-        Career::create($data);
+                if (!$uploadedFile || !$uploadedFile->isValid()) {
+                    continue;
+                }
 
-        return redirect()->back()->with('success', 'Your information has been submitted successfully.');
+                $document_url = uploadToOBS($uploadedFile);
+                $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
+
+                ClientDocument::create([
+                    'client_id'            => $client->id,
+                    'remarks'              => $request->input('remarks'),
+                    'document_type'        => $field,
+                    'passport_expiry_date' => $passport_expiry_date,
+                    'document_url'         => $document_url,
+                ]);
+            }
+
+            Application::create([
+                'client_id' => $client->id,
+                'career_id' => $request->get('job_title'),
+                'remarks' => $request->get('experience_brief'),
+            ]);
+
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Your information has been submitted successfully.');
+        } catch (\Exception $exception) {
+            \Log::info($exception);
+            \DB::rollBack();
+        }
     }
 
     /**

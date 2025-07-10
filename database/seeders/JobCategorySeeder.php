@@ -73,21 +73,28 @@ class JobCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $categoryName => $jobTitles) {
-            $jobCategory = JobCategory::create([
-                'name' => $categoryName,
-                'desc' => "$categoryName related roles.",
-                'slug' => Str::slug($categoryName),
-            ]);
+            $jobCategory = JobCategory::updateOrCreate(
+                [
+                    'slug' => Str::slug($categoryName),
+                ],
+                [
+                    'name' => $categoryName,
+                    'description' => "$categoryName related roles.",
+                    'slug' => Str::slug($categoryName),
+                ]);
 
             foreach ($jobTitles as $title) {
-                Career::create([
-                    'name' => $title,
-                    'slug' => Str::slug($title),
-                    'description' => "$title description",
-                    'job_category_id' => $jobCategory->id,
-                    'status_id' => 1, // Assuming 1 = Active
-                    'slots' => rand(1, 20),
-                ]);
+                Career::updateOrCreate(
+                    [
+                        'slug' => Str::slug($title),
+                    ],
+                    [
+                        'name' => $title,
+                        'slug' => Str::slug($title),
+                        'description' => "$title description",
+                        'job_category_id' => $jobCategory->id,
+                        'slots' => 0,
+                    ]);
             }
         }
     }

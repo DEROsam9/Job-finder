@@ -60,6 +60,18 @@ return [
             'report' => false,
         ],
 
+        'obs' => [
+            'driver' => 's3',
+            'root' => '',
+            'key' => env('OBS_KEY'),
+            'region' => env('OBS_REGION'),
+            'secret' => env('OBS_SECRET'),
+            'bucket' => env('OBS_BUCKET'),
+            'endpoint' => env('OBS_ENDPOINT'),
+            'is_cname' => env('OBS_IS_CNAME', false),
+            'security_token' => env('OBS_SECURITY_TOKEN'),
+        ],
+
     ],
 
     /*

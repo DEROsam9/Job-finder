@@ -102,8 +102,8 @@
                                 <h3>User Information</h3>
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
-                                        <label for="surname_name">Surname</label>
-                                        <input type="text" class="form-control" name="surname_name"  id="surname_name" required>
+                                        <label for="surname">Surname</label>
+                                        <input type="text" class="form-control" name="surname"  id="surname" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label for="first_name">First Name</label>
@@ -134,14 +134,13 @@
 
                                     <div class="col-md-6 mb-3">
                                         <label for="id_number">ID Number</label>
-                                        <input type="text" class="form-control" name="id_number" required>
+                                        <input type="text" class="form-control" name="id_number" id="id_number" required>
                                     </div>
 
                                     <div class="col-md-6 mb-3">
-                                        <label for="id_number">Passport Number</label>
-                                        <input type="text" class="form-control" name=passport_number" required>
+                                        <label for="passport_number">Passport Number</label>
+                                        <input type="text" class="form-control" name="passport_number"  id="passport_number"  required>
                                     </div>
-
 
                                     <div class="col-md-4 mb-3">
                                         <label>National ID - (Back And Front)</label>
@@ -219,12 +218,13 @@
                                         <div class="card shadow-sm border-0">
                                             <div class="card-header bg-info text-white fw-bold">Personal Information</div>
                                             <div class="card-body">
-                                                <p><strong>Surname:</strong> <span id="confirm_surname_name"></span></p>
+                                                <p><strong>Surname:</strong> <span id="confirm_surname"></span></p>
                                                 <p><strong>First Name:</strong> <span id="confirm_first_name"></span></p>
                                                 <p><strong>Middle Name:</strong> <span id="confirm_middle_name"></span></p>
                                                 <p><strong>Email:</strong> <span id="confirm_email"></span></p>
                                                 <p><strong>Phone Number:</strong> <span id="confirm_phone_number"></span></p>
-                                                <p><strong>ID/Passport Number:</strong> <span id="confirm_id_number"></span></p>
+                                                <p><strong>ID Number:</strong> <span id="confirm_id_number"></span></p>
+                                                <p><strong>Passport Number:</strong> <span id="confirm_passport_number"></span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -236,9 +236,7 @@
                                             <div class="card-body">
                                                 <p><strong>Job Category:</strong> <span id="confirm_job_category"></span></p>
                                                 <p><strong>Job Title:</strong> <span id="confirm_job_title"></span></p>
-                                                <p><strong>Years of Experience:</strong> <span id="confirm_experience_years"></span></p>
-                                                <p><strong>Salary Expectation:</strong> <span id="confirm_salary_expectation"></span></p>
-                                                <p><strong>Experience Summary:</strong><br>
+                                                <p><strong>Short Summary:</strong><br>
                                                     <small class="text-muted" id="confirm_experience_brief"></small>
                                                 </p>
                                             </div>
@@ -276,16 +274,15 @@
             nextTab.show();
 
             if ($(nextTabLinkEl).attr('href') === '#step4') {
-                $("#confirm_surname_name").text($("#surname_name").val());
+                $("#confirm_surname").text($("#surname").val());
                 $("#confirm_first_name").text($("#first_name").val());
                 $("#confirm_middle_name").text($("#middle_name").val());
                 $("#confirm_email").text($("#email").val());
                 $("#confirm_phone_number").text($("#phone_number").val());
                 $("#confirm_id_number").text($("#id_number").val());
+                $("#confirm_passport_number").text($("#confirm_passport_number").val());
                 $("#confirm_job_category").text($("[name='job_category']").val());
                 $("#confirm_job_title").text($("[name='job_title']").val());
-                $("#confirm_experience_years").text($("[name='experience_years']").val());
-                $("#confirm_salary_expectation").text($("[name='salary_expectation']").val());
                 $("#confirm_experience_brief").text($("[name='experience_brief']").val());
             }
         });
