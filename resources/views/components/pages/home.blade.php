@@ -16,12 +16,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xl-8">
-                            <a href="{{ route('application') }}" class="btn head-btn2">Get Started</a>
-                        </div>
+                    <div class="button-group">
+                        <a href="#" class="btn primary-btn">Apply Now</a>
+                        <a href="#" class="btn secondary-btn">Track Application</a>
                     </div>
+
+
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -256,99 +259,47 @@
         </div>
     </div>
     <!-- Testimonial End -->
-    <!-- Support Company Start-->
-    <div class="support-company-area support-padding fix">
+    
+        <!-- Blog Area Start -->
+    <div class="home-blog-area blog-h-padding py-5 bg-light">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-6 col-lg-6">
-                    <div class="right-caption">
-                        <!-- Section Tittle -->
-                        <div class="section-tittle section-tittle2">
-                            <span>What we are doing</span>
-                            <h2>24k Talented people are getting Jobs</h2>
-                        </div>
-                        <div class="support-caption">
-                            <p class="pera-top">Mollit anim laborum duis au dolor in voluptate velit ess cillum dolore eu lore dsu quality mollit anim laborumuis au dolor in voluptate velit cillum.</p>
-                            <p>Mollit anim laborum.Duis aute irufg dhjkolohr in re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur signjnt occa cupidatat non inulpadeserunt mollit aboru. temnthp incididbnt ut labore mollit anim laborum suis aute.</p>
-                            <a href="about.html" class="btn post-btn">Post a job</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-6">
-                    <div class="support-location-img">
-                        <img src="{{ asset('assets/img/service/support-img.jpg') }}" alt="">
-                        <div class="support-img-cap text-center">
-                            <p>Since</p>
-                            <span>1994</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Support Company End-->
-    <!-- Blog Area Start -->
-    <div class="home-blog-area blog-h-padding">
-        <div class="container">
-            <!-- Section Tittle -->
+            <!-- Section Title -->
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-tittle text-center">
-                        <h2>Our Patners</h2>
+                    <div class="section-tittle text-center mb-4">
+                        <h2>Our Partners</h2>
                     </div>
                 </div>
             </div>
 
-            <div class="testimonial-area testimonial-padding">
-                <div class="container">
-                    <!-- Testimonial contents -->
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-xl-2 col-lg-2 col-md-2">
-                            <div class="h1-testimonial-active dot-style">
-                                <!-- Single Testimonial -->
-                                <div class="single-testimonial text-center">
-                                    <!-- Testimonial Content -->
-                                    <div class="testimonial-caption ">
-                                        <!-- founder -->
-                                        <div class="testimonial-founder  ">
-                                            <div class="founder-img mb-xl-2">
-                                                <img src="{{ asset('assets/img/testmonial/testimonial-founder.png') }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Testimonial -->
-                                <div class="single-testimonial text-center">
-                                    <!-- Testimonial Content -->
-                                    <div class="testimonial-caption ">
-                                        <!-- founder -->
-                                        <div class="testimonial-founder  ">
-                                            <div class="founder-img mb-2">
-                                                <img src="{{ asset('assets/img/testmonial/testimonial-founder.png') }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Testimonial -->
-                                <div class="single-testimonial text-center">
-                                    <!-- Testimonial Content -->
-                                    <div class="testimonial-caption ">
-                                        <!-- founder -->
-                                        <div class="testimonial-founder  ">
-                                            <div class="founder-img mb-2">
-                                                <img src="{{ asset('assets/img/testmonial/testimonial-founder.png') }}" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <!-- Marquee Style Partner Logo Slider -->
+            <div class="partner-slider-wrapper overflow-hidden">
+                <div class="partner-slider d-flex align-items-center">
+                    @php
+                        $logos = [
+                            'citizen-duka.jpg',
+                            'europeanUnion.png',
+                            'join-forces.png',
+                            'unicef.png',
+                            'viusasa.png',
+                        ];
+                    @endphp
+
+                    @for ($i = 0; $i < 2; $i++) <!-- Duplicate entire row -->
+                        @foreach ($logos as $logo)
+                            <div class="partner-logo mx-5">
+                                <img src="{{ asset('assets/img/partners/' . $logo) }}" alt="Partner Logo" height="80">
                             </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endfor
                 </div>
             </div>
+
         </div>
     </div>
     <!-- Blog Area End -->
+
+
 
 </main>
 

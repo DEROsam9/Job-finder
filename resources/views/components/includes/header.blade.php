@@ -17,17 +17,17 @@
                                 <nav class="d-none d-lg-block">
                                     <ul id="navigation">
                                         <li><a href="/">Home</a></li>
-                                        <li><a href="/">Find a Jobs </a></li>
-                                        <li><a href="/">About</a></li>
-                                        <li><a href="#">Page</a>
+                                        <!-- <li><a href="/"></a></li> -->
+                                        <!-- <li><a href="/"></a></li> -->
+                                        <!-- <li><a href="#"></a> -->
                                             <ul class="submenu">
-                                                <li><a href="/">Blog</a></li>
-                                                <li><a href="/">Blog Details</a></li>
-                                                <li><a href="/">Elements</a></li>
-                                                <li><a href="/">job Details</a></li>
+                                                <!-- <li><a href="/"></a></li> -->
+                                                <!-- <li><a href="/"></a></li> -->
+                                                <!-- <li><a href="/"></a></li> -->
+                                                <!-- <li><a href="/"></a></li> -->
                                             </ul>
                                         </li>
-                                        <li><a href="/">Contact</a></li>
+                                        <!-- <li><a href="/">Contact</a></li> -->
                                     </ul>
                                 </nav>
                             </div>
