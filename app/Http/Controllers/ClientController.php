@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Http\Traits\mpesa;
 use App\Models\Application;
-use App\Models\Career;
+use App\Models\ApplicationPayment;
 use App\Models\Client;
 use App\Models\ClientDocument;
+use App\Models\Payment;
 use DB;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    use mpesa;
     /**
      * Display a listing of the resource.
      */
@@ -75,12 +77,41 @@ class ClientController extends Controller
                 ]);
             }
 
-            Application::create([
+            $application = Application::create([
                 'client_id' => $client->id,
                 'career_id' => $request->get('job_title'),
                 'remarks' => $request->get('experience_brief'),
             ]);
 
+            $data = array(
+                'application_code' => $application->application_code,
+                'phone_number' => $client->phone_number,
+                'amount' => 1000,
+            );
+
+            $response = $this->stkPushRequest($data);
+
+            if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
+                $payment = Payment::create(array(
+                    'client_id' => $client->id,
+                    'amount' => 100,
+                    'status_id' => loadStatusId('Draft'),
+                    'remarks' => 'payment for application coded '.$application->application_code,
+                    'merchant_request_id' => $response['MerchantRequestID'],
+                    'checkout_request_id' => $response['CheckoutRequestID']
+                ));
+
+                ApplicationPayment::create(array(
+                    'client_id' => $client->id,
+                    'payment_id' => $payment->id,
+                    'application_id' => $application->id,
+                    'amount' => 0,
+                    'balance' => 1000
+                ));
+            } else {
+                \Log::error($response["ResponseCode"]);
+                return false;
+            }
             DB::commit();
 
             return redirect()->back()->with('success', 'Your information has been submitted successfully.');

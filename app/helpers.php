@@ -2,6 +2,28 @@
 use Illuminate\Support\Facades\Storage;
 
 
+if (! function_exists('update_status')) {
+    /**
+     * @param $table
+     * @param $status_id
+     * @param $id
+     * @return bool
+     */
+    function update_status($table,$status_id, $id): bool
+    {
+        \DB::table($table)->where('id', $id)->update(['status_id'=>$status_id]);
+
+        return true;
+    }
+}
+
+if (! function_exists('loadStatusId')) {
+    function loadStatusId($status)
+    {
+        return  \DB::table('statuses')->where('code', $status)->first()->id;
+    }
+}
+
 
 if (!function_exists('normalizeToUpper')) {
 

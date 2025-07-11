@@ -2,7 +2,10 @@
 
 namespace App\Http\Traits;
 
+use App\Models\Application;
+use App\Models\ApplicationPayment;
 use App\Models\Payment;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Support\Facades\Cache;
@@ -49,7 +52,7 @@ trait mpesa
         $this->stk_push_url = "mpesa/stkpush/v1/processrequest";
         $this->stk_transaction_query = "mpesa/stkpushquery/v1/query";
 
-        $this->weego_base_url = url('/');
+        $this->skyworld_base_url = url('/');
 
         $this->short_code = config('mpesa.short_code');
         $this->consumer_secret = config('mpesa.consumer_secret');
@@ -124,14 +127,13 @@ trait mpesa
      */
     public function stkPushRequest($data): mixed
     {
-        $user = $data['user'];
         $consumer_secret = $this->consumer_secret;
         $consumer_key = $this->consumer_key;
         $stk_url = $this->stk_push_url;
         $pass_key = $this->pass_key;
         $shortcode = $this->short_code;
-        $call_back_url = $this->weego_base_url . '/api/stk-push-response';
-        $phone = $data['for'] == "USER" ? $user->UserPhone : $user->phoneNumber;
+        $call_back_url = $this->skyworld_base_url . '/api/stk-push-response';
+
 
         $requestBody = [
             'BusinessShortCode' => $shortcode,
@@ -139,12 +141,12 @@ trait mpesa
             'Timestamp' => $this->timestamp,
             'TransactionType' => "CustomerPayBillOnline",
             'Amount' => $data['amount'],
-            'PartyA' =>  str_replace("+", "", sanitizePhoneNumber($phone)),
+            'PartyA' =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
             "PartyB" => $shortcode,
-            "PhoneNumber" =>  str_replace("+", "", sanitizePhoneNumber($phone)),
+            "PhoneNumber" =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
             "CallBackURL" => $call_back_url,
-            "AccountReference" => $data['booking_code'],
-            "TransactionDesc" => 'ride payment'
+            "AccountReference" => $data['application_code'],
+            "TransactionDesc" => 'job application payment'
         ];
 
         return $this->post($stk_url, $requestBody, $consumer_secret, $consumer_key);
@@ -157,18 +159,11 @@ trait mpesa
         $checkout_request_id = $call_back['CheckoutRequestID'];
         $request_code = $call_back['ResultCode'];
         $result_desc = $call_back['ResultDesc'];
-
-        $payment = Payment::where('merchant_request_id', $merchant_request_id)
-            ->where('checkout_request_id', $checkout_request_id)
-            ->first();
-
         try {
-
             if ($request_code == 0) {
                 $callback_metadata = $call_back['CallbackMetadata']['Item'];
 
                 $count = count($callback_metadata);
-
                 $transaction_reference = '';
 
                 if ($count == 5) {
@@ -187,10 +182,28 @@ trait mpesa
                     $phone_number = $callback_metadata[3]['Value'];
                 }
 
+                $payment = Payment::where('merchant_request_id', $merchant_request_id)
+                    ->where('checkout_request_id', $checkout_request_id)
+                    ->first();
+
+                if (!$payment) {
+                    return false;
+                }
+
                 $lock = Cache::lock("call_back_data_{$transaction_reference}", 300);
 
                 if ($lock->get()) {
-                    // LOGIC
+                    $payment->update([
+                        'status_id' => loadStatusId('Draft'),
+                        'additional_information' => $phone_number,
+                        'payload' => json_encode($request),
+                        'transaction_reference' =>$transaction_reference,
+                        'transaction_date' => Carbon::now()->getTimestamp()
+                    ]);
+                    ApplicationPayment::where('payment_id', $payment->id)->first()->update([
+                        'amount' => 1000,
+                        'balance' => 0
+                    ]);
                     return true;
                 } else {
                     return false;
@@ -199,12 +212,61 @@ trait mpesa
                 //SEND SMS
                 return false;
             }
-
-                return true;
-
         } catch (\Exception $exception) {
+            Log::info($exception);
             return false;
         }
     }
 
+
+    public function amountsAreEqual($amount1, $amount2, $precision = 2): bool {
+        return round($amount1, $precision) === round($amount2, $precision);
+    }
+
+    public function validation($request): \Illuminate\Http\JsonResponse
+    {
+        $Amount = $request['TransAmount'];
+        $BillRefNumber = normalizeToUpper($request['BillRefNumber']);
+
+        try {
+            // Check if BillRefNumber matches a booking
+            $application = Application::where('application_code', $BillRefNumber)->first();
+
+            if ($application) {
+
+                if ($this->amountsAreEqual(1000, $Amount)) {
+                    return response()->json([
+                        'ResultCode' => "0",
+                        'ResultDesc' => "Accepted"
+                    ]);
+                } else {
+                    return response()->json([
+                        'ResultCode' => "C2B00013",
+                        'ResultDesc' => "Rejected"
+                    ]);
+                }
+
+            } else {
+                return response()->json([
+                    'ResultCode' => "C2B00016",
+                    'ResultDesc' => "Rejected"
+                ]);
+            }
+
+
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return response()->json([
+                'ResultCode' => "C2B00016",
+                'ResultDesc' => "Rejected"
+            ]);
+        }
+    }
+
+    public function c2bConfirmation ($request): bool
+    {
+        $trans_reference = $request['TransID'];
+        $amount = $request['TransAmount'];
+        $booking_code = normalizeToUpper($request['BillRefNumber']);
+    }
 }

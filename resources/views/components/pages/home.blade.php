@@ -1,7 +1,6 @@
 @extends('components.layout.app')
 
 @section('content')
-
     <style>
         .button-group {
             display: flex;
@@ -21,7 +20,6 @@
             }
         }
     </style>
-
 <main>
     <!-- slider Area Start-->
     <div class="slider-area ">
@@ -63,8 +61,8 @@
                             <span class="flaticon-tour"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Design & Creative</a></h5>
-                            <span>(653)</span>
+                            <h5><a href="#">Design & Creative</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -74,8 +72,8 @@
                             <span class="flaticon-cms"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Design & Development</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Design & Development</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -85,8 +83,8 @@
                             <span class="flaticon-report"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Sales & Marketing</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Sales & Marketing</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -96,8 +94,8 @@
                             <span class="flaticon-app"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Mobile Application</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="j#">Mobile Application</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -107,8 +105,8 @@
                             <span class="flaticon-helmet"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Construction</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Construction</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -118,8 +116,8 @@
                             <span class="flaticon-high-tech"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Information Technology</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Information Technology</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -129,8 +127,8 @@
                             <span class="flaticon-real-estate"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Real Estate</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Real Estate</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
@@ -140,8 +138,8 @@
                             <span class="flaticon-content"></span>
                         </div>
                         <div class="services-cap">
-                            <h5><a href="job_listing.html">Content Writer</a></h5>
-                            <span>(658)</span>
+                            <h5><a href="#">Content Writer</a></h5>
+                            <span></span>
                         </div>
                     </div>
                 </div>
