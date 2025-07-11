@@ -16,7 +16,7 @@
                             <div class="main-menu">
                                 <nav class="d-none d-lg-block">
                                     <ul id="navigation">
-                                        <li><a href="/">Home</a></li>
+                                        <!-- <li><a href="/">Home</a></li> -->
                                         <!-- <li><a href="/"></a></li> -->
                                         <!-- <li><a href="/"></a></li> -->
                                         <!-- <li><a href="#"></a> -->

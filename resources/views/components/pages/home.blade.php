@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="button-group">
-                        <a href="#" class="btn primary-btn">Apply Now</a>
+                        <a href="{{ route('application') }}" class="btn primary-btn">Apply Now</a>
                         <a href="#" class="btn secondary-btn">Track Application</a>
                     </div>
 
@@ -36,7 +36,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-tittle text-center">
-                        <span>FEATURED TOURS Packages</span>
                         <h2>Browse Top Categories </h2>
                     </div>
                 </div>
@@ -131,15 +130,7 @@
                     </div>
                 </div>
             </div>
-            <!-- More Btn -->
-            <!-- Section Button -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="browse-btn2 text-center mt-50">
-                        <a href="job_listing.html" class="border-btn2">Browse All Sectors</a>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- Our Services End -->
