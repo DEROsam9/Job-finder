@@ -2,6 +2,26 @@
 
 @section('content')
 
+    <style>
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .button-group {
+                flex-direction: column;
+                align-items: flex-start; /* Optional: aligns buttons to left */
+            }
+
+            .button-group .btn {
+                width: 100%; /* Full width buttons on mobile */
+            }
+        }
+    </style>
+
 <main>
     <!-- slider Area Start-->
     <div class="slider-area ">
@@ -20,11 +40,7 @@
                         <a href="{{ route('application') }}" class="btn primary-btn">Apply Now</a>
                         <a href="#" class="btn secondary-btn">Track Application</a>
                     </div>
-
-
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -130,7 +146,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <!-- Our Services End -->
@@ -250,7 +266,7 @@
         </div>
     </div>
     <!-- Testimonial End -->
-    
+
         <!-- Blog Area Start -->
     <div class="home-blog-area blog-h-padding py-5 bg-light">
         <div class="container">

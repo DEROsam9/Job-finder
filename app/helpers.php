@@ -2,6 +2,14 @@
 use Illuminate\Support\Facades\Storage;
 
 
+
+if (!function_exists('normalizeToUpper')) {
+
+    function normalizeToUpper(string $input): string {
+        return strtoupper($input);
+    }
+}
+
 if (! function_exists('splitFullName')) {
     function splitFullName(string $fullName): array
     {
@@ -139,6 +147,7 @@ if (!function_exists('deleteImage')) {
     }
 
 }
+
 
 
 
