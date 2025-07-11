@@ -1,7 +1,9 @@
 @extends('components.layout.app')
 
 @section('content')
-<style>
+
+
+    <style>
 .wizard,
 .wizard .nav-tabs,
 .wizard .nav-tabs .nav-item {
@@ -200,24 +202,24 @@
                                         </select>
                                         <div class="invalid-feedback">Please select job category.</div>
                                     </div>
-{{--                                    <div class="col-md-6 mb-3">--}}
-{{--                                        <label for="job_title">Job Title</label>--}}
-{{--                                        <select class="form-select" name="job_title" id="job_title" required>--}}
-{{--                                            <option value="">-- Select Job Title --</option>--}}
-{{--                                            @foreach($careers as $career)--}}
-{{--                                                <option value="{{ $career->id }}">{{ $career->name }}</option>--}}
-{{--                                            @endforeach--}}
-{{--                                        </select>--}}
-{{--                                        <div class="invalid-feedback">Please select job.</div>--}}
-{{--                                    </div>--}}
                                     <div class="col-md-6 mb-3">
                                         <label for="job_title">Job Title</label>
                                         <select class="form-select" name="job_title" id="job_title" required>
                                             <option value="">-- Select Job Title --</option>
-                                            <!-- Options will be populated by AJAX -->
+                                            @foreach($careers as $career)
+                                                <option value="{{ $career->id }}">{{ $career->name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="invalid-feedback">Please select job.</div>
                                     </div>
+{{--                                    <div class="col-md-6 mb-3">--}}
+{{--                                        <label for="job_title">Job Title</label>--}}
+{{--                                        <select class="form-select" name="job_title" id="job_title" required>--}}
+{{--                                            <option value="">-- Select Job Title --</option>--}}
+{{--                                            <!-- Options will be populated by AJAX -->--}}
+{{--                                        </select>--}}
+{{--                                        <div class="invalid-feedback">Please select job.</div>--}}
+{{--                                    </div>--}}
                                     <div class="col-md-12 mb-3">
                                         <label>Notes</label>
                                         <textarea class="form-control" name="experience_brief" rows="4"></textarea>
@@ -287,36 +289,40 @@
     </div>
 </main>
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-
-
-
     $(document).ready(function () {
-
         $('#job_category').on('change', function () {
             const categoryId = $(this).val();
             const $jobTitle = $('#job_title');
-
             let options = '<option value="">-- Select Job Title --</option>';
 
             if (categoryId) {
-                $.get(`/api/job-titles/${categoryId}`, function (jobs) {
-                    jobs.forEach(job => {
-                        options += `<option value="${job.id}">${job.name}</option>`;
-                    });
+                $.ajax({
+                    url: '/api/job-titles/' + categoryId,
+                    type: 'GET',
+                    success: function (jobs) {
 
-                    $jobTitle.html(options); // ✅ replaces entire options content
-                }).fail(function () {
-                    alert('Failed to fetch job titles.');
+                        if (Array.isArray(jobs)) {
+                            jobs.forEach(job => {
+                                options += `<option value="${job.id}">${job.name}</option>`;
+                            });
+                        }
+                        $('#job_title').html(data.html);
+                        console.log(options)
+                        $jobTitle.html(options); // Replace options
+                    },
+                    error: function () {
+                        alert('Error fetching job titles.');
+                    }
                 });
             } else {
                 $jobTitle.html(options); // Reset if no category
             }
         });
-        
+
         $('.next').click(function (e) {
             e.preventDefault();
 
@@ -361,7 +367,6 @@
                 const $nextTab = $('.nav-tabs .nav-link.active').parent().next('li').find('.nav-link');
                 $nextTab.tab('show');
 
-
                 if ($($nextTab).attr('href') === '#step4') {
                     $("#confirm_surname").text($("#surname").val());
                     $("#confirm_first_name").text($("#first_name").val());
@@ -369,7 +374,7 @@
                     $("#confirm_email").text($("#email").val());
                     $("#confirm_phone_number").text($("#phone_number").val());
                     $("#confirm_id_number").text($("#id_number").val());
-                    $("#confirm_passport_number").text($("#confirm_passport_number").val());
+                    $("#confirm_passport_number").text($("#passport_number").val());
                     $("#confirm_job_category").text($("[name='job_category']").val());
                     $("#confirm_job_title").text($("[name='job_title']").val());
                     $("#confirm_experience_brief").text($("[name='experience_brief']").val());

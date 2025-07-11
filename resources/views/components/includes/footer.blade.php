@@ -9,7 +9,8 @@
                             <div class="footer-tittle">
                                 <h4>About Us</h4>
                                 <div class="footer-pera">
-                                    <p>Heaven frucvitful doesn't cover lesser dvsays appear creeping seasons so behold.</p>
+                                    <p>Vision To be the leading aggregation & market linkage company. </p>
+                                        <p>Mission To aggregate products and services and connect them with the consumers through digital platforms.</p>
                                 </div>
                             </div>
                         </div>
@@ -22,11 +23,10 @@
                             <h4>Contact Info</h4>
                             <ul>
                                 <li>
-                                    <p>Address :Your address goes
-                                        here, your demo address.</p>
+                                    <p>Baobab House, 2nd Floor, Westlands Office Park, Waiyaki Way, Westlands - Nairobi Kenya.</p>
                                 </li>
-                                <li><a href="#">Phone : +8880 44338899</a></li>
-                                <li><a href="#">Email : info@colorlib.com</a></li>
+                                <li><a href="#">Phone : +254 (20) 4456182, 4456183, 4456184, or +254(722) 389022</a></li>
+                                <li><a href="#">Email : info@calkenya.com</a></li>
                             </ul>
                         </div>
 
@@ -51,7 +51,7 @@
                         <div class="footer-tittle">
                             <h4>Newsletter</h4>
                             <div class="footer-pera footer-pera2">
-                                <p>Heaven fruitful doesn't over lesser in days. Appear creeping.</p>
+                                <p>We aggregate products in services, entertainment, news, education, health, etc.</p>
                             </div>
                             <!-- Form -->
                             <div class="footer-form" >
@@ -78,7 +78,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                     <!-- logo -->
                     <div class="footer-logo mb-20">
-                        <a href="index.html"><img src="{{ asset('assets/img/logo/logo2_footer.png')}}" alt=""></a>
+                        <a href="/"><img src="{{ asset('assets/img/logo/logo2_footer.png')}}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
@@ -111,7 +111,7 @@
                     <div class="col-xl-10 col-lg-10 ">
                         <div class="footer-copy-right">
                             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">WalkSky</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                         </div>
                     </div>
