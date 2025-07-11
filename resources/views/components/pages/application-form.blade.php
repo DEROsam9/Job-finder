@@ -311,8 +311,8 @@
                             });
                         }
                         $('#job_title').html(data.html);
-                        console.log(options)
-                        $jobTitle.html(options); // Replace options
+
+                        $jobTitle.html(options);
                     },
                     error: function () {
                         alert('Error fetching job titles.');
