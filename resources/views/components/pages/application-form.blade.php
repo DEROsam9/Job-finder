@@ -388,8 +388,12 @@
                     $("#confirm_phone_number").text($("#phone_number").val());
                     $("#confirm_id_number").text($("#id_number").val());
                     $("#confirm_passport_number").text($("#passport_number").val());
-                    $("#confirm_job_category").text($("[name='job_category']").val());
-                    $("#confirm_job_title").text($("[name='job_title']").val());
+                    //$("#confirm_job_category").text($("[name='job_category']").val());
+                    //$("#confirm_job_title").text($("[name='job_title']").val());
+                    $("#confirm_job_category").text($("#job_category option:selected").text());
+                    $("#confirm_job_title").text($("#job_title option:selected").text());
+
+                    
                     $("#confirm_experience_brief").text($("[name='experience_brief']").val());
                 }
             } else {
