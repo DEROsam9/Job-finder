@@ -11,6 +11,7 @@ use App\Models\ClientDocument;
 use App\Models\Payment;
 use DB;
 use Illuminate\Http\Request;
+use Laracasts\Flash\Flash;
 
 class ClientController extends Controller
 {
@@ -35,93 +36,97 @@ class ClientController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+{
+    try {
+        DB::beginTransaction();
+        $input = $request->all();
 
-        try {
-            DB::beginTransaction();
-            $input = $request->all();
+        $client = Client::create([
+            'surname' => $input['surname'],
+            'first_name' => $input['first_name'],
+            'middle_name' => $input['middle_name'],
+            'email' => $input['email'],
+            'phone_number' => $input['phone_number'],
+            'passport_number' => $input['passport_number'],
+            'id_number' => $input['id_number'],
+        ]);
 
-            $client = Client::create([
-                'surname' => $input['surname'],
-                'first_name' => $input['first_name'],
-                'middle_name' => $input['middle_name'],
-                'email' => $input['email'],
-                'phone_number' => $input['phone_number'],
-                'passport_number' => $input['passport_number'],
-                'id_number' => $input['id_number'],
-            ]);
+        $docFields = [
+            'cv'            => null,
+            'good_conduct'  => null,
+            'passport_copy' => 'passport_expiry_date',
+            'id_card'       => null,
+        ];
 
-            $docFields = [
-                'cv'            => null,
-                'good_conduct'  => null,
-                'passport_copy' => 'passport_expiry_date',
-                'id_card'       => null,
-            ];
+        foreach ($docFields as $field => $expiryField) {
+            $uploadedFile = $request->file($field);
 
-            foreach ($docFields as $field => $expiryField) {
-                $uploadedFile = $request->file($field);
-
-                if (!$uploadedFile || !$uploadedFile->isValid()) {
-                    continue;
-                }
-
-                $document_url = uploadToOBS($uploadedFile);
-                $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
-
-                ClientDocument::create([
-                    'client_id'            => $client->id,
-                    'remarks'              => $request->input('remarks'),
-                    'document_type'        => $field,
-                    'passport_expiry_date' => $passport_expiry_date,
-                    'document_url'         => $document_url,
-                ]);
+            if (!$uploadedFile || !$uploadedFile->isValid()) {
+                continue;
             }
 
-            $application = Application::create([
-                'client_id' => $client->id,
-                'career_id' => $request->get('job_title'),
-                'remarks' => $request->get('experience_brief'),
+            $document_url = uploadToOBS($uploadedFile);
+            $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
+
+            ClientDocument::create([
+                'client_id'            => $client->id,
+                'remarks'              => $request->input('remarks'),
+                'document_type'        => $field,
+                'passport_expiry_date' => $passport_expiry_date,
+                'document_url'         => $document_url,
             ]);
-
-            $data = array(
-                'application_code' => $application->application_code,
-                'phone_number' => $client->phone_number,
-                'amount' => 1000,
-            );
-
-            $response = $this->stkPushRequest($data);
-
-            if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
-                $payment = Payment::create(array(
-                    'client_id' => $client->id,
-                    'amount' => 100,
-                    'status_id' => loadStatusId('Draft'),
-                    'transaction_reference' => '',
-                    'remarks' => 'payment for application coded '.$application->application_code,
-                    'merchant_request_id' => $response['MerchantRequestID'],
-                    'checkout_request_id' => $response['CheckoutRequestID']
-                ));
-
-                ApplicationPayment::create(array(
-                    'client_id' => $client->id,
-                    'payment_id' => $payment->id,
-                    'application_id' => $application->id,
-                    'amount' => 0,
-                    'balance' => 1000
-                ));
-            } else {
-                // error message
-                \Log::error($response);
-                return false;
-            }
-            DB::commit();
-
-            return redirect()->back()->with('success', 'Your information has been submitted successfully.');
-        } catch (\Exception $exception) {
-            \Log::info($exception);
-            \DB::rollBack();
         }
+
+        $application = Application::create([
+            'client_id' => $client->id,
+            'career_id' => $request->get('job_title'),
+            'remarks' => $request->get('experience_brief'),
+        ]);
+
+        $data = [
+            'application_code' => $application->application_code,
+            'phone_number'     => $client->phone_number,
+            'amount'           => 1000,
+        ];
+
+        $response = $this->stkPushRequest($data);
+
+        if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
+            $payment = Payment::create([
+                'client_id'            => $client->id,
+                'amount'               => 100,
+                'status_id'            => loadStatusId('Draft'),
+                'transaction_reference'=> '',
+                'remarks'              => 'payment for application coded '.$application->application_code,
+                'merchant_request_id'  => $response['MerchantRequestID'],
+                'checkout_request_id'  => $response['CheckoutRequestID']
+            ]);
+
+            ApplicationPayment::create([
+                'client_id'     => $client->id,
+                'payment_id'    => $payment->id,
+                'application_id'=> $application->id,
+                'amount'        => 0,
+                'balance'       => 1000
+            ]);
+        } else {
+            session()->flash('error', 'STK Push failed. Please try again later.');
+            \Log::error($response);
+            return redirect()->back();
+        }
+
+        DB::commit();
+
+        session()->flash('success', 'Your information has been submitted successfully. Check your phone for an STK Push.');
+        return redirect()->back();
+    } catch (\Exception $exception) {
+        \Log::error($exception);
+        DB::rollBack();
+        session()->flash('error', 'Something went wrong. Please try again later.');
+        return redirect()->back();
     }
+}
+
 
     /**
      * Display the specified resource.

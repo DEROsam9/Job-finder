@@ -101,6 +101,21 @@
                             </li>
                         </ul>
 
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if(session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+
                         <div class="tab-content" id="myTabContent">
                             <!-- Step 1: User Form -->
                             <div class="tab-pane fade show active" role="tabpanel" id="step1" aria-labelledby="step1-tab">

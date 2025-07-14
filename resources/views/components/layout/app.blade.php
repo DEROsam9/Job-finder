@@ -10,6 +10,9 @@
 <!-- Preloader Start -->
 @include('components.includes.header')
 
+<!-- flash messages Popup -->
+@include('flash::message')
+
 @yield('content')
 
 @include('components.includes.footer')
