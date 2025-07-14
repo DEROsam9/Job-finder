@@ -67,6 +67,10 @@
         .is-invalid {
             border-color: #dc3545;
         }
+         #job-title-loader {
+            font-size: 14px;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 <main>
     <div class="container">
@@ -219,20 +223,12 @@
                                         <label for="job_title">Job Title</label>
                                         <select class="form-select" name="job_title" id="job_title" required>
                                             <option value="">-- Select Job Title --</option>
-                                            @foreach($careers as $career)
-                                                <option value="{{ $career->id }}">{{ $career->name }}</option>
-                                            @endforeach
                                         </select>
+                                        <div id="job-title-loader" class="form-text text-info mt-1 d-none">
+                                            <i class="fas fa-spinner fa-spin me-2"></i> Loading job titles...
+                                        </div>
                                         <div class="invalid-feedback">Please select job.</div>
                                     </div>
-{{--                                    <div class="col-md-6 mb-3">--}}
-{{--                                        <label for="job_title">Job Title</label>--}}
-{{--                                        <select class="form-select" name="job_title" id="job_title" required>--}}
-{{--                                            <option value="">-- Select Job Title --</option>--}}
-{{--                                            <!-- Options will be populated by AJAX -->--}}
-{{--                                        </select>--}}
-{{--                                        <div class="invalid-feedback">Please select job.</div>--}}
-{{--                                    </div>--}}
                                     <div class="col-md-12 mb-3">
                                         <label>Notes</label>
                                         <textarea class="form-control" name="experience_brief" rows="4"></textarea>
@@ -307,42 +303,72 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready(function () {
+        // Initialize all <select> elements with niceSelect plugin for better UI
+        $('select').niceSelect();
+        $('#job_title').niceSelect(); // explicitly initialize job_title dropdown
+
+        // When job category changes
         $('#job_category').on('change', function () {
-            const categoryId = $(this).val();
-            const $jobTitle = $('#job_title');
-            let options = '<option value="">-- Select Job Title --</option>';
+            const categoryId = $(this).val(); // Get selected category ID
+            const $jobTitle = $('#job_title'); // Reference to job title dropdown
+            let options = '<option value="">-- Select Job Title --</option>'; // Reset options
+            $('#job-title-loader').removeClass('d-none'); // Show loading spinner
+            $jobTitle.prop('disabled', true); // Disable dropdown while loading
 
             if (categoryId) {
+                // If a category is selected, fetch job titles via AJAX
                 $.ajax({
-                    url: '/job-titles/' + categoryId,
+                    url: '/job-titles/' + categoryId, // e.g. /job-titles/3
                     type: 'GET',
                     success: function (jobs) {
+                        let options = '<option value="">-- Select Job Title --</option>';
 
+                        // Loop through job titles and build option tags
                         if (Array.isArray(jobs)) {
                             jobs.forEach(job => {
                                 options += `<option value="${job.id}">${job.name}</option>`;
                             });
                         }
-                        $('#job_title').html(data.html);
 
+                        // Destroy existing niceSelect before updating
+                        $jobTitle.niceSelect('destroy');
+
+                        // Re-enable and update dropdown options
+                        $jobTitle.prop('disabled', false);
                         $jobTitle.html(options);
+
+                        // Re-initialize niceSelect with new options
+                        $jobTitle.niceSelect();
+
+                        // Hide loading spinner
+                        $('#job-title-loader').addClass('d-none');
                     },
+
                     error: function () {
+                        // Handle error case
                         alert('Error fetching job titles.');
+                        $('#job-title-loader').addClass('d-none');
+                        $jobTitle.prop('disabled', false); // Always re-enable even on error
                     }
                 });
             } else {
-                $jobTitle.html(options); // Reset if no category
+                // If no category is selected, reset and re-enable dropdown
+                $jobTitle.niceSelect('destroy');
+                $jobTitle.prop('disabled', false);
+                $jobTitle.html(options);
+                $jobTitle.niceSelect();
+                $('#job-title-loader').addClass('d-none');
             }
         });
 
+        // Handle "Next" button clicks in form wizard
         $('.next').click(function (e) {
             e.preventDefault();
 
-            let $currentTab = $(this).closest('.tab-pane');
+            let $currentTab = $(this).closest('.tab-pane'); // Current step
             let isValid = true;
 
-            // Validate required fields
+            // Validate required inputs, selects, and textareas
             $currentTab.find('input[required], select[required], textarea[required]').each(function () {
                 if (!$(this).val()) {
                     $(this).addClass('is-invalid');
@@ -352,7 +378,7 @@
                 }
             });
 
-            // Passport expiry validation (6 months ahead)
+            // Special validation: passport must be valid for at least 6 more months
             const expiryInput = $currentTab.find('#passport_expiry');
             if (expiryInput.length) {
                 const rawVal = expiryInput.val();
@@ -374,12 +400,12 @@
                 }
             }
 
-            // Move to next tab if valid
+            // If valid, move to the next tab
             if (isValid) {
-
                 const $nextTab = $('.nav-tabs .nav-link.active').parent().next('li').find('.nav-link');
                 $nextTab.tab('show');
 
+                // If final confirmation step, populate summary fields
                 if ($($nextTab).attr('href') === '#step4') {
                     $("#confirm_surname").text($("#surname").val());
                     $("#confirm_first_name").text($("#first_name").val());
@@ -397,11 +423,12 @@
                     $("#confirm_experience_brief").text($("[name='experience_brief']").val());
                 }
             } else {
-                // Optional: Hide tooltip for the current tab to avoid interference
+                // Optional: hide tooltips on invalid tab
                 $('.nav-tabs .nav-link.active').tooltip('dispose');
             }
         });
 
+        // Handle "Previous" button click in form wizard
         $('.previous').click(function (e) {
             e.preventDefault();
             const $prevTab = $('.nav-tabs .nav-link.active').parent().prev('li').find('.nav-link');
@@ -409,5 +436,7 @@
         });
     });
 </script>
+
+
 
 @endsection
