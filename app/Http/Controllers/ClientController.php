@@ -96,6 +96,7 @@ class ClientController extends Controller
                     'client_id' => $client->id,
                     'amount' => 100,
                     'status_id' => loadStatusId('Draft'),
+                    'transaction_reference' => '',
                     'remarks' => 'payment for application coded '.$application->application_code,
                     'merchant_request_id' => $response['MerchantRequestID'],
                     'checkout_request_id' => $response['CheckoutRequestID']
