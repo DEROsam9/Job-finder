@@ -10,8 +10,6 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('l
 
 Route::get('/application-form', [HomeController::class, 'application'])->name('application');
 Route::post('/client/submit/form', [ClientController::class, 'store'])->name('client.submit');
-
-Route::get('/api/job-categories', [CareerController::class, 'getCategories']);
-Route::get('/api/job-titles/{categoryId}', [CareerController::class, 'getJobsByCategory']);
+Route::get('/job-titles/{categoryId}', [CareerController::class, 'getJobsByCategory']);
 
 

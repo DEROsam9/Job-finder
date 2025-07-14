@@ -110,6 +110,7 @@ class ClientController extends Controller
                     'balance' => 1000
                 ));
             } else {
+                // error message
                 \Log::error($response);
                 return false;
             }
