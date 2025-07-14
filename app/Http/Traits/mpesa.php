@@ -81,6 +81,7 @@ trait mpesa
             ]);
             return json_decode((string)$response->getBody(), true);
         } catch (BadResponseException $exception) {
+            \Log::info($exception);
             return json_decode((string)$exception->getResponse()->getBody()->getContents(), true);
         }
     }
@@ -127,29 +128,32 @@ trait mpesa
      */
     public function stkPushRequest($data): mixed
     {
-        $consumer_secret = $this->consumer_secret;
-        $consumer_key = $this->consumer_key;
-        $stk_url = $this->stk_push_url;
-        $pass_key = $this->pass_key;
-        $shortcode = $this->short_code;
-        $call_back_url = $this->skyworld_base_url . '/api/stk-push-response';
+        try {
+            $consumer_secret = $this->consumer_secret;
+            $consumer_key = $this->consumer_key;
+            $stk_url = $this->stk_push_url;
+            $pass_key = $this->pass_key;
+            $shortcode = $this->short_code;
+            $call_back_url = $this->skyworld_base_url . '/api/stk-push-response';
 
+            $requestBody = [
+                'BusinessShortCode' => $shortcode,
+                'Password' => $this->getPassword($pass_key, $shortcode),
+                'Timestamp' => $this->timestamp,
+                'TransactionType' => "CustomerPayBillOnline",
+                'Amount' => $data['amount'],
+                'PartyA' =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
+                "PartyB" => $shortcode,
+                "PhoneNumber" =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
+                "CallBackURL" => $call_back_url,
+                "AccountReference" => $data['application_code'],
+                "TransactionDesc" => 'job application payment'
+            ];
 
-        $requestBody = [
-            'BusinessShortCode' => $shortcode,
-            'Password' => $this->getPassword($pass_key, $shortcode),
-            'Timestamp' => $this->timestamp,
-            'TransactionType' => "CustomerPayBillOnline",
-            'Amount' => $data['amount'],
-            'PartyA' =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
-            "PartyB" => $shortcode,
-            "PhoneNumber" =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
-            "CallBackURL" => $call_back_url,
-            "AccountReference" => $data['application_code'],
-            "TransactionDesc" => 'job application payment'
-        ];
-
-        return $this->post($stk_url, $requestBody, $consumer_secret, $consumer_key);
+            return $this->post($stk_url, $requestBody, $consumer_secret, $consumer_key);
+        } catch (\Exception $exception) {
+            \Log::info($exception);
+        }
     }
 
     public function stkPushResponse($request): bool

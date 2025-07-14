@@ -109,7 +109,7 @@ class ClientController extends Controller
                     'balance' => 1000
                 ));
             } else {
-                \Log::error($response["ResponseCode"]);
+                \Log::error($response);
                 return false;
             }
             DB::commit();
