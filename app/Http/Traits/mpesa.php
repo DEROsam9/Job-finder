@@ -52,7 +52,7 @@ trait mpesa
         $this->stk_push_url = "mpesa/stkpush/v1/processrequest";
         $this->stk_transaction_query = "mpesa/stkpushquery/v1/query";
 
-        $this->skyworld_base_url = url('/');
+        $this->skyworld_base_url = url('https://skyworld.weego.co.ke');
 
         $this->short_code = config('mpesa.short_code');
         $this->consumer_secret = config('mpesa.consumer_secret');

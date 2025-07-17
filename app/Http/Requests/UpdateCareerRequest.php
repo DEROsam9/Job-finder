@@ -22,7 +22,11 @@ class UpdateCareerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', 'unique:careers,slug,' . $career->id],
+            'description' => ['nullable', 'string'],
+            'job_category_id' => ['required', 'exists:job_categories,id'],
+            'slots' => ['required', 'integer', 'min:0'],
         ];
     }
 }

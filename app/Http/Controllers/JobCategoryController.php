@@ -5,62 +5,112 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreJobCategoryRequest;
 use App\Http\Requests\UpdateJobCategoryRequest;
 use App\Models\JobCategory;
+use App\Models\Career;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 
 class JobCategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List all job categories.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $jobCategories = JobCategory::all();
+        return response()->json($jobCategories, 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Create and store a new job category.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // public function store(StoreJobCategoryRequest $request): JsonResponse
+    // {
+    //     try {
+    //         $jobCategory = JobCategory::create($request->validated());
+    //         return response()->json($jobCategory, 201);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'Failed to create job category',
+    //             'message' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
     public function store(StoreJobCategoryRequest $request)
     {
-        //
+        $slug = \Illuminate\Support\Str::slug($request->name);
+
+        $jobCategory = JobCategory::create([
+            'name' => $request->name,
+            'slug' => $slug,
+            'description' => $request->description,
+        ]);
+
+        return response()->json($jobCategory, 201);
+    }
+
+
+    /**
+     * Display a specific job category by ID.
+     */
+    public function show($id): JsonResponse
+    {
+        try {
+            $jobCategory = JobCategory::findOrFail($id);
+            return response()->json($jobCategory, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Job category not found'], 404);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Update an existing job category.
      */
-    public function show(JobCategory $jobCategory)
+    public function update(UpdateJobCategoryRequest $request, $id): JsonResponse
     {
-        //
+        try {
+            $jobCategory = JobCategory::findOrFail($id);
+            $jobCategory->update($request->validated());
+            return response()->json($jobCategory, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Job category not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to update job category',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Delete a job category by ID.
      */
-    public function edit(JobCategory $jobCategory)
+    public function destroy($id): JsonResponse
     {
-        //
+        try {
+            $jobCategory = JobCategory::findOrFail($id);
+            $jobCategory->delete();
+            return response()->json(null, 204);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Job category not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to delete job category',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Get job titles (careers) under a specific job category.
      */
-    public function update(UpdateJobCategoryRequest $request, JobCategory $jobCategory)
+    public function getTitlesByCategory($categoryId): JsonResponse
     {
-        //
-    }
+        $titles = Career::where('job_category_id', $categoryId)
+                        ->orderBy('name', 'asc')
+                        ->get(['id', 'name']);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(JobCategory $jobCategory)
-    {
-        //
+        return response()->json($titles, 200);
     }
 }
