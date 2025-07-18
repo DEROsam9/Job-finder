@@ -20,9 +20,19 @@ class UpdatePaymentRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            //
-        ];
-    }
+{
+    return [
+        'client_id' => 'required|exists:clients,id',
+        'amount' => 'required|numeric|min:0',
+        'status_id' => 'nullable|exists:statuses,id',
+        'additional_information' => 'nullable|string',
+        'payload' => 'nullable|json',
+        'transaction_reference' => 'nullable|string|max:255',
+        'transaction_date' => 'nullable|date',
+        'remarks' => 'nullable|string|max:500',
+        'merchant_request_id' => 'nullable|string|max:255',
+        'checkout_request_id' => 'nullable|string|max:255',
+    ];
+}
+
 }

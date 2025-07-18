@@ -5,62 +5,67 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
+use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List all payments with pagination
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $payments = Payment::latest()->paginate($request->get('limit', 20));
+
+        return response()->json([
+            'data' => $payments
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a new payment
      */
     public function store(StorePaymentRequest $request)
     {
-        //
+        $payment = Payment::create($request->validated());
+
+        return response()->json([
+            'message' => 'Payment created successfully',
+            'data' => $payment
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Show a single payment
      */
     public function show(Payment $payment)
     {
-        //
+        return response()->json([
+            'data' => $payment
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update an existing payment
      */
     public function update(UpdatePaymentRequest $request, Payment $payment)
     {
-        //
+        $payment->update($request->validated());
+
+        return response()->json([
+            'message' => 'Payment updated successfully',
+            'data' => $payment
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a payment
      */
     public function destroy(Payment $payment)
     {
-        //
+        $payment->delete();
+
+        return response()->json([
+            'message' => 'Payment deleted successfully'
+        ]);
     }
 }

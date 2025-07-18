@@ -1,16 +1,35 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use \App\Models\AppBaseModel as Model;
+use App\Models\AppBaseModel;
 
-class Application extends Model
+class Application extends AppBaseModel
 {
-    /** @use HasFactory<\Database\Factories\ApplicationFactory> */
     use HasFactory;
 
     protected $fillable = [
         'application_code', 'client_id', 'career_id', 'status_id', 'remarks'
     ];
+
+    // Relationships
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function career()
+    {
+        return $this->belongsTo(Career::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(ApplicationPayment::class);
+    }
 }

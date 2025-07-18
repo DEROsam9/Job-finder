@@ -11,7 +11,7 @@ class UpdateClientDocumentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class UpdateClientDocumentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+         return [
+            'remarks' => 'nullable|string|max:255',
+            'document_type' => 'required|string|in:cv,good_conduct,passport_copy,id_card',
+            'passport_expiry_date' => 'nullable|date',
+            'document_url' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
     }
 }

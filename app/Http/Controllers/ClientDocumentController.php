@@ -1,66 +1,72 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClientDocumentRequest;
-use App\Http\Requests\UpdateClientDocumentRequest;
 use App\Models\ClientDocument;
+use App\Http\Requests\UpdateClientDocumentRequest;
+use Illuminate\Support\Facades\Storage;
+    use App\Models\Client;
 
 class ClientDocumentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $documents = ClientDocument::with('client')->latest()->get();
+
+        return response()->json([
+            'data' => $documents
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreClientDocumentRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(ClientDocument $clientDocument)
     {
-        //
+        return response()->json([
+            'data' => $clientDocument->load('client')
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ClientDocument $clientDocument)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateClientDocumentRequest $request, ClientDocument $clientDocument)
     {
-        //
+        $validated = $request->validated();
+
+        // If a new file is uploaded, store and update URL
+        if ($request->hasFile('document_url')) {
+            $file = $request->file('document_url');
+
+            // Store on default disk or use 'obs' if Huawei OBS
+            $path = $file->store('client-documents', 'public');
+            $validated['document_url'] = Storage::url($path);
+
+            // Optionally delete old file
+            // Storage::delete(parse_url($clientDocument->document_url, PHP_URL_PATH));
+        }
+
+        $clientDocument->update($validated);
+
+        return response()->json([
+            'message' => 'Client document updated successfully.',
+            'data' => $clientDocument
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ClientDocument $clientDocument)
     {
-        //
+        $clientDocument->delete();
+
+        return response()->json([
+            'message' => 'Client document deleted.'
+        ]);
     }
+
+
+public function getByClient(Client $client)
+{
+    $documents = ClientDocument::where('client_id', $client->id)
+        ->with('client')
+        ->get();
+
+    return response()->json([
+        'data' => $documents
+    ]);
+}
+
 }

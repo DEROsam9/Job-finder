@@ -11,7 +11,7 @@ class UpdateApplicationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,9 +20,14 @@ class UpdateApplicationRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            //
-        ];
-    }
+{
+    return [
+        'application_code' => 'sometimes|string|max:255',
+        'client_id'        => 'sometimes|exists:clients,id',
+        'career_id'        => 'sometimes|exists:careers,id',
+        'status_id'        => 'sometimes|exists:statuses,id',
+        'remarks'          => 'nullable|string|max:1000',
+    ];
+}
+
 }

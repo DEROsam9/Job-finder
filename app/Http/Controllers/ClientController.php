@@ -19,9 +19,13 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $clients = Client::paginate($request->get('limit', 20));
+
+        return response()->json([
+            'data'=>$clients
+        ],200);
     }
 
     /**
@@ -29,7 +33,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -131,9 +135,15 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        //
+        $customer = Client::find($id);
+        
+        if(!$customer){
+            return response()->json(['message'=>'Client not Found']);
+        }
+
+        return response()->json(['data'=>$customer]);
     }
 
     /**
@@ -147,16 +157,43 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClientRequest $request, Client $client)
+   public function update(UpdateClientRequest $request, $id)
     {
-        //
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['message' => 'Client not found'], 404);
+        }
+
+        $data = $request->validated();
+
+        if (empty($data)) {
+            return response()->json(['message' => 'No data provided'], 422);
+        }
+
+        $client->update($data);
+
+        return response()->json(['data' => $client], 200);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+        $client = Client::find($id);
+
+        if(!$client){
+            return response()->json(['data'=>'Client Not found'],404);
+
+        }
+
+        $client->delete();
+
+        return response()->json(['message'=>'Client Deleted']);
+
+
     }
 }
