@@ -7,13 +7,31 @@ use App\Models\JobCategory;
 use App\Models\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Repositories\CareerRepository;
 
 class CareerController extends Controller
 {
+    private CareerRepository $careerRepository;
+
+    public function __construct(CareerRepository $careerRepo)
+    {
+        $this->careerRepository = $careerRepo;
+    }
+
+    public function index(Request $request)
+    {
+        $careers = $this->careerRepository
+        ->with('jobCategory')
+        ->paginate($request->get('limit', 8));
+
+        return response()->json([
+                'data' => $careers,
+            ], 200);
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function _index(): JsonResponse
     {
         $careers = Career::all();
         return response()->json($careers);

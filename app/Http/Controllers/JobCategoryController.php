@@ -10,17 +10,36 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Str;
+use App\Repositories\BaseRepository;
+
 
 class JobCategoryController extends Controller
 {
+
+    private BaseRepository $baseRepository;
+
+    public function __construct(BaseRepository $baseRepo)
+    {
+        $this->baseRepository = $baseRepo;
+    }
     /**
      * List all job categories.
      */
-    public function index(): JsonResponse
-    {
-        $jobCategories = JobCategory::all();
-        return response()->json($jobCategories, 200);
-    }
+    // public function index(): JsonResponse
+    // {
+    //     $jobCategories = JobCategory::all();
+    //     return response()->json($jobCategories, 200);
+    // }
+    public function index(Request $request): JsonResponse
+{
+    $perPage = $request->get('limit', 10);
+    $page = $request->get('page', 1);
+
+    $jobCategories = JobCategory::paginate($perPage, ['*'], 'page', $page);
+
+    return response()->json($jobCategories, 200);
+}
+
 
     /**
      * Create and store a new job category.
