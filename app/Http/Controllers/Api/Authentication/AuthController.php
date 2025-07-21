@@ -74,8 +74,8 @@ class AuthController extends Controller
             $request->validate([
                 'username' => 'required|string|email',
                 'password' => 'required|string',
-                'client_id' => 'required|string',
-                'client_secret' => 'required|string',
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET'),
             ]);
 
             $user = $this->userRepository->where('email', $request->username)->first();
@@ -105,6 +105,33 @@ class AuthController extends Controller
             return response()->json(
                 ['message' => $exception->getMessage()
                 ], 500);
+        }
+    }
+
+     public function logout(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            if ($user) {
+                // Revoke all tokens issued to the user, or just the current token:
+                // Option 1: Revoke only current access token:
+                $request->user()->token()->revoke();
+
+                // Option 2: Revoke all tokens for the user (optional)
+                // Token::where('user_id', $user->id)->update(['revoked' => true]);
+            }
+
+            Auth::logout();
+
+            return response()->json([
+                'message' => 'Successfully logged out.'
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Logout failed: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Logout failed.'
+            ], 500);
         }
     }
 }

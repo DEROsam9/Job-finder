@@ -21,4 +21,9 @@ class UserRepository extends BaseRepository
     {
         return User::class;
     }
+    public function findByEmail(string $email): ?User
+{
+    return $this->model()::where('email', $email)->first();
+}
+
 }

@@ -43,4 +43,8 @@ return [
 
     'connection' => env('PASSPORT_CONNECTION'),
 
+    'route_registration_enabled' => true,
+   // ✅ Custom login endpoint (optional)
+    'login_endpoint' => env('PASSPORT_LOGIN_ENDPOINT', env('APP_URL') . '/oauth/token'),
+    
 ];
