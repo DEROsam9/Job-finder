@@ -9,6 +9,8 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ClientDocumentController;
 use App\Http\Controllers\ApplicationPaymentController;
 use App\Http\Controllers\Api\Authentication\AuthController;
+use App\Http\Controllers\CareerController;
+use App\Http\Controllers\JobCategoryController;
 
 // Auth routes
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -27,3 +29,8 @@ Route::apiResource( 'statuses', StatusController::class);
 
 // Custom routes
 Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'getByClient']);
+
+Route::resource('careers', CareerController::class);
+Route::resource('job-categories', JobCategoryController::class);
+
+

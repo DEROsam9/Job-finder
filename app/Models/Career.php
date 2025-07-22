@@ -13,4 +13,9 @@ class Career extends Model
     protected $fillable = [
          'name', 'slug', 'description', 'job_category_id', 'status_id', 'slots'
     ];
+
+    public function jobCategory()
+    {
+        return $this->belongsTo(JobCategory::class);
+    }
 }
