@@ -5,63 +5,38 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStatusRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Models\Status;
+use Illuminate\Http\Request;
+
 
 class StatusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return response()->json(Status::all());
 
-    }
+public function index()
+{
+    return response()->json(Status::all());
+}
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+public function store(StoreStatusRequest $request)
+{
+    $status = Status::create($request->validated());
+    return response()->json($status, 201);
+}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreStatusRequest $request)
-    {
-        //
-    }
+public function show(Status $status)
+{
+    return response()->json($status);
+}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Status $status)
-    {
-        //
-    }
+public function update(UpdateStatusRequest $request, Status $status)
+{
+    $status->update($request->validated());
+    return response()->json($status);
+}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Status $status)
-    {
-        //
-    }
+public function destroy(Status $status)
+{
+    $status->delete();
+    return response()->json(['message' => 'Status deleted successfully']);
+}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStatusRequest $request, Status $status)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Status $status)
-    {
-        //
-    }
 }

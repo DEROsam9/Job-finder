@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\ClientDocument;
-use App\Http\Requests\UpdateClientDocumentRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateClientDocumentRequest;
     use App\Models\Client;
 
 class ClientDocumentController extends Controller
@@ -68,5 +69,34 @@ public function getByClient(Client $client)
         'data' => $documents
     ]);
 }
+
+public function approve(ClientDocument $clientDocument)
+{
+    $clientDocument->status = 'Verified';
+    $clientDocument->save();
+
+    return response()->json([
+        'message' => 'Document approved successfully.',
+        'data' => $clientDocument
+    ]);
+}
+
+public function reject(Request $request, ClientDocument $clientDocument)
+{
+    $request->validate([
+    'remarks' => 'required|string|max:255'
+]);
+
+    $clientDocument->status = 'Rejected';
+    $clientDocument->remarks = $request->input('remarks', ''); // optional reason
+    $clientDocument->save();
+
+    return response()->json([
+        'message' => 'Document rejected successfully.',
+        'data' => $clientDocument
+    ]);
+}
+
+
 
 }

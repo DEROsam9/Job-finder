@@ -12,26 +12,30 @@ class PaymentController extends Controller
     /**
      * List all payments with pagination
      */
-    public function index(Request $request)
-    {
-        $payments = Payment::latest()->paginate($request->get('limit', 20));
+public function index(Request $request)
+{
+    $payments = Payment::with(['status', 'client'])->latest()->paginate($request->get('limit', 20));
 
-        return response()->json([
-            'data' => $payments
-        ]);
-    }
+    return response()->json([
+        'data' => $payments
+    ]);
+}
+
+
 
     /**
      * Store a new payment
      */
     public function store(StorePaymentRequest $request)
     {
+          \Log::info('Entered PaymentController@store');
         $payment = Payment::create($request->validated());
 
         return response()->json([
             'message' => 'Payment created successfully',
             'data' => $payment
         ], 201);
+        
     }
 
     /**

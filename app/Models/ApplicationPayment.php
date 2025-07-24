@@ -13,4 +13,19 @@ class ApplicationPayment extends Model
     protected $fillable = [
         'client_id', 'payment_id', 'application_id', 'amount', 'balance'
     ];
+
+    public function client()
+{
+    return $this->belongsTo(\App\Models\Client::class);
+}
+    public function payment()
+{
+    return $this->belongsTo(Payment::class);
+}
+
+    public function application()
+{
+    return $this->belongsTo(Application::class);
+
+}
 }

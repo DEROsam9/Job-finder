@@ -24,6 +24,9 @@ Route::apiResource('application-payments', ApplicationPaymentController::class);
 Route::apiResource('applications', ApplicationController::class);
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('clientdocs', ClientDocumentController::class);
+Route::post('/clientdocs/{clientDocument}/approve', [ClientDocumentController::class, 'approve']);
+Route::post('/clientdocs/{clientDocument}/reject', [ClientDocumentController::class, 'reject']);
+// Status routes
 Route::apiResource( 'statuses', StatusController::class);
 
 

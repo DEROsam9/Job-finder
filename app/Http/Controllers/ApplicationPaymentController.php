@@ -10,13 +10,14 @@ use Illuminate\Http\Request;
 class ApplicationPaymentController extends Controller
 {
     public function index(Request $request)
-    {
-        $data = ApplicationPayment::paginate($request->get('limit', 20));
+{
+    $data = ApplicationPayment::with('client')->paginate($request->get('limit', 20));
 
-        return response()->json([
-            'data' => $data
-        ], 200);
-    }
+    return response()->json([
+        'data' => $data
+    ], 200);
+}
+
 
     public function store(StoreApplicationPaymentRequest $request)
     {

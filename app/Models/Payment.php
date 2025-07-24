@@ -13,4 +13,13 @@ class Payment extends Model
     protected $fillable = [
         'client_id', 'amount', 'status_id', 'additional_information', 'payload', 'transaction_reference', 'transaction_date', 'remarks', 'merchant_request_id', 'checkout_request_id'
     ];
+
+    public function status()
+{
+    return $this->belongsTo(Status::class, 'status_id');
+}
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
 }
