@@ -19,14 +19,50 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $clients = Client::paginate($request->get('limit', 20));
+    // Laravel (in ClientController.php)
 
-        return response()->json([
-            'data'=>$clients
-        ],200);
+public function index(Request $request)
+{
+    $query = Client::query();
+
+    // 🔹 Grouped filtering for name OR email
+    if ($request->name || $request->email) {
+        $query->where(function ($q) use ($request) {
+            if ($request->name) {
+                $q->where('first_name', 'like', "%{$request->name}%")
+                  ->orWhere('surname', 'like', "%{$request->name}%");
+            }
+
+            if ($request->email) {
+                $q->orWhere('email', 'like', "%{$request->email}%");
+            }
+        });
     }
+
+    // 🔹 Grouped filtering for passport OR ID
+    if ($request->passport_number || $request->id_number) {
+        $query->where(function ($q) use ($request) {
+            if ($request->passport_number) {
+                $q->where('passport_number', 'like', "%{$request->passport_number}%");
+            }
+
+            if ($request->id_number) {
+                $q->orWhere('id_number', 'like', "%{$request->id_number}%");
+            }
+        });
+    }
+
+    // 🔹 Date filter
+    if ($request->start_date && $request->end_date) {
+        $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+    }
+
+    return response()->json([
+        'data' => $query->latest()->paginate(10),
+    ]);
+}
+
+
 
     /**
      * Show the form for creating a new resource.
