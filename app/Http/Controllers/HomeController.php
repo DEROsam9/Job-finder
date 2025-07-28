@@ -22,4 +22,9 @@ class HomeController extends Controller
 
         return view('components.pages.applications', compact(['jobCategories', 'careers']));
     }
+
+    public function trackApplication() {
+
+        return view('components.pages.track-application');
+    }
 }

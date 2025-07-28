@@ -9,25 +9,26 @@
                 <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
                 <ul class="menu">
                     <li class="active">
-                        <a href="home.html">Home</a>
+                        <a href="{{ route('landing') }}">Home</a>
                     </li>
                     <li>
-                        <a href="about.html">About Us</a>
+                        <a href="#">About Us</a>
                     </li>
                     <li>
-                        <a href="services.html">Services</a>
+                        <a href="#">Services</a>
                     </li>
                     <li>
-                        <a href="experiences.html">Experiences</a>
+                        <a href="#">Experiences</a>
                     </li>
                     <li>
-                        <a href="partners.html">Partners</a>
+                        <a href="#">Partners</a>
                     </li>
                     <div class="rightmenu">
-                        <li class="apply"><a href="apply.html">Apply Now</a></li>
-                        <li class="track"><a href="track.html">Track Application</a></li>
+                        <li class="apply"><a href="{{ route('application') }}">Apply Now</a></li>
+                        <li class="track"><a href="{{ route('track.application') }}">Track Application</a></li>
                     </div>
                 </ul>
+
 
             </div>
         </div>

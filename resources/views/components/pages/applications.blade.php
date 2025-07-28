@@ -86,6 +86,13 @@
             text-align: center;
             max-width: 120px;
         }
+        .step-indicator[data-step="4"].active {
+    background: #1E40AF; /* A deeper blue for final step */
+    outline-color: #1E40AF;
+    box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
+    transition: all 0.3s ease-in-out;
+}
+
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
@@ -121,6 +128,17 @@
                 text-align: left;
             }
         }
+        .form-step[data-step="4"] button[type="submit"] {
+            background: #10B981; /* green */
+            font-weight: 600;
+            padding: 10px 30px;
+            transition: background 0.2s ease;
+        }
+
+        .form-step[data-step="4"] button[type="submit"]:hover {
+            background: #059669;
+        }
+
 
         @media (max-width: 480px) {
             .step-indicator {
@@ -178,39 +196,41 @@
                         </div>
                     </div>
                     <div class="form-section">
-                        <form id="application-form">
+                        <form id="application-form" action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="form-step active" data-step="1">
                                 <p>
-                                    <input type="text" name="First Name" placeholder="First Name" required>
-                                    <input type="text" name="Last Name" placeholder="Last Name" required>
+                                    <input type="text" name="first_name" placeholder="First Name" required>
+                                    <input type="text" name="surname" placeholder="Last Name" required>
                                 </p>
                                 <p>
-                                    <input type="email" name="Email Address" placeholder="Email Address" required>
-                                    <input type="tel" name="Phone Number" placeholder="Phone Number" required>
+                                    <input type="email" name="email" placeholder="Email Address" required>
+                                    <input type="tel" name="phone_number" placeholder="Phone Number" required>
                                 </p>
                                 <p>
-                                    <input type="text" name="Passport Number" placeholder="Passport Number" required>
-                                    <input type="text" name="ID Number" placeholder="ID Number" required>
+                                    <input type="text" name="passport_number" placeholder="Passport Number" required>
+                                    <input type="text" name="id_number" placeholder="ID Number" required>
                                 </p>
                                 <button type="button" onclick="nextStep(2)">Next</button>
                             </div>
+                            <!-- Docs Upload -->
                             <div class="form-step" data-step="2">
 
                                 <div class="upload-section">
                                     <div class="upload-box">
                                         <div class="upload-content">
                                             <i class="fa fa-upload"></i>
-                                            <p>Apload Passport</p>
-                                            <input type="file" name="resume" accept=".pdf,.doc,.docx" id="resumeFile">
-                                            <label for="resumeFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="resumeInfo"></div>
+                                            <p>Upload Passport</p>
+                                            <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile">
+                                            <label for="passportFile" class="upload-btn">Choose File</label>
+                                            <div class="file-info" id="passportInfo"></div>
                                         </div>
                                     </div>
                                     <div class="upload-box">
                                         <div class="upload-content">
                                             <i class="fa fa-upload"></i>
                                             <p>Upload Resume/CV</p>
-                                            <input type="file" name="resume" accept=".pdf,.doc,.docx" id="resumeFile">
+                                            <input type="file" name="cv" accept=".pdf,.doc,.docx" id="resumeFile">
                                             <label for="resumeFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="resumeInfo"></div>
                                         </div>
@@ -219,7 +239,7 @@
                                         <div class="upload-content">
                                             <i class="fa fa-file-text"></i>
                                             <p>Upload Cover Letter (Optional)</p>
-                                            <input type="file" name="coverLetter" accept=".pdf,.doc,.docx" id="coverFile">
+                                            <input type="file" name="cover_letter" accept=".pdf,.doc,.docx" id="coverFile">
                                             <label for="coverFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="coverInfo"></div>
                                         </div>
@@ -232,14 +252,15 @@
                             </div>
                             <div class="form-step" data-step="3">
                                 <p>
-                                    <select name="Job Category" required>
+                                    <select id="jobCategorySelect" name="job_category_id" class="form-control">
                                         <option value="">Select Job Category</option>
-                                        <option value="Engineering">Engineering</option>
-                                        <option value="Marketing">Marketing</option>
-                                        <option value="Sales">Sales</option>
-                                        <option value="Other">Other</option>
                                     </select>
-                                    <input type="text" name="Job Title" placeholder="Desired Job Title" required>
+
+                                    <select id="jobTitleSelect" name="job_title_id" class="form-control">
+                                        <option value="">Select Job Title</option>
+                                    </select>
+
+
                                 </p>
                                 <p>
                                     <button type="button" onclick="prevStep(2)">Previous</button>
@@ -247,7 +268,10 @@
                                 </p>
                             </div>
                             <div class="form-step" data-step="4">
-                                <p><div id="form-summary"></div></p>
+                                <div style="background: #F9FAFB; padding: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+                                    <div id="form-summary"></div>
+                                </div>
+
                                 <p>
                                     <button type="button" onclick="prevStep(3)">Previous</button>
                                     <button type="submit">Submit</button>
@@ -316,21 +340,88 @@
         }
 
         function displaySummary() {
-            const formData = new FormData(document.getElementById('application-form'));
-            let summary = '<h3>Application Summary</h3>';
-            for (let [key, value] of formData.entries()) {
-                if (key !== 'Resume' && key !== 'Cover Letter') {
-                    summary += `<p><strong>${key}:</strong> ${value}</p>`;
-                } else {
-                    summary += `<p><strong>${key}:</strong> ${value.name || 'Not uploaded'}</p>`;
-                }
-            }
-            document.getElementById('form-summary').innerHTML = summary;
+    const formData = new FormData(document.getElementById('application-form'));
+    let summary = `
+        <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-family: 'Montserrat', sans-serif;">
+    `;
+
+    const seen = new Set();
+
+    for (let [key, value] of formData.entries()) {
+        if (seen.has(key)) continue; // Avoid duplicate entries for same-named file inputs
+        seen.add(key);
+
+        if (value instanceof File) {
+            summary += `
+                <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <strong>${key}:</strong> ${value.name || 'Not uploaded'}
+                </div>`;
+        } else {
+            summary += `
+                <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                    <strong>${key}:</strong> ${value}
+                </div>`;
         }
+    }
+
+    summary += `</div>`;
+    document.getElementById('form-summary').innerHTML = summary;
+}
+
 
         document.getElementById('application-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Application submitted successfully!');
         });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('jobCategorySelect');
+    const titleSelect = document.getElementById('jobTitleSelect');
+
+    // Fetch job categories
+    fetch('/api/v1/job-categories')
+        .then(response => response.json())
+        .then(response => {
+            const data = response.data || response; // Support for both paginated and non-paginated
+            data.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categorySelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching job categories:', error);
+        });
+
+    // On category change, fetch job titles
+    categorySelect.addEventListener('change', function () {
+        const categoryId = this.value;
+        titleSelect.innerHTML = '<option value="">Loading...</option>';
+
+        if (!categoryId) {
+            titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+            return;
+        }
+
+        fetch(`/api/v1/careers/by-category/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+                data.forEach(job => {
+                    const option = document.createElement('option');
+                    option.value = job.id;
+                    option.textContent = job.name;
+                    titleSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching job titles:', error);
+                titleSelect.innerHTML = '<option value="">Failed to load titles</option>';
+            });
+    });
+});
+
     </script>
 @endsection
