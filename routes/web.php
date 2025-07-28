@@ -11,5 +11,10 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('l
 Route::get('/application-form', [HomeController::class, 'application'])->name('application');
 Route::post('/client/submit/form', [ClientController::class, 'store'])->name('client.submit');
 Route::get('/job-titles/{categoryId}', action: [CareerController::class, 'getJobsByCategory']);
+Route::get('about', [HomeController::class, 'about'])->name('about');
+Route::get('about', [HomeController::class, 'about'])->name('about');
+Route::get('patners', [HomeController::class, 'patners'])->name('patners');
+Route::get('experiences', [HomeController::class, 'experiences'])->name('experiences');
+Route::get('services', [HomeController::class, 'services'])->name('services');
 
 
