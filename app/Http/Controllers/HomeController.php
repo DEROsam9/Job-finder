@@ -35,4 +35,9 @@ class HomeController extends Controller
     public function service() {
         return view('components.pages.service');
     }
+
+    public function trackApplication() {
+
+        return view('components.pages.track-application');
+    }
 }

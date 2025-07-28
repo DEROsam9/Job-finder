@@ -2,10 +2,11 @@
 
 @section('content')
 {{-- Starter --}}
-<div class="row">
-  <div class="container">
-    <div class="col-md-12">
-      <div class="pg-title">
+<div class="application-pg" id="home">
+  <div class="row">
+    <div class="container">
+      <div class="col-md-12">
+        <div class="pg-title">
         <h1>Your Dream Career Awaits</h1>
       </div>
     </div>
@@ -32,7 +33,7 @@
 </div>
 
 {{-- About Us --}}
-<div class="row">
+<div class="row" id="about-us">
   <div class="container">
     <div class="col-md-12">
       <div class="pg-title">
@@ -61,7 +62,7 @@
 </div>
 
 {{-- Partners --}}
-<div class="row">
+<div class="row" id="partners">
   <div class="container">
     <div class="col-md-12">
       <div class="pg-title">
@@ -102,7 +103,7 @@
 </div>
 
 {{-- Experiences --}}
-<div class="row">
+<div class="row" id="testimonials">
   <div class="container">
     <div class="col-md-12">
       <div class="pg-title">
@@ -136,7 +137,7 @@
 </div>
 
 {{-- Services --}}
-<div class="row">
+<div class="row" id="services">
   <div class="container">
     <div class="col-md-12">
       <div class="pg-title">

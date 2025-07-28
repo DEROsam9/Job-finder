@@ -1,6 +1,5 @@
 @extends('components.layout.app')
 @section('content')
-<div class="application-pg">
   <div class="row">
     <div class="container">
       <div class="col-md-12">
