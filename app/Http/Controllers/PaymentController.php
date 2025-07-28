@@ -14,12 +14,44 @@ class PaymentController extends Controller
      */
 public function index(Request $request)
 {
-    $payments = Payment::with(['status', 'client'])->latest()->paginate($request->get('limit', 20));
+    $query = Payment::with(['status', 'client'])->latest();
+
+    if ($request->filled('name_email')) {
+        $nameEmail = $request->input('name_email');
+        $query->whereHas('client', function ($q) use ($nameEmail) {
+            $q->where('first_name', 'like', "%$nameEmail%")
+              ->orWhere('middle_name', 'like', "%$nameEmail%")
+              ->orWhere('surname', 'like', "%$nameEmail%")
+              ->orWhere('email', 'like', "%$nameEmail%");
+        });
+    }
+
+    if ($request->filled('passport_id')) {
+        $query->whereHas('client', function ($q) use ($request) {
+            $q->where('passport_number', 'like', "%{$request->input('passport_id')}%");
+        });
+    }
+
+    if ($request->filled('status')) {
+        $query->whereHas('status', function ($q) use ($request) {
+            $q->where('name', $request->input('status'));
+        });
+    }
+
+    if ($request->filled('date_from') && $request->filled('date_to')) {
+        $query->whereBetween('transaction_date', [
+            $request->input('date_from'),
+            $request->input('date_to')
+        ]);
+    }
+
+    $payments = $query->paginate($request->get('limit', 20));
 
     return response()->json([
         'data' => $payments
     ]);
 }
+
 
 
 
