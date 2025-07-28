@@ -5,13 +5,139 @@
         .form-step.active { display: block; }
         .step-indicator.active { background: #2D78C9; color: white; }
         .step-indicator { cursor: pointer; }
-        .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 30px; width: 100%; z-index: -1; }
+        .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: -1; }
         .progress-line.active { background: #2D78C9; }
         .form-section { margin-top: 40px; }
-        .form-section input { margin: 10px 0; width: 48%; }
-        .form-section p { display: flex; justify-content: space-between; }
+        .form-section input, .form-section select { margin: 10px 0; width: 48%; }
+        .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
         .form-section button { margin: 20px 0; padding: 10px 20px; background: #2D78C9; color: white; border: none; border-radius: 5px; cursor: pointer; }
         .form-section button:disabled { background: #CCCCCC; cursor: not-allowed; }
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 40px auto 20px;
+            padding: 0 20px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 24px;
+            left: 10px;
+            right: 10px;
+            height: 4px;
+            background-color: #E0E0E0;
+            z-index: 0;
+            border-radius: 2px;
+        }
+
+        .progress-line.active {
+            background-color: #2D78C9;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 100px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .step-indicator {
+            width: 45px;
+            height: 45px;
+            background: #E5E5E5;
+            border-radius: 50%;
+            outline: 2px solid #CCCCCC;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background: #2D78C9;
+            color: white;
+            outline: 2px solid #2D78C9;
+        }
+
+        .step-container div:nth-child(2) {
+            font-weight: 700;
+            font-size: 14px;
+            color: #2D78C9;
+            text-align: center;
+        }
+
+        .step-container div:nth-child(3) {
+            font-size: 12px;
+            color: #555;
+            font-weight: 400;
+            text-align: center;
+            max-width: 120px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .progress-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+                margin: 20px auto;
+            }
+
+            .progress-line {
+                display: none;
+            }
+
+            .step-container {
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .step-indicator {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+                margin-bottom: 0;
+            }
+
+            .step-container div:nth-child(2),
+            .step-container div:nth-child(3) {
+                font-size: 12px;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .step-indicator {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+
+            .step-container div:nth-child(2) {
+                font-size: 10px;
+            }
+
+            .step-container div:nth-child(3) {
+                font-size: 9px;
+            }
+        }
+
     </style>
     <div class="row">
         <div class="container">
@@ -20,35 +146,35 @@
                     <h1>Apply For a Job</h1>
                 </div>
                 <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 24px; display: flex">
-                    <div style="width: 700px; position: relative; justify-content: space-between; align-items: flex-start; display: inline-flex">
+                    <div class="progress-container">
                         <div class="progress-line" id="progress-line"></div>
-                        <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
-                            <div class="step-indicator active" data-step="1" style="width: 60px; height: 60px; padding: 18px 1px; background: #E5E5E5; border-radius: 100px; outline: 1px #2D78C9 solid; outline-offset: -1px; display: flex; justify-content: center; align-items: center;">
-                                <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 800;">1</div>
+                        <div class="step-container">
+                            <div class="step-indicator active" data-step="1">
+                                <div style="text-align: center; font-weight: 700; color: #1A1A1A;">1</div>
                             </div>
-                            <div style="text-align: center; font-weight: 700">Step 1</div>
+                            <div>Step 1</div>
                             <div style="text-align: center; color: #2D78C9; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Personal Details</div>
                         </div>
-                        <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
-                            <div class="step-indicator" data-step="2" style="width: 60px; height: 60px; padding: 18px 1px; background: #E5E5E5; border-radius: 100px; outline: 1px #CCCCCC solid; outline-offset: -1px; display: flex; justify-content: center; align-items: center;">
-                                <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 700;">2</div>
+                        <div class="step-container">
+                            <div class="step-indicator" data-step="2">
+                                <div style="text-align: center; color: #1A1A1A;">2</div>
                             </div>
-                            <div style="text-align: center; font-weight: 700">Step 2</div>
-                            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Upload Document</div>
+                            <div>Step 2</div>
+                            <div style="text-align: center; color: #2D78C9; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Upload Document</div>
                         </div>
-                        <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
-                            <div class="step-indicator" data-step="3" style="width: 60px; height: 60px; padding: 18px 1px; background: #E5E5E5; border-radius: 100px; outline: 1px #CCCCCC solid; outline-offset: -1px; display: flex; justify-content: center; align-items: center;">
-                                <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 700;">3</div>
+                        <div class="step-container">
+                            <div class="step-indicator" data-step="3">
+                                <div style="text-align: center; color: #1A1A1A;">3</div>
                             </div>
-                            <div style="text-align: center; font-weight: 700">Step 3</div>
-                            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Job Categorization</div>
+                            <div>Step 3</div>
+                            <div style="text-align: center; color: #2D78C9; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Job Categorization</div>
                         </div>
-                        <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
-                            <div class="step-indicator" data-step="4" style="width: 60px; height: 60px; padding: 18px 1px; background: #E5E5E5; border-radius: 100px; outline: 1px #CCCCCC solid; outline-offset: -1px; display: flex; justify-content: center; align-items: center;">
-                                <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 700;">4</div>
+                        <div class="step-container">
+                            <div class="step-indicator" data-step="4">
+                                <div style="text-align: center; color: #1A1A1A;">4</div>
                             </div>
-                            <div style="text-align: center; font-weight: 700">Step 4</div>
-                            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Confirm Details</div>
+                            <div>Step 4</div>
+                            <div style="text-align: center; color: #2D78C9; font-size: 16px; font-family: 'Montserrat', sans-serif; font-weight: 400;">Confirm Details</div>
                         </div>
                     </div>
                     <div class="form-section">
@@ -74,7 +200,7 @@
                                     <div class="upload-box">
                                         <div class="upload-content">
                                             <i class="fa fa-upload"></i>
-                                            <p>Appload Passport</p>
+                                            <p>Apload Passport</p>
                                             <input type="file" name="resume" accept=".pdf,.doc,.docx" id="resumeFile">
                                             <label for="resumeFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="resumeInfo"></div>
@@ -99,11 +225,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-{{--                                <p>--}}
-{{--                                    <input type="file" name="Resume" accept=".pdf,.doc,.docx" required>--}}
-{{--                                    <input type="file" name="Cover Letter" accept=".pdf,.doc,.docx">--}}
-{{--                                </p>--}}
                                 <p>
                                     <button type="button" onclick="prevStep(1)">Previous</button>
                                     <button type="button" onclick="nextStep(3)">Next</button>
