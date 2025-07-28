@@ -29,10 +29,10 @@ class HomeController extends Controller
     public function patners() {
         return view('components.pages.patners');
     }
-    public function experiences() {
-        return view('components.pages.experiences');
+    public function testimonials() {
+        return view('components.pages.testimonials');
     }
-    public function services() {
-        return view('components.pages.services');
+    public function service() {
+        return view('components.pages.service');
     }
 }

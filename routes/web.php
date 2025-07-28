@@ -14,7 +14,7 @@ Route::get('/job-titles/{categoryId}', action: [CareerController::class, 'getJob
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('about', [HomeController::class, 'about'])->name('about');
 Route::get('patners', [HomeController::class, 'patners'])->name('patners');
-Route::get('experiences', [HomeController::class, 'experiences'])->name('experiences');
-Route::get('services', [HomeController::class, 'services'])->name('services');
+Route::get('testimonials', [HomeController::class, 'testimonials'])->name('testimonials');
+Route::get('service', [HomeController::class, 'service'])->name('service');
 
 
