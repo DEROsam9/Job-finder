@@ -1,24 +1,23 @@
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Job board HTML-5 Template </title>
+    <meta charset="UTF-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="{{ asset('site.webmanifest')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico')}}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="manifest" href="site.webmanifest">
+    <title>Jobs Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
     <!-- CSS here -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/flaticon.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/price_rangs.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/slicknav.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/fontawesome-all.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/slick.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css')}}">
+
+    <!-- JS here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 </head>

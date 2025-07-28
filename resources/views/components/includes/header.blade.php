@@ -1,50 +1,35 @@
-<header>
-    <!-- Header Start -->
-    <div class="header-area header-transparrent">
-        <div class="headder-top header-sticky">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-2">
-                        <!-- Logo -->
-                        <div class="logo">
-                            <a href="/"><img src="{{ asset('assets/img/logo/logo.png')}}" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-9 col-md-9">
-                        <div class="menu-wrapper">
-                            <!-- Main-menu -->
-                            <div class="main-menu">
-                                <nav class="d-none d-lg-block">
-                                    <ul id="navigation">
-                                        <!-- <li><a href="/">Home</a></li> -->
-                                        <!-- <li><a href="/"></a></li> -->
-                                        <!-- <li><a href="/"></a></li> -->
-                                        <!-- <li><a href="#"></a> -->
-                                            <ul class="submenu">
-                                                <!-- <li><a href="/"></a></li> -->
-                                                <!-- <li><a href="/"></a></li> -->
-                                                <!-- <li><a href="/"></a></li> -->
-                                                <!-- <li><a href="/"></a></li> -->
-                                            </ul>
-                                        </li>
-                                        <!-- <li><a href="/">Contact</a></li> -->
-                                    </ul>
-                                </nav>
-                            </div>
-                            <!-- Header-btn -->
-                            <div class="header-btn d-none f-right d-lg-block">
-                                <a href="#" class="btn head-btn1">Register</a>
-                                <a href="#" class="btn head-btn2">Login</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Mobile Menu -->
-                    <div class="col-12">
-                        <div class="mobile_menu d-block d-lg-none"></div>
-                    </div>
+<div class="header">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="logo">
+                    <h2>Logo</h2>
                 </div>
+                <input class="menu-btn" type="checkbox" id="menu-btn" />
+                <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+                <ul class="menu">
+                    <li class="active">
+                        <a href="home.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About Us</a>
+                    </li>
+                    <li>
+                        <a href="services.html">Services</a>
+                    </li>
+                    <li>
+                        <a href="experiences.html">Experiences</a>
+                    </li>
+                    <li>
+                        <a href="partners.html">Partners</a>
+                    </li>
+                    <div class="rightmenu">
+                        <li class="apply"><a href="apply.html">Apply Now</a></li>
+                        <li class="track"><a href="track.html">Track Application</a></li>
+                    </div>
+                </ul>
+
             </div>
         </div>
     </div>
-    <!-- Header End -->
-</header>
+</div>

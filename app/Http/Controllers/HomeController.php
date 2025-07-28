@@ -20,6 +20,6 @@ class HomeController extends Controller
 
         $careers = Career::all();
 
-        return view('components.pages.application-form', compact(['jobCategories', 'careers']));
+        return view('components.pages.applications', compact(['jobCategories', 'careers']));
     }
 }

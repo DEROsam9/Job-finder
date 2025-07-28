@@ -1,23 +1,18 @@
-<!doctype html>
-<html class="no-js" lang="zxx">
+<!DOCTYPE html>
+<html class="no-js" lang="en">
 
 @include('components.includes.head')
 
 <body>
-<!-- Preloader Start -->
-@include('components.includes.loader')
-
-<!-- Preloader Start -->
 @include('components.includes.header')
 
-<!-- flash messages Popup -->
-@include('flash::message')
+<div class="application-pg">
 
-@yield('content')
 
-@include('components.includes.footer')
+    @yield('content')
 
-@include('components.includes.script')
+    @include('components.includes.footer')
+</div>
 
 </body>
 </html>
