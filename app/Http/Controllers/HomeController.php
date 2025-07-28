@@ -23,7 +23,6 @@ class HomeController extends Controller
 
         return view('components.pages.applications', compact(['jobCategories', 'careers']));
     }
-<<<<<<< HEAD
     public function about() {
         return view('components.pages.about');
     }
@@ -35,11 +34,10 @@ class HomeController extends Controller
     }
     public function services() {
         return view('components.pages.services');
-=======
+    }
 
     public function trackApplication() {
 
         return view('components.pages.track-application');
->>>>>>> origin/feature/home-layout-update
     }
 }
