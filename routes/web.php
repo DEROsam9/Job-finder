@@ -17,4 +17,5 @@ Route::get('patners', [HomeController::class, 'patners'])->name('patners');
 Route::get('experiences', [HomeController::class, 'experiences'])->name('experiences');
 Route::get('services', [HomeController::class, 'services'])->name('services');
 
+Route::get('/track-application', [HomeController::class, 'trackApplication'])->name('track.application');
 
