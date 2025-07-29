@@ -2397,23 +2397,24 @@ li.apply a {
 
 
 /* Upload Section */
-.upload-section {
+/* .upload-section {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
 }
 
 .upload-box {
     width: 300px;
     height: 200px;
-    border: 2px dashed #ddd;
-    border-radius: 10px;
+    
     display: flex;
     align-items: center;
     justify-content: center;
     transition: border-color 0.3s ease;
-}
+} */
 
 .upload-box:hover {
     border-color: #2d78c9;

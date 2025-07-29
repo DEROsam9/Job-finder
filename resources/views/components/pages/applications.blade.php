@@ -153,18 +153,35 @@
             background: #059669;
         }
 
-        .upload-section {
+    .upload-section {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: space-between; /* Spread evenly across two columns */
+    width: 100%;
 }
 
+.upload-section > div {
+    flex: 0 0 calc(50% - 10px); /* Two columns with gap accounted for */
+}
+
+@media (max-width: 768px) {
+    .upload-section > div {
+        flex: 0 0 100%; /* Stack on smaller screens */
+    }
+}
 .upload-box {
     background: #F1F5F9;
     padding: 20px;
     border-radius: 8px;
     flex: 1 1 45%;
     min-width: 280px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;    
 }
 
 .upload-box.full-width {
@@ -290,26 +307,23 @@ input[type="file"].shake {
                                     <input type="tel" name="phone_number" placeholder="Phone Number" required>
                                 </p>
                                 <p>
-                                    <input type="text" name="passport_number" placeholder="Passport Number" required>
-                                    <input type="text" name="id_number" placeholder="ID Number" required>
+                                    <input type="text" name="passport_number" id="passport_number" placeholder="Passport Number(optional)" >
+                                    <input type="text" name="id_number" id="id_number" placeholder="ID Number" required>
+                                    <div id="passport_expiry_wrapper"
+                                        style="display: none; width: 100%; margin-top: 20px; position: relative; z-index: 10;">
+                                        {{-- Passport Expiry Date --}}
+                                        <input type="date" class="form-control" id="passport_expiry" name="passport_expiry"
+                                            placeholder="Passport Expiry Date"
+                                            style="width: 100%; height: 50px; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                                    </div>
+
                                 </p>
                                 <button type="button" onclick="nextStep(2)">Next</button>
                             </div>
                             <!-- Docs Upload -->
                             <div class="form-step" data-step="2">
 
-                                <div class="upload-section">
-                                        <div class="upload-box full-width">
-                                            <div class="upload-content">
-                                                <i class="fa fa-upload"></i>
-                                                <p>Upload Passport</p>
-                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile" required>
-                                                <label for="passportFile" class="upload-btn">Choose File</label>
-                                                <div class="file-info" id="passportInfo"></div>
-                                            </div>
-                                        </div>
-                                    
-
+                                <div class="upload-section"> 
                                     <div>
                                         <h4>Upload ID Front</h4>
                                         <div class="upload-box">
@@ -322,8 +336,7 @@ input[type="file"].shake {
                                             </div>
                                         </div>
                                     </div>
-                                    
-
+                                   
                                     <div>
                                         <h4>Upload ID Back</h4>
                                         <div class="upload-box">
@@ -336,6 +349,34 @@ input[type="file"].shake {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <h4>Upload Passport</h4>
+                                        <div class="upload-box ">
+                                            <div class="upload-content">
+                                                <i class="fa fa-upload"></i>
+                                                <p>Upload Passport</p>
+                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile" >
+                                                <label for="passportFile" class="upload-btn">Choose File(optional)</label>
+                                                <div class="file-info" id="passportInfo"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div>
+                                        <h4>Upload Good Conduct Certificate</h4>
+                                        <div class="upload-box">
+                                            <div class="upload-content">
+                                                <i class="fa fa-upload"></i>
+                                                <p>Good Conduct Certificate</p>
+                                                <input type="file" name="good_conduct" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="goodConductFile" >
+                                                <label for="goodConductFile" class="upload-btn">Choose File(optional)</label>
+                                                <div class="file-info" id="goodConductInfo"></div>
+                                            </div>
+                                    </div>
+                                    </div>
+                                    
                                     
                                 </div>
 
@@ -439,6 +480,23 @@ input[type="file"].shake {
         }, 500);
 
         if (valid) {
+            // Check passport expiry is at least 6 months away if a passport is entered
+            const passportNumber = document.getElementById('passport_number').value.trim();
+            const passportExpiryInput = document.getElementById('passport_expiry');
+
+            if (passportNumber !== '') {
+                const expiryDate = new Date(passportExpiryInput.value);
+                const today = new Date();
+                const sixMonthsFromNow = new Date();
+                sixMonthsFromNow.setMonth(today.getMonth() + 6);
+
+                if (expiryDate < sixMonthsFromNow) {
+                    passportExpiryInput.classList.add('shake');
+                    document.getElementById('form-error-message').innerText = 'Passport expiry date must be at least 6 months from today.';
+                    document.getElementById('form-error-message').style.display = 'block';
+                    return; // stop the step change
+                }
+            }
             document.getElementById('form-error-message').style.display = 'none';
             if (step === 4) {
                 displaySummary();
@@ -496,7 +554,16 @@ input[type="file"].shake {
         document.addEventListener('DOMContentLoaded', function () {
         const categorySelect = document.getElementById('jobCategorySelect');
         const titleSelect = document.getElementById('jobTitleSelect');
+        const passportInput = document.getElementById('passport_number');
+        const expiryWrapper = document.getElementById('passport_expiry_wrapper');
 
+        passportInput.addEventListener('input', function () {
+            if (passportInput.value.trim() !== '') {
+                expiryWrapper.style.display = 'block';
+            } else {
+                expiryWrapper.style.display = 'none';
+            }
+        });
         // Fetch job categories
         fetch('/api/v1/job-categories')
             .then(response => response.json())

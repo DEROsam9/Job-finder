@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateClientRequest;
-use App\Http\Traits\mpesa;
-use App\Models\Application;
-use App\Models\ApplicationPayment;
-use App\Models\Client;
-use App\Models\ClientDocument;
-use App\Models\Payment;
 use DB;
-use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\Payment;
+use App\Http\Traits\mpesa;
 use Laracasts\Flash\Flash;
+use App\Models\Application;
+use Illuminate\Http\Request;
+use App\Models\ClientDocument;
+use App\Models\ApplicationPayment;
+use App\Http\Requests\UpdateClientRequest;
+use Illuminate\Support\Facades\Validator;
+
 
 class ClientController extends Controller
 {
@@ -77,28 +79,35 @@ public function index(Request $request)
      */
     public function store(Request $request)
 {
-    $request->validate([
-    'first_name'       => 'required|string|max:255',
-    'surname'          => 'required|string|max:255',
-    'email'            => 'required|email|unique:clients,email',
-    'phone_number'     => 'required|string|max:20',
-    'passport_number'  => 'required|string|max:50',
-    'id_number'        => 'required|string|max:50',
+    \Log::info($request->all());
+    $validator = Validator::make($request->all(), [
+        'first_name'       => 'required|string|max:255',
+        'surname'          => 'required|string|max:255',
+        'email'            => 'required|email|unique:clients,email',
+        'phone_number'     => 'required|string|max:20',
+        'passport_number'  => 'nullable|string|max:50',
+        'id_number'        => 'required|string|max:50',
 
-    // Files
-    'cv'               => 'required|file|mimes:pdf,doc,docx|max:2048',
-    'passport_copy'    => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-    'client_id_front'  => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-    'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        // Files
+        'cv'               => 'required|file|mimes:pdf,doc,docx|max:2048',
+        'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_front'  => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_back'   => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
-    // Job selection
-    'job_title'        => 'required|exists:careers,id',
-    'job_category'     => 'nullable|exists:job_categories,id', // optional, just for chaining
+        // Job selection
+        'job_title'        => 'required|exists:careers,id',
+        'job_category'     => 'nullable|exists:job_categories,id', // optional, just for chaining
 
-    // Optional additional fields
-    'remarks'          => 'nullable|string|max:255',
-]);
+        // Optional additional fields
+        'remarks'          => 'nullable|string|max:255',
+    ]);
 
+    // Check for validation errors
+if ($validator->fails()) {
+    return response()->json(['error' => $validator->errors()->first()], 422);
+}
+\Log::info('Client creation request validated', $request->all());
 
     try {
         DB::beginTransaction();
@@ -118,6 +127,7 @@ public function index(Request $request)
             'passport_copy'   => null,
             'client_id_front' => null,
             'client_id_back'  => null,
+            'good_conduct'=> null,
         ];
 
 

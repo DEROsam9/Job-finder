@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id');
             $table->string('email');
             $table->string('phone_number');
-            $table->string('passport_number');
+            $table->string('passport_number')->nullable();
             $table->string('id_number');
             $table->string('address')->nullable();
             $table->string('city')->nullable();
