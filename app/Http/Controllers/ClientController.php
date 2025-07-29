@@ -77,6 +77,29 @@ public function index(Request $request)
      */
     public function store(Request $request)
 {
+    $request->validate([
+    'first_name'       => 'required|string|max:255',
+    'surname'          => 'required|string|max:255',
+    'email'            => 'required|email|unique:clients,email',
+    'phone_number'     => 'required|string|max:20',
+    'passport_number'  => 'required|string|max:50',
+    'id_number'        => 'required|string|max:50',
+
+    // Files
+    'cv'               => 'required|file|mimes:pdf,doc,docx|max:2048',
+    'passport_copy'    => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+    'client_id_front'  => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+    'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+
+    // Job selection
+    'job_title'        => 'required|exists:careers,id',
+    'job_category'     => 'nullable|exists:job_categories,id', // optional, just for chaining
+
+    // Optional additional fields
+    'remarks'          => 'nullable|string|max:255',
+]);
+
+
     try {
         DB::beginTransaction();
         $input = $request->all();
@@ -84,7 +107,6 @@ public function index(Request $request)
         $client = Client::create([
             'surname' => $input['surname'],
             'first_name' => $input['first_name'],
-            'middle_name' => $input['middle_name'],
             'email' => $input['email'],
             'phone_number' => $input['phone_number'],
             'passport_number' => $input['passport_number'],
@@ -92,11 +114,12 @@ public function index(Request $request)
         ]);
 
         $docFields = [
-            'cv'            => null,
-            'good_conduct'  => null,
-            'passport_copy' => 'passport_expiry_date',
-            'id_card'       => null,
+            'cv'              => null,
+            'passport_copy'   => null,
+            'client_id_front' => null,
+            'client_id_back'  => null,
         ];
+
 
         foreach ($docFields as $field => $expiryField) {
             $uploadedFile = $request->file($field);

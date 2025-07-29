@@ -139,6 +139,25 @@
             background: #059669;
         }
 
+        .upload-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.upload-box {
+    background: #F1F5F9;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1 1 45%;
+    min-width: 280px;
+}
+
+.upload-box.full-width {
+    flex: 1 1 100%;
+}
+
+
 
         @media (max-width: 480px) {
             .step-indicator {
@@ -217,50 +236,73 @@
                             <div class="form-step" data-step="2">
 
                                 <div class="upload-section">
-                                    <div class="upload-box">
-                                        <div class="upload-content">
-                                            <i class="fa fa-upload"></i>
-                                            <p>Upload Passport</p>
-                                            <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile">
-                                            <label for="passportFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="passportInfo"></div>
+                                        <div class="upload-box full-width">
+                                            <div class="upload-content">
+                                                <i class="fa fa-upload"></i>
+                                                <p>Upload Passport</p>
+                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile" required>
+                                                <label for="passportFile" class="upload-btn">Choose File</label>
+                                                <div class="file-info" id="passportInfo"></div>
+                                            </div>
+                                        </div>
+                                    
+
+                                    <div>
+                                        <h4>Upload ID Front</h4>
+                                        <div class="upload-box">
+                                            <div class="upload-content">
+                                                <i class="fa fa-id-card"></i>
+                                                <p>Upload ID Front</p>
+                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile" required>
+                                                <label for="idCardFile" class="upload-btn">Choose File</label>
+                                                <div class="file-info" id="idCardInfo"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="upload-box">
-                                        <div class="upload-content">
-                                            <i class="fa fa-upload"></i>
-                                            <p>Upload Resume/CV</p>
-                                            <input type="file" name="cv" accept=".pdf,.doc,.docx" id="resumeFile">
-                                            <label for="resumeFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="resumeInfo"></div>
+                                    
+
+                                    <div>
+                                        <h4>Upload ID Back</h4>
+                                        <div class="upload-box">
+                                            <div class="upload-content">
+                                                <i class="fa fa-id-card"></i>
+                                                <p>Upload ID Back</p>
+                                                <input type="file" name="client_id_back" accept=".pdf,.doc,.docx" id="idCardBackFile">
+                                                <label for="idCardBackFile" class="upload-btn">Choose File</label>
+                                                <div class="file-info" id="idCardBackInfo"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="upload-box">
-                                        <div class="upload-content">
-                                            <i class="fa fa-file-text"></i>
-                                            <p>Upload Cover Letter (Optional)</p>
-                                            <input type="file" name="cover_letter" accept=".pdf,.doc,.docx" id="coverFile">
-                                            <label for="coverFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="coverInfo"></div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
+
                                 <p>
                                     <button type="button" onclick="prevStep(1)">Previous</button>
                                     <button type="button" onclick="nextStep(3)">Next</button>
                                 </p>
                             </div>
                             <div class="form-step" data-step="3">
+                                <div class="upload-section">
+                                        <div class="upload-box full-width">
+                                            <div class="upload-content">
+                                                <i class="fa fa-file-text"></i>
+                                                <p>Upload CV</p>
+                                                <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile" required>
+                                                <label for="cvFile" class="upload-btn">Choose File</label>
+                                                <div class="file-info" id="cvInfo"></div>
+                                            </div>
+                                        </div>
+                                        
+                                </div>
                                 <p>
-                                    <select id="jobCategorySelect" name="job_category_id" class="form-control">
+                                    <select id="jobCategorySelect" name="job_category" class="form-control">
                                         <option value="">Select Job Category</option>
                                     </select>
 
-                                    <select id="jobTitleSelect" name="job_title_id" class="form-control">
+                                    <select id="jobTitleSelect" name="job_title" class="form-control">
                                         <option value="">Select Job Title</option>
                                     </select>
-
-
+                                    
                                 </p>
                                 <p>
                                     <button type="button" onclick="prevStep(2)">Previous</button>
@@ -370,10 +412,12 @@
 }
 
 
-        document.getElementById('application-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Application submitted successfully!');
-        });
+        // Optional: keep summary display before submission
+document.getElementById('application-form').addEventListener('submit', function(e) {
+    displaySummary(); // Optional
+    // Do NOT preventDefault — allow Laravel to handle it
+});
+
 
     document.addEventListener('DOMContentLoaded', function () {
     const categorySelect = document.getElementById('jobCategorySelect');

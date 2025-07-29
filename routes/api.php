@@ -35,5 +35,6 @@ Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'get
 
 Route::resource('careers', CareerController::class);
 Route::resource('job-categories', JobCategoryController::class);
+Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJobsByCategory']);
 
 

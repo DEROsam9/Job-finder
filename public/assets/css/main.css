@@ -434,8 +434,12 @@ li.apply, li.track{
     padding-top: 15px;
 }
 .application-pg {
-    margin-top: 9em;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px; /* Matches the header height exactly */
 }
+
 .header .menu li{
     float: left;
     list-style: none;
