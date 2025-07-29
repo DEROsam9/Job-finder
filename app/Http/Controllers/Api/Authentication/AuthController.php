@@ -74,8 +74,8 @@ class AuthController extends Controller
             $request->validate([
                 'username' => 'required|string|email',
                 'password' => 'required|string',
-                'client_id' => env('CLIENT_ID'),
-                'client_secret' => env('CLIENT_SECRET'),
+//                'client_id' => env('CLIENT_ID'),
+//                'client_secret' => env('CLIENT_SECRET'),
             ]);
 
             $user = $this->userRepository->where('email', $request->username)->first();
@@ -85,7 +85,7 @@ class AuthController extends Controller
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
             }
-
+            
             Auth::login($user);
 
             // Generate API token for SPA
@@ -100,7 +100,7 @@ class AuthController extends Controller
                 'expires_in' => $tokenData->token->expires_at->diffInSeconds(now()),
             ]);
         } catch (ValidationException $exception) {
-            Log::error($exception->getMessage());
+            Log::error($exception);
             DB::rollBack();
             return response()->json(
                 ['message' => $exception->getMessage()
