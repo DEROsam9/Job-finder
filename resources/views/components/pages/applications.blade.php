@@ -509,39 +509,109 @@ input[type="file"].shake {
     }
 
 
-            function prevStep(step) {
-                showStep(step);
+    function prevStep(step) {
+        showStep(step);
+    }
+
+        function displaySummary() {
+            const form = document.getElementById('application-form');
+            const formData = new FormData(form);
+
+            const personalFields = ['first_name', 'surname', 'email', 'phone_number', 'passport_number', 'id_number', 'passport_expiry'];
+            const documentFields = ['client_id_front', 'client_id_back', 'passport_copy', 'good_conduct', 'cv'];
+            const jobFields = ['job_category', 'job_title'];
+
+            const fieldLabels = {
+                first_name: "First Name",
+                surname: "Surname",
+                email: "Email",
+                phone_number: "Phone Number",
+                passport_number: "Passport Number",
+                id_number: "ID Number",
+                passport_expiry: "Passport Expiry",
+                client_id_front: "ID Front",
+                client_id_back: "ID Back",
+                passport_copy: "Passport Copy",
+                good_conduct: "Good Conduct",
+                cv: "Curriculum Vitae (CV)",
+                job_category: "Job Category",
+                job_title: "Job Title",
+            };
+
+            const seen = new Set();
+            const summary = {
+                personal: [],
+                documents: [],
+                job: [],
+            };
+
+            for (let [key, value] of formData.entries()) {
+                if (key === '_token') continue; // skip token
+
+                if (seen.has(key)) continue;
+                seen.add(key);
+
+                let label = fieldLabels[key] || key;
+               let displayValue = value;
+
+                // Replace job_category and job_title IDs with their text
+                if (key === 'job_category') {
+                    const selectedOption = document.querySelector(`#jobCategorySelect option[value="${value}"]`);
+                    if (selectedOption) {
+                        displayValue = selectedOption.textContent;
+                    }
+                } else if (key === 'job_title') {
+                    const selectedOption = document.querySelector(`#jobTitleSelect option[value="${value}"]`);
+                    if (selectedOption) {
+                        displayValue = selectedOption.textContent;
+                    }
+                } else if (value instanceof File) {
+                    displayValue = value.name || 'Not uploaded';
+                }
+
+                if (personalFields.includes(key)) {
+                    summary.personal.push({ label, displayValue });
+                } else if (documentFields.includes(key)) {
+                    summary.documents.push({ label, displayValue });
+                } else if (jobFields.includes(key)) {
+                    summary.job.push({ label, displayValue });
+                }
             }
 
-            function displaySummary() {
-        const formData = new FormData(document.getElementById('application-form'));
-        let summary = `
-            <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-family: 'Montserrat', sans-serif;">
-        `;
+            let html = `
+                <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
+                    ${summary.personal.map(item => `
+                        <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <strong>${item.label}:</strong> ${item.displayValue}
+                        </div>`).join('')}
+                </div>
 
-        const seen = new Set();
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #1E3A8A; margin-bottom: 10px;">Uploaded Documents</h4>
+                    ${summary.documents.map(item => `
+                        <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <strong>${item.label}:</strong> ${item.displayValue}
+                        </div>`).join('')}
+                </div>
 
-        for (let [key, value] of formData.entries()) {
-            if (seen.has(key)) continue; // Avoid duplicate entries for same-named file inputs
-            seen.add(key);
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #1E3A8A; margin-bottom: 10px;">Job Details</h4>
+                    ${summary.job.map(item => `
+                        <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                            <strong>${item.label}:</strong> ${item.displayValue}
+                        </div>`).join('')}
+                </div>
+            `;
 
-            if (value instanceof File) {
-                summary += `
-                    <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <strong>${key}:</strong> ${value.name || 'Not uploaded'}
-                    </div>`;
-            } else {
-                summary += `
-                    <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <strong>${key}:</strong> ${value}
-                    </div>`;
-            }
+            document.getElementById('form-summary').innerHTML = html;
+
         }
 
-        summary += `</div>`;
-        document.getElementById('form-summary').innerHTML = summary;
-    }
+
+
 
 
             // Optional: keep summary display before submission
