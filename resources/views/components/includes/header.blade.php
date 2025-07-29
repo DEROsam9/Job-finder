@@ -3,10 +3,9 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="logo">
-                    <a href="{{ route('landing') }}#home">  
-                    {{-- <h2>Logo</h2> --}}
-<img src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">                
-</div>
+                    <a href="{{ route('landing') }}#home"> 
+                    <img src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">                
+                </div>
                 <input class="menu-btn" type="checkbox" id="menu-btn" />
                 <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
                 <ul class="menu">
@@ -43,9 +42,9 @@
     <div class="row">
         <div class="container">
             <div class="col-md-12">
-            <a href="{{ route('landing') }}#home">
                 <div class="logo">
-                    
+                    <a href="{{ route('landing') }}#home"> 
+                    <img src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">                
                 </div>
                 <input class="menu-btn" type="checkbox" id="menu-btn" />
                 <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
