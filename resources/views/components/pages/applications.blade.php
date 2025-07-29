@@ -338,7 +338,7 @@ input[type="file"].shake {
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
                                                 <p>Upload ID Front</p>
-                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile" required>
+                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile" >
                                                 <label for="idCardFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardInfo"></div>
                                             </div>
@@ -400,7 +400,7 @@ input[type="file"].shake {
                                             <div class="upload-content">
                                                 <i class="fa fa-file-text"></i>
                                                 <p>Upload CV</p>
-                                                <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile" required>
+                                                <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile" >
                                                 <label for="cvFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="cvInfo"></div>
                                             </div>
@@ -596,32 +596,39 @@ input[type="file"].shake {
         }
 
         let html = `
-            <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
-            
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
-                ${summary.personal.map(item => `
-                    <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                        <strong>${item.label}:</strong> ${item.displayValue}
-                    </div>`).join('')}
-            </div>
+    <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
+    
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.personal.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
 
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Uploaded Documents</h4>
-                ${summary.documents.map(item => `
-                    <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                        <strong>${item.label}:</strong> ${item.displayValue}
-                    </div>`).join('')}
-            </div>
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Uploaded Documents</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.documents.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
 
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Job Details</h4>
-                ${summary.job.map(item => `
-                    <div style="background: #fff; padding: 10px 16px; border-radius: 6px; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                        <strong>${item.label}:</strong> ${item.displayValue}
-                    </div>`).join('')}
-            </div>
-        `;
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Job Details</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.job.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
+`;
+
 
         document.getElementById('form-summary').innerHTML = html;
 
