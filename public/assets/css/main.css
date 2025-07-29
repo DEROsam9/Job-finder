@@ -2454,7 +2454,3 @@ html, body, .layout-wrapper {
     flex-direction: column;
 }
 
-.layout-main {
-    flex: 1;
-    color: #fff;
-}
