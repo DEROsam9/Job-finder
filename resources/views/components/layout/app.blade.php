@@ -5,7 +5,7 @@
 <body class="layout-body">
     @include('components.includes.header')
 
-    <div class="application-pg layout-wrapper">
+    <div class="layout-wrapper application-pg">
         <main class="layout-main">
             @yield('content')
         </main>
