@@ -10,7 +10,18 @@
         .form-section { margin-top: 40px; }
         .form-section input, .form-section select { margin: 10px 0; width: 48%; }
         .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
-        .form-section button { margin: 20px 0; padding: 10px 20px; background: #2D78C9; color: white; border: none; border-radius: 5px; cursor: pointer; }
+.form-section button {
+    margin: 25px 0;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    background: #2D78C9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
         .form-section button:disabled { background: #CCCCCC; cursor: not-allowed; }
         .progress-container {
             width: 100%;
@@ -129,11 +140,14 @@
             }
         }
         .form-step[data-step="4"] button[type="submit"] {
-            background: #10B981; /* green */
-            font-weight: 600;
-            padding: 10px 30px;
-            transition: background 0.2s ease;
-        }
+    background: #10B981;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
 
         .form-step[data-step="4"] button[type="submit"]:hover {
             background: #059669;
@@ -157,6 +171,41 @@
     flex: 1 1 100%;
 }
 
+/* #form-error-message {
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    padding: 10px 15px;
+    border-radius: 5px;
+} */
+
+    @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+input.shake, select.shake {
+    animation: shake 0.3s ease;
+    border: 1px solid red !important;
+}
+
+
+input[type="file"].shake {
+    box-shadow: 0 0 0 2px #f87171;
+}
+
+@media (max-width: 480px) {
+    .form-section button {
+        width: 100%;
+    }
+
+    .form-step[data-step="4"] button[type="submit"] {
+        width: 100%;
+    }
+}
+
 
 
         @media (max-width: 480px) {
@@ -176,6 +225,18 @@
         }
 
     </style>
+    @if (session('success'))
+    <div style="background: #D1FAE5; color: #065F46; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; font-weight: 600;">
+        <i class="fa fa-check-circle"></i> {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div style="background: #FECACA; color: #991B1B; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; font-weight: 600;">
+        <i class="fa fa-exclamation-circle"></i> {{ session('error') }}
+    </div>
+@endif
+
     <div class="row">
         <div class="container">
             <div class="col-md-12">
@@ -215,6 +276,8 @@
                         </div>
                     </div>
                     <div class="form-section">
+                        <div id="form-error-message" style="color: #dc2626; font-weight: 500; margin-bottom: 10px; display: none;"></div>
+
                         <form id="application-form" action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-step active" data-step="1">
@@ -324,6 +387,7 @@
                 </div>
             </div>
         </div>
+
     </div>
     <script>
         let currentStep = 1;
@@ -357,87 +421,97 @@
         }
 
         function nextStep(step) {
-            const currentInputs = document.querySelectorAll(`.form-step[data-step="${currentStep}"] input[required], .form-step[data-step="${currentStep}"] select[required]`);
-            let valid = true;
-            currentInputs.forEach(input => {
-                if (!input.value) {
-                    valid = false;
-                    input.style.border = '1px solid red';
-                } else {
-                    input.style.border = '';
-                }
-            });
-            if (valid) {
-                if (step === 4) {
-                    displaySummary();
-                }
-                showStep(step);
+        const currentInputs = document.querySelectorAll(`.form-step[data-step="${currentStep}"] input[required], .form-step[data-step="${currentStep}"] select[required]`);
+        let valid = true;
+
+        currentInputs.forEach(input => {
+            if (!input.value) {
+                valid = false;
+                input.classList.add('shake');
             } else {
-                alert('Please fill in all required fields.');
+                input.classList.remove('shake');
             }
-        }
+        });
 
-        function prevStep(step) {
+        // Remove shake class after animation ends so it can re-trigger next time
+        setTimeout(() => {
+            currentInputs.forEach(input => input.classList.remove('shake'));
+        }, 500);
+
+        if (valid) {
+            document.getElementById('form-error-message').style.display = 'none';
+            if (step === 4) {
+                displaySummary();
+            }
             showStep(step);
-        }
-
-        function displaySummary() {
-    const formData = new FormData(document.getElementById('application-form'));
-    let summary = `
-        <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-family: 'Montserrat', sans-serif;">
-    `;
-
-    const seen = new Set();
-
-    for (let [key, value] of formData.entries()) {
-        if (seen.has(key)) continue; // Avoid duplicate entries for same-named file inputs
-        seen.add(key);
-
-        if (value instanceof File) {
-            summary += `
-                <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <strong>${key}:</strong> ${value.name || 'Not uploaded'}
-                </div>`;
         } else {
-            summary += `
-                <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    <strong>${key}:</strong> ${value}
-                </div>`;
+            document.getElementById('form-error-message').innerText = 'Please fill in all required fields.';
+            document.getElementById('form-error-message').style.display = 'block';
         }
     }
 
-    summary += `</div>`;
-    document.getElementById('form-summary').innerHTML = summary;
-}
+
+            function prevStep(step) {
+                showStep(step);
+            }
+
+            function displaySummary() {
+        const formData = new FormData(document.getElementById('application-form'));
+        let summary = `
+            <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-family: 'Montserrat', sans-serif;">
+        `;
+
+        const seen = new Set();
+
+        for (let [key, value] of formData.entries()) {
+            if (seen.has(key)) continue; // Avoid duplicate entries for same-named file inputs
+            seen.add(key);
+
+            if (value instanceof File) {
+                summary += `
+                    <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <strong>${key}:</strong> ${value.name || 'Not uploaded'}
+                    </div>`;
+            } else {
+                summary += `
+                    <div style="background: #fff; padding: 12px 16px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <strong>${key}:</strong> ${value}
+                    </div>`;
+            }
+        }
+
+        summary += `</div>`;
+        document.getElementById('form-summary').innerHTML = summary;
+    }
 
 
-        // Optional: keep summary display before submission
-document.getElementById('application-form').addEventListener('submit', function(e) {
-    displaySummary(); // Optional
-    // Do NOT preventDefault — allow Laravel to handle it
-});
+            // Optional: keep summary display before submission
+    document.getElementById('application-form').addEventListener('submit', function(e) {
+        displaySummary(); // Optional
+        // Do NOT preventDefault — allow Laravel to handle it
+    });
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const categorySelect = document.getElementById('jobCategorySelect');
-    const titleSelect = document.getElementById('jobTitleSelect');
+        document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('jobCategorySelect');
+        const titleSelect = document.getElementById('jobTitleSelect');
 
-    // Fetch job categories
-    fetch('/api/v1/job-categories')
-        .then(response => response.json())
-        .then(response => {
-            const data = response.data || response; // Support for both paginated and non-paginated
-            data.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.id;
-                option.textContent = category.name;
-                categorySelect.appendChild(option);
+        // Fetch job categories
+        fetch('/api/v1/job-categories')
+            .then(response => response.json())
+            .then(response => {
+                const data = response.data || response; // Support for both paginated and non-paginated
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching job categories:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error fetching job categories:', error);
-        });
 
     // On category change, fetch job titles
     categorySelect.addEventListener('change', function () {
@@ -465,6 +539,16 @@ document.getElementById('application-form').addEventListener('submit', function(
                 titleSelect.innerHTML = '<option value="">Failed to load titles</option>';
             });
     });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('[style*="padding: 15px 20px"]');
+    setTimeout(() => {
+        alerts.forEach(alert => {
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        });
+    }, 4000);
 });
 
     </script>
