@@ -3,7 +3,9 @@
         <div class="container">
             <div class="col-md-12">
                 <div class="logo">
-                    <img href="{{ route('landing') }}#home" src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">
+                    <a href="{{ route('landing') }}">
+                        <img src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">
+                    </a>
                 </div>
                 <input class="menu-btn" type="checkbox" id="menu-btn" />
                 <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>

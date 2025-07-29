@@ -1,8 +1,6 @@
 @extends('components.layout.app')
 @section('content')
 <style>
-
-
     .form-step { display: none; }
     .form-step.active { display: block; }
     .step-indicator.active { background: #2D78C9; color: white; }
@@ -501,22 +499,22 @@
 
         if (valid) {
             // Check passport expiry is at least 6 months away if a passport is entered
-            const passportNumber = document.getElementById('passport_number').value.trim();
-            const passportExpiryInput = document.getElementById('passport_expiry');
-
-            if (passportNumber !== '') {
-                const expiryDate = new Date(passportExpiryInput.value);
-                const today = new Date();
-                const sixMonthsFromNow = new Date();
-                sixMonthsFromNow.setMonth(today.getMonth() + 6);
-
-                if (expiryDate < sixMonthsFromNow) {
-                    passportExpiryInput.classList.add('shake');
-                    document.getElementById('form-error-message').innerText = 'Passport expiry date must be at least 6 months from today.';
-                    document.getElementById('form-error-message').style.display = 'block';
-                    return; // stop the step change
-                }
-            }
+            // const passportNumber = document.getElementById('passport_number').value.trim();
+            // const passportExpiryInput = document.getElementById('passport_expiry');
+            //
+            // if (passportNumber !== '') {
+            //     const expiryDate = new Date(passportExpiryInput.value);
+            //     const today = new Date();
+            //     const sixMonthsFromNow = new Date();
+            //     sixMonthsFromNow.setMonth(today.getMonth() + 6);
+            //
+            //     if (expiryDate < sixMonthsFromNow) {
+            //         passportExpiryInput.classList.add('shake');
+            //         document.getElementById('form-error-message').innerText = 'Passport expiry date must be at least 6 months from today.';
+            //         document.getElementById('form-error-message').style.display = 'block';
+            //         return; // stop the step change
+            //     }
+            // }
             document.getElementById('form-error-message').style.display = 'none';
             if (step === 4) {
                 displaySummary();
