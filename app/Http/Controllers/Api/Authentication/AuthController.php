@@ -85,7 +85,7 @@ class AuthController extends Controller
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
             }
-            
+
             Auth::login($user);
 
             // Generate API token for SPA

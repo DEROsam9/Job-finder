@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('document_type', ['client_id_front', 'client_id_back', 'passport_copy', 'cv', 'good_conduct']);
             $table->date('passport_expiry_date')->nullable();
             $table->string('document_url')->nullable();
-            $table->string('status')->default('Pending'); // merged here
+            $table->string('status')->default('Pending');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
 
             $table->timestamps();
