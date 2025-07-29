@@ -1,4 +1,4 @@
-<div class="header">
+ {{-- <div class="header">
     <div class="row">
         <div class="container">
             <div class="col-md-12">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>  --}}
 
 
 
@@ -36,12 +36,11 @@
 
 
 
-{{-- home nav links --}}
-
-{{-- <div class="header">
+{{-- home nav links  --}}
+ <div class="header">
     <div class="row">
-        <div class="container">
-            <div class="col-md-12">
+        <div class="container"> 
+             <div class="col-md-12">
                 <div class="logo">
                     <a href="{{ route('landing') }}#home"> 
                     <img src="{{ asset('images/TALENTBRIDGE LOGO.png') }}" alt="TalentBridge Logo" height="50">                
@@ -74,4 +73,4 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>  
