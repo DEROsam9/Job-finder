@@ -87,20 +87,25 @@
             max-width: 120px;
         }
         .step-indicator[data-step="4"].active {
-    background: #1E40AF; /* A deeper blue for final step */
-    outline-color: #1E40AF;
-    box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
-    transition: all 0.3s ease-in-out;
-}
+            background: #1E40AF; /* A deeper blue for final step */
+            outline-color: #1E40AF;
+            box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
+            transition: all 0.3s ease-in-out;
+        }
 
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .progress-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 25px;
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                white-space: nowrap;
+                gap: 10px; /* Reduced from 25px */
+                padding: 10px;
                 margin: 20px auto;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
             }
 
             .progress-line {
@@ -108,10 +113,11 @@
             }
 
             .step-container {
-                flex-direction: row;
+                flex: 0 0 auto; /* Prevent shrinking */
                 justify-content: flex-start;
                 align-items: center;
                 width: 100%;
+                min-width: 150px; /* Adjust as needed for readability */
                 gap: 10px;
             }
 
@@ -140,22 +146,22 @@
         }
 
         .upload-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-.upload-box {
-    background: #F1F5F9;
-    padding: 20px;
-    border-radius: 8px;
-    flex: 1 1 45%;
-    min-width: 280px;
-}
+        .upload-box {
+            background: #F1F5F9;
+            padding: 20px;
+            border-radius: 8px;
+            flex: 1 1 45%;
+            min-width: 280px;
+        }
 
-.upload-box.full-width {
-    flex: 1 1 100%;
-}
+        .upload-box.full-width {
+            flex: 1 1 100%;
+        }
 
 
 
@@ -217,7 +223,9 @@
                     <div class="form-section">
                         <form id="application-form" action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+
                             <div class="form-step active" data-step="1">
+                                <h3>User Information</h3>
                                 <p>
                                     <input type="text" name="first_name" placeholder="First Name" required>
                                     <input type="text" name="surname" placeholder="Last Name" required>
@@ -234,7 +242,7 @@
                             </div>
                             <!-- Docs Upload -->
                             <div class="form-step" data-step="2">
-
+                                <h3>Documents Upload</h3>
                                 <div class="upload-section">
                                         <div class="upload-box full-width">
                                             <div class="upload-content">
@@ -245,7 +253,7 @@
                                                 <div class="file-info" id="passportInfo"></div>
                                             </div>
                                         </div>
-                                    
+
 
                                     <div>
                                         <h4>Upload ID Front</h4>
@@ -259,7 +267,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                     <div>
                                         <h4>Upload ID Back</h4>
@@ -273,7 +281,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                                 <p>
@@ -282,6 +290,7 @@
                                 </p>
                             </div>
                             <div class="form-step" data-step="3">
+                                <h3>Job Selection</h3>
                                 <div class="upload-section">
                                         <div class="upload-box full-width">
                                             <div class="upload-content">
@@ -292,7 +301,7 @@
                                                 <div class="file-info" id="cvInfo"></div>
                                             </div>
                                         </div>
-                                        
+
                                 </div>
                                 <p>
                                     <select id="jobCategorySelect" name="job_category" class="form-control">
@@ -302,7 +311,7 @@
                                     <select id="jobTitleSelect" name="job_title" class="form-control">
                                         <option value="">Select Job Title</option>
                                     </select>
-                                    
+
                                 </p>
                                 <p>
                                     <button type="button" onclick="prevStep(2)">Previous</button>
@@ -327,6 +336,13 @@
     </div>
     <script>
         let currentStep = 1;
+
+        function scrollToStep(stepNumber) {
+            const step = document.querySelector(`.step-indicator[data-step="${stepNumber}"]`);
+            if (step) {
+                step.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
 
         function updateProgressLine(step) {
             const progressLine = document.getElementById('progress-line');
@@ -353,6 +369,7 @@
             document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
             updateStepIndicators(step);
             updateProgressLine(step);
+            scrollToStep(step);
             currentStep = step;
         }
 
