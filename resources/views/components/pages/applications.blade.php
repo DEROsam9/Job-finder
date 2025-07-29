@@ -19,7 +19,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin: 40px auto 20px;
+            margin: 20px auto 10px;
             padding: 0 20px;
         }
 
