@@ -71,7 +71,7 @@ public function index(Request $request)
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -79,7 +79,6 @@ public function index(Request $request)
      */
     public function store(Request $request)
 {
-    \Log::info($request->all());
     $validator = Validator::make($request->all(), [
         'first_name'       => 'required|string|max:255',
         'surname'          => 'required|string|max:255',
@@ -207,7 +206,7 @@ if ($validator->fails()) {
     public function show($id)
     {
         $customer = Client::find($id);
-        
+
         if(!$customer){
             return response()->json(['message'=>'Client not Found']);
         }

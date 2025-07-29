@@ -1,254 +1,249 @@
 @extends('components.layout.app')
 @section('content')
-    <style>
-        .form-step { display: none; }
-        .form-step.active { display: block; }
-        .step-indicator.active { background: #2D78C9; color: white; }
-        .step-indicator { cursor: pointer; }
-        .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: -1; }
-        .progress-line.active { background: #2D78C9; }
-        .form-section { margin-top: 40px; }
-        .form-section input, .form-section select { margin: 10px 0; width: 48%; }
-        .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
-.form-section button {
-    margin: 25px 0;
-    padding: 14px 32px;
-    font-size: 16px;
-    font-weight: 600;
-    background: #2D78C9;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-        .form-section button:disabled { background: #CCCCCC; cursor: not-allowed; }
+<style>
+
+
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+    .step-indicator.active { background: #2D78C9; color: white; }
+    .step-indicator { cursor: pointer; }
+    .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: -1; }
+    .progress-line.active { background: #2D78C9; }
+    .form-section { margin-top: 40px; }
+    .form-section input, .form-section select { margin: 10px 0; width: 48%; }
+    .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
+    .form-section button {
+        margin: 25px 0;
+        padding: 14px 32px;
+        font-size: 16px;
+        font-weight: 600;
+        background: #2D78C9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    .form-section button:disabled { background: #CCCCCC; cursor: not-allowed; }
+    .progress-container {
+        width: 100%;
+        max-width: 800px;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 20px auto 10px;
+        padding: 0 20px;
+    }
+
+    .progress-line {
+        position: absolute;
+        top: 24px;
+        left: 10px;
+        right: 10px;
+        height: 4px;
+        background-color: #E0E0E0;
+        z-index: 0;
+        border-radius: 2px;
+    }
+
+    .progress-line.active {
+        background-color: #2D78C9;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .step-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-width: 100px;
+        z-index: 1;
+        position: relative;
+    }
+
+    .step-indicator {
+        width: 45px;
+        height: 45px;
+        background: #E5E5E5;
+        border-radius: 50%;
+        outline: 2px solid #CCCCCC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #1A1A1A;
+        margin-bottom: 8px;
+        transition: background 0.3s ease;
+    }
+
+    .step-indicator.active {
+        background: #2D78C9;
+        color: white;
+        outline: 2px solid #2D78C9;
+    }
+
+    .step-container div:nth-child(2) {
+        font-weight: 700;
+        font-size: 14px;
+        color: #2D78C9;
+        text-align: center;
+    }
+
+    .step-container div:nth-child(3) {
+        font-size: 12px;
+        color: #555;
+        font-weight: 400;
+        text-align: center;
+        max-width: 120px;
+    }
+    .step-indicator[data-step="4"].active {
+        background: #1E40AF; /* A deeper blue for final step */
+        outline-color: #1E40AF;
+        box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
+        transition: all 0.3s ease-in-out;
+    }
+
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
         .progress-container {
-            width: 100%;
-            max-width: 800px;
-            position: relative;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin: 20px auto 10px;
-            padding: 0 20px;
+            flex-direction: row;
+            overflow-x: auto;
+            white-space: nowrap;
+            gap: 10px; /* Reduced from 25px */
+            padding: 10px;
+            margin: 20px auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .progress-line {
-            position: absolute;
-            top: 24px;
-            left: 10px;
-            right: 10px;
-            height: 4px;
-            background-color: #E0E0E0;
-            z-index: 0;
-            border-radius: 2px;
-        }
-
-        .progress-line.active {
-            background-color: #2D78C9;
-            transition: width 0.3s ease-in-out;
+            display: none;
         }
 
         .step-container {
-            display: flex;
-            flex-direction: column;
+            flex: 0 0 auto; /* Prevent shrinking */
+            justify-content: flex-start;
             align-items: center;
-            flex: 1;
-            min-width: 100px;
-            z-index: 1;
-            position: relative;
+            width: 100%;
+            min-width: 150px; /* Adjust as needed for readability */
+            gap: 10px;
         }
 
         .step-indicator {
-            width: 45px;
-            height: 45px;
-            background: #E5E5E5;
-            border-radius: 50%;
-            outline: 2px solid #CCCCCC;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: #1A1A1A;
-            margin-bottom: 8px;
-            transition: background 0.3s ease;
+            width: 35px;
+            height: 35px;
+            font-size: 14px;
+            margin-bottom: 0;
         }
 
-        .step-indicator.active {
-            background: #2D78C9;
-            color: white;
-            outline: 2px solid #2D78C9;
+        .step-container div:nth-child(2),
+        .step-container div:nth-child(3) {
+            font-size: 12px;
+            text-align: left;
+        }
+    }
+    .form-step[data-step="4"] button[type="submit"] {
+        background: #10B981;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 14px 32px;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+    }
+
+
+    .form-step[data-step="4"] button[type="submit"]:hover {
+        background: #059669;
+    }
+
+    .upload-section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between; /* Spread evenly across two columns */
+        width: 100%;
+    }
+
+    .upload-section > div {
+        flex: 0 0 calc(50% - 10px); /* Two columns with gap accounted for */
+    }
+
+    @media (max-width: 768px) {
+        .upload-section > div {
+            flex: 0 0 100%; /* Stack on smaller screens */
+        }
+    }
+    .upload-box {
+        background: #F1F5F9;
+        padding: 20px;
+        border-radius: 8px;
+        flex: 1 1 45%;
+        min-width: 280px;
+        border: 2px dashed #ddd;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.3s ease;
+    }
+
+    .upload-box.full-width {
+        flex: 1 1 100%;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+        100% { transform: translateX(0); }
+    }
+
+    input.shake, select.shake {
+        animation: shake 0.3s ease;
+        border: 1px solid red !important;
+    }
+
+
+    input[type="file"].shake {
+        box-shadow: 0 0 0 2px #f87171;
+    }
+
+    @media (max-width: 480px) {
+        .form-section button {
+            width: 100%;
+        }
+
+        .form-step[data-step="4"] button[type="submit"] {
+            width: 100%;
+        }
+    }
+
+
+
+    @media (max-width: 480px) {
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
         }
 
         .step-container div:nth-child(2) {
-            font-weight: 700;
-            font-size: 14px;
-            color: #2D78C9;
-            text-align: center;
+            font-size: 10px;
         }
 
         .step-container div:nth-child(3) {
-            font-size: 12px;
-            color: #555;
-            font-weight: 400;
-            text-align: center;
-            max-width: 120px;
+            font-size: 9px;
         }
-        .step-indicator[data-step="4"].active {
-            background: #1E40AF; /* A deeper blue for final step */
-            outline-color: #1E40AF;
-            box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
-            transition: all 0.3s ease-in-out;
-        }
-
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .progress-container {
-                display: flex;
-                flex-direction: row;
-                overflow-x: auto;
-                white-space: nowrap;
-                gap: 10px; /* Reduced from 25px */
-                padding: 10px;
-                margin: 20px auto;
-                scroll-behavior: smooth;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .progress-line {
-                display: none;
-            }
-
-            .step-container {
-                flex: 0 0 auto; /* Prevent shrinking */
-                justify-content: flex-start;
-                align-items: center;
-                width: 100%;
-                min-width: 150px; /* Adjust as needed for readability */
-                gap: 10px;
-            }
-
-            .step-indicator {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
-                margin-bottom: 0;
-            }
-
-            .step-container div:nth-child(2),
-            .step-container div:nth-child(3) {
-                font-size: 12px;
-                text-align: left;
-            }
-        }
-        .form-step[data-step="4"] button[type="submit"] {
-    background: #10B981;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 14px 32px;
-    border-radius: 8px;
-    transition: background 0.2s ease;
-}
-
-
-        .form-step[data-step="4"] button[type="submit"]:hover {
-            background: #059669;
-        }
-
-    .upload-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between; /* Spread evenly across two columns */
-    width: 100%;
-}
-
-.upload-section > div {
-    flex: 0 0 calc(50% - 10px); /* Two columns with gap accounted for */
-}
-
-@media (max-width: 768px) {
-    .upload-section > div {
-        flex: 0 0 100%; /* Stack on smaller screens */
-    }
-}
-.upload-box {
-    background: #F1F5F9;
-    padding: 20px;
-    border-radius: 8px;
-    flex: 1 1 45%;
-    min-width: 280px;
-    border: 2px dashed #ddd;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.3s ease;    
-}
-
-        .upload-box.full-width {
-            flex: 1 1 100%;
-        }
-
-/* #form-error-message {
-    background-color: #fee2e2;
-    border: 1px solid #fca5a5;
-    padding: 10px 15px;
-    border-radius: 5px;
-} */
-
-    @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-input.shake, select.shake {
-    animation: shake 0.3s ease;
-    border: 1px solid red !important;
-}
-
-
-input[type="file"].shake {
-    box-shadow: 0 0 0 2px #f87171;
-}
-
-@media (max-width: 480px) {
-    .form-section button {
-        width: 100%;
     }
 
-    .form-step[data-step="4"] button[type="submit"] {
-        width: 100%;
-    }
-}
-
-
-
-        @media (max-width: 480px) {
-            .step-indicator {
-                width: 30px;
-                height: 30px;
-                font-size: 12px;
-            }
-
-            .step-container div:nth-child(2) {
-                font-size: 10px;
-            }
-
-            .step-container div:nth-child(3) {
-                font-size: 9px;
-            }
-        }
-
-    </style>
-    @if (session('success'))
+</style>
+@if (session('success'))
     <div style="background: #D1FAE5; color: #065F46; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; font-weight: 600;">
         <i class="fa fa-check-circle"></i> {{ session('success') }}
     </div>
@@ -305,7 +300,7 @@ input[type="file"].shake {
                             @csrf
 
                             <div class="form-step active" data-step="1">
-                                <h3>User Information</h3>
+                                <h3 style="color: black;">User Information</h3>
                                 <p>
                                     <input type="text" name="first_name" placeholder="First Name" required>
                                     <input type="text" name="surname" placeholder="Last Name" required>
@@ -315,25 +310,33 @@ input[type="file"].shake {
                                     <input type="tel" name="phone_number" placeholder="Phone Number" required>
                                 </p>
                                 <p>
-                                    <input type="text" name="passport_number" id="passport_number" placeholder="Passport Number(optional)" >
                                     <input type="text" name="id_number" id="id_number" placeholder="ID Number" required>
-                                    <div id="passport_expiry_wrapper"
-                                        style="display: none; width: 100%; margin-top: 20px; position: relative; z-index: 10;">
-                                        {{-- Passport Expiry Date --}}
-                                        <input type="date" class="form-control" id="passport_expiry" name="passport_expiry"
-                                            placeholder="Passport Expiry Date"
-                                            style="width: 100%; height: 50px; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
-                                    </div>
+
+                                    <input type="text" name="passport_number" id="passport_number" placeholder="Passport Number(optional)" >
+                                <div id="passport_expiry_wrapper"
+                                     style="display: none; width: 100%; margin-top: 20px; position: relative; z-index: 10;">
+
+                                    <label for="passport_expiry" style="color: #2d2c2c; float: left; margin-bottom: 5px; display: block;">
+                                        Passport Expiry Date
+                                    </label>
+
+                                    <input type="date"
+                                           class="form-control"
+                                           id="passport_expiry"
+                                           name="passport_expiry"
+                                           placeholder="Passport Expiry Date"
+                                           style="width: 100%; height: 50px; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+                                </div>
 
                                 </p>
                                 <button type="button" onclick="nextStep(2)">Next</button>
                             </div>
                             <!-- Docs Upload -->
                             <div class="form-step" data-step="2">
-
-                                <div class="upload-section"> 
+                                <h3 style="color: black;">Upload Documents</h3>
+                                <div class="upload-section">
                                     <div>
-                                        <h4>Upload ID Front</h4>
+                                        <h4 style="color: black;">Upload ID Front</h4>
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
@@ -344,9 +347,9 @@ input[type="file"].shake {
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                     <div>
-                                        <h4>Upload ID Back</h4>
+                                        <h4 style="color: black;">Upload ID Back</h4>
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
@@ -359,7 +362,7 @@ input[type="file"].shake {
                                     </div>
 
                                     <div>
-                                        <h4>Upload Passport</h4>
+                                        <h4 style="color: black;">Upload Passport</h4>
                                         <div class="upload-box ">
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
@@ -370,10 +373,10 @@ input[type="file"].shake {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                     <div>
-                                        <h4>Upload Good Conduct Certificate</h4>
+                                        <h4 style="color: black;">Upload Good Conduct Certificate</h4>
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
@@ -384,8 +387,8 @@ input[type="file"].shake {
                                             </div>
                                     </div>
                                     </div>
-                                    
-                                    
+
+
                                 </div>
 
                                 <p>
@@ -394,7 +397,7 @@ input[type="file"].shake {
                                 </p>
                             </div>
                             <div class="form-step" data-step="3">
-                                <h3>Job Selection</h3>
+                                <h3 style="color: black;">Job Selection</h3>
                                 <div class="upload-section">
                                         <div class="upload-box full-width">
                                             <div class="upload-content">
@@ -423,7 +426,7 @@ input[type="file"].shake {
                                 </p>
                             </div>
                             <div class="form-step" data-step="4">
-                                <div style="background: #F9FAFB; padding: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+                                <div style="background: #F9FAFB; color: black; padding: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
                                     <div id="form-summary"></div>
                                 </div>
 
@@ -597,7 +600,7 @@ input[type="file"].shake {
 
         let html = `
     <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
-    
+
     <div style="margin-bottom: 20px;">
         <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">

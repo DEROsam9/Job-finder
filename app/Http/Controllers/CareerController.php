@@ -22,7 +22,7 @@ class CareerController extends Controller
     {
         $careers = $this->careerRepository
         ->with('jobCategory')
-        ->paginate($request->get('limit', 8));
+        ->paginate($request->get('limit', 20));
 
         return response()->json([
                 'data' => $careers,
@@ -114,7 +114,10 @@ class CareerController extends Controller
     public function destroy(Career $career): JsonResponse
     {
         $career->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'message' => 'Deleted successfully',
+        ], 204);
     }
 
     public function getCategories()
