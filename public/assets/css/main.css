@@ -146,6 +146,11 @@ body {
     max-height: 0;
     transition: max-height .2s ease-out;
 }
+
+/* Default: hide mobile apply button */
+.apply-now-mobile {
+    display: none;
+}
 li.apply, li.track{
     margin-right: 0 !important;
     margin-left: 0 !important;
@@ -158,9 +163,33 @@ li.apply, li.track{
         width: auto;
         padding-top: 1em;
     }
+    .apply-now-mobile {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 992px) {
+    .apply{
+        display: none !important;
+    }
+    .track{
+        border-radius: 10px;
+    }
+    
+    .apply-now-mobile {
+        display: block;
+        float: right;
+        margin-top: 20px;
+    }
+    .apply-now-mobile .btn-apply {
+        background-color: #2D78C9;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        font-weight: bold;
+    }
     .header .menu-icon {
         display: block;
     }

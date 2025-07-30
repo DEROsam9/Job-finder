@@ -9,6 +9,12 @@
                 </div>
                 <input class="menu-btn" type="checkbox" id="menu-btn" />
                 <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+                <!-- Mobile Apply Now button -->
+                <div class="apply-now-mobile">
+                    <a href="{{ route('application') }}" class="btn-apply">Apply Now</a>
+                </div>
+                
+                {{-- Mobile apply button --}}
                 <ul class="menu">
                     <li class="active"><a href="{{ route('landing') }}#home">Home</a></li>
                     <li><a href="{{ route('landing') }}#about-us">About Us</a></li>
@@ -20,8 +26,6 @@
                         <li class="track"><a href="{{ route('track.application') }}">Track Application</a></li>
                     </div>
                 </ul>
-
-
             </div>
         </div>
     </div>
