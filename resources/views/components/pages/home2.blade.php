@@ -20,7 +20,7 @@
           <input type="search" name="search" placeholder="Search">
         </form>
         <div class="dream-img">
-          <img src="{{ asset('images/v27_51.png') }}">
+          <img src="{{ asset('images/v27_51.jpg') }}">
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <div class="col-md-12">
       <div class="page-content">
         <div class="dream-img">
-          <img src="images/v27_67.png">
+          <img src="images/v27_67.jpg">
         </div>
         <p>
           At [Your Platform Name], we connect ambitious job seekers with exciting career opportunities
@@ -74,7 +74,7 @@
         <div class="partners-pics row">
           @php
             $partners = [
-              ['img' => 'v54_724.png', 'name' => 'Janta'],
+              ['img' => 'v54_724.jpg', 'name' => 'Janta'],
               ['img' => 'accurex.png', 'name' => 'Accurex'],
               ['img' => 'mal.png', 'name' => 'MAL Consultancy'],
               ['img' => 'hr.png', 'name' => 'Hallmark']
@@ -115,10 +115,10 @@
         <div class="experiences-pics row">
           @php
             $experiences = [
-              ['img' => 'v108_550.png', 'name' => 'Kevin Muriithi'],
-              ['img' => 'v108_548.png', 'name' => 'Mary Mweni'],
-              ['img' => 'v108_407.png', 'name' => 'Joseph Ochiel'],
-              ['img' => 'v108_406.png', 'name' => 'Martin Muriithi']
+              ['img' => 'v108_550.jpg', 'name' => 'Kevin Muriithi'],
+              ['img' => 'v108_548.jpg', 'name' => 'Mary Mweni'],
+              ['img' => 'v108_407.jpg', 'name' => 'Joseph Ochiel'],
+              ['img' => 'v108_406.jpg', 'name' => 'Martin Muriithi']
             ];
           @endphp
 
