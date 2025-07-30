@@ -168,7 +168,24 @@ li.apply, li.track{
     }
 }
 
+.search{
+    background: #2d78c9;
+    border-radius: 10px;
+    width: 200px;
+    height: 60px;
+    border: none;
+
+}
+
 @media screen and (max-width: 992px) {
+    .search{
+    background: #2d78c9;
+    border-radius: 10px;
+    width: 80px;
+    height: 60px;
+    border: none;
+
+}
     .apply{
         display: none !important;
     }

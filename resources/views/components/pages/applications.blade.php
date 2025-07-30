@@ -7,7 +7,7 @@
     .step-indicator { cursor: pointer; }
     .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: -1; }
     .progress-line.active { background: #2D78C9; }
-    .form-section { margin-top: 40px; }
+    .form-section { margin-top: 10px; }
     .form-section input, .form-section select { margin: 10px 0; width: 48%; }
     .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
     .form-section button {
