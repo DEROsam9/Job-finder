@@ -16,9 +16,9 @@
         Discover life-changing job opportunities across top global cities.
         Apply today and take the first step toward your future.
       </p>
-      <form>
+      <!-- <form>
         <input type="search" name="search" placeholder="Search">
-      </form>
+      </form> -->
       <div class="dream-img">
         <img src="{{ asset('images/v27_51.jpg') }}">
       </div>

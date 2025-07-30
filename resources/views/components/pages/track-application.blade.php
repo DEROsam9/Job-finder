@@ -14,7 +14,7 @@
               <form>
                 <p>
                   <input type="text" name="Job reference Number" placeholder="Job reference Number">
-                  <a href="#" class="next">Search</a>
+                  <button class="search">Search</button>
                 </p>
               </form>
             </div>
