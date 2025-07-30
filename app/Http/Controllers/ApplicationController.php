@@ -16,10 +16,6 @@ class ApplicationController extends Controller
      */
    public function index(Request $request)
     {
-        Log::info('📥 Received filters', $request->all());
-
-        $limit = $request->get('limit', 20);
-    Log::info('🔍 Incoming Filters', $request->all());
 
         $query = Application::with(['client', 'career', 'status', 'payments']);
 
@@ -57,7 +53,7 @@ class ApplicationController extends Controller
     }
 
 
-        $applications = $query->orderBy('created_at', 'desc')->paginate($limit);
+        $applications = $query->orderBy('created_at', 'desc')->paginate($request->get('limit', 20));
 
         return response()->json([
             'data' => $applications
