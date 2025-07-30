@@ -45,7 +45,7 @@
         <img src="images/v27_67.jpg">
       </div>
       <p>
-        At [Your Platform Name], we connect ambitious job seekers with exciting career opportunities
+        At Talent Bridge, we connect ambitious job seekers with exciting career opportunities
         in Dubai and other global cities. Our mission is to simplify the job search process by
         offering a reliable, user-friendly platform where talent meets opportunity. Join thousands
         of professionals who trust us to take the next big step in their careers.
