@@ -74,7 +74,7 @@
         <div class="partners-pics row">
           @php
             $partners = [
-              ['img' => 'v54_724.jpg', 'name' => 'Janta'],
+              ['img' => 'v54_724.png', 'name' => 'Janta'],
               ['img' => 'accurex.png', 'name' => 'Accurex'],
               ['img' => 'mal.png', 'name' => 'MAL Consultancy'],
               ['img' => 'hr.png', 'name' => 'Hallmark']
