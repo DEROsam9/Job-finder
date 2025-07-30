@@ -19,3 +19,4 @@ Route::get('service', [HomeController::class, 'service'])->name('service');
 
 Route::get('/track-application', [HomeController::class, 'trackApplication'])->name('track.application');
 
+Route::get('/application-success/{reference}', [\App\Http\Controllers\ClientController::class, 'applicationSuccess'])->name('application.success');

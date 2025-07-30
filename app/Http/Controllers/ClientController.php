@@ -118,6 +118,7 @@ if ($validator->fails()) {
             'email' => $input['email'],
             'phone_number' => $input['phone_number'],
             'passport_number' => $input['passport_number'],
+            // 'passport_number' => $input['passport_number'] ?? '',
             'id_number' => $input['id_number'],
         ]);
 
@@ -190,7 +191,7 @@ if ($validator->fails()) {
         DB::commit();
 
         session()->flash('success', 'Your information has been submitted successfully. Check your phone for an STK Push.');
-        return redirect()->back();
+        return redirect()->route('application.success', ['reference' => $application->application_code]);
     } catch (\Exception $exception) {
         \Log::error($exception);
         DB::rollBack();
@@ -198,6 +199,7 @@ if ($validator->fails()) {
         return redirect()->back();
     }
 }
+
 
 
     /**
@@ -263,5 +265,11 @@ if ($validator->fails()) {
         return response()->json(['message'=>'Client Deleted']);
 
 
+    }
+
+    public function applicationSuccess($reference)
+    {
+        
+        return view('components.pages.application-success', ['reference' => $reference]);
     }
 }
