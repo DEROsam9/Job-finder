@@ -6,7 +6,6 @@
     .form-track {
         background: #f8f9fa;
         padding: 2rem;
-        border-radius: 8px;
     }
 
     .form-track h3 {
