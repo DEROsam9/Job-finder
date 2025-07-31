@@ -105,6 +105,55 @@
         transition: all 0.3s ease-in-out;
     }
 
+    /* Job selection styles */
+    .job-selection-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .job-selection-row select {
+        flex: 1;
+        min-width: 150px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .job-selection-row .delete-job-btn {
+        background: #dc2626;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        flex-shrink: 0;
+    }
+
+    .job-selection-row .delete-job-btn:hover {
+        background: #b91c1c;
+    }
+
+    .add-job-btn {
+        background: #2D78C9;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .add-job-btn i {
+        font-size: 14px;
+    }
+
     /* Mobile Responsive */
     @media (max-width: 768px) {
         .progress-container {
@@ -144,14 +193,69 @@
             font-size: 12px;
             text-align: left;
         }
+        
         .summary-grid {
-      display: block !important;
+            display: block !important;
+        }
+        
+        .summary-grid > div {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+        
+        .form-section input, 
+        .form-section select {
+            width: 100%;
+        }
+        
+        .job-selection-row {
+            gap: 8px;
+        }
+        
+        .job-selection-row select {
+            min-width: calc(50% - 15px);
+        }
     }
-    .summary-grid > div {
-      width: 100% !important;
-      margin-bottom: 10px;
+
+    @media (max-width: 480px) {
+        .form-section button {
+            width: 100%;
+        }
+
+        .form-step[data-step="4"] button[type="submit"] {
+            width: 100%;
+        }
+        
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+        }
+
+        .step-container div:nth-child(2) {
+            font-size: 10px;
+        }
+
+        .step-container div:nth-child(3) {
+            font-size: 9px;
+        }
+        
+        .job-selection-row select {
+            min-width: 100%;
+        }
+        
+        .job-selection-row .delete-job-btn {
+            width: 100%;
+            justify-content: center;
+        }
     }
+
+    /* Fix for menu z-index */
+    .navbar {
+        position: relative;
+        z-index: 1000;
     }
+
     .form-step[data-step="4"] button[type="submit"] {
         background: #10B981;
         font-weight: 600;
@@ -182,6 +286,7 @@
             flex: 0 0 100%;
         }
     }
+    
     .upload-box {
         background: #F1F5F9;
         padding: 20px;
@@ -215,62 +320,6 @@
 
     input[type="file"].shake {
         box-shadow: 0 0 0 2px #f87171;
-    }
-
-    @media (max-width: 480px) {
-        .form-section button {
-            width: 100%;
-        }
-
-        .form-step[data-step="4"] button[type="submit"] {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .step-indicator {
-            width: 30px;
-            height: 30px;
-            font-size: 12px;
-        }
-
-        .step-container div:nth-child(2) {
-            font-size: 10px;
-        }
-
-        .step-container div:nth-child(3) {
-            font-size: 9px;
-        }
-    }
-
-    /* Fix for menu z-index */
-    .navbar {
-        position: relative;
-        z-index: 1000;
-    }
-
-    /* Job selection styles */
-    .job-selection-row {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .job-selection-row select {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .add-job-btn {
-        background: #2D78C9;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
     }
 </style>
 
@@ -422,7 +471,7 @@
                                 </div>
 
                                 <p>
-                                    <button type="button" onclick="prevStep(1)">Previous</button>
+                                    <button type="button" style="background-color: orange;" onclick="prevStep(1)">Previous</button>
                                     <button type="button" onclick="nextStep(3)">Next</button>
                                 </p>
                             </div>
@@ -450,6 +499,9 @@
                                             <select name="job_title[]" class="job-title-select">
                                                 <option value="">Select Job Title</option>
                                             </select>
+                                            <button type="button" class="delete-job-btn" style="display: none;">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <button type="button" onclick="addJobSelection()" class="add-job-btn">
@@ -457,7 +509,7 @@
                                     </button>
                                 </div>
                                 <p>
-                                    <button type="button" onclick="prevStep(2)">Previous</button>
+                                    <button type="button" style="background-color: orange;" onclick="prevStep(2)">Previous</button>
                                     <button type="button" onclick="nextStep(4)">Next</button>
                                 </p>
                             </div>
@@ -468,7 +520,7 @@
                                 </div>
 
                                 <p>
-                                    <button type="button" onclick="prevStep(3)">Previous</button>
+                                    <button type="button" style="background-color: orange;" onclick="prevStep(3)">Previous</button>
                                     <button type="submit">Submit</button>
                                 </p>
                             </div>
@@ -571,7 +623,7 @@
             client_id_front: "ID Front",
             client_id_back: "ID Back",
             passport_copy: "Passport Copy",
-            passport_photo: "Passport Photo", // <--- Add this
+            passport_photo: "Passport Photo",
             good_conduct: "Good Conduct",
             cv: "Curriculum Vitae (CV)",
             job_category: "Job Category",
@@ -644,13 +696,12 @@
             </div>
         `;
 
-
         let html = `
             <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
 
             <div style="margin-bottom: 20px;">
                 <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
-                <div  class="summary-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                <div class="summary-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                     ${summary.personal.map(item => `
                         <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                             <strong>${item.label}:</strong> ${item.displayValue}
@@ -738,10 +789,7 @@
             
             const row = document.createElement('div');
             row.className = 'job-selection-row';
-            row.style.display = 'flex';
-            row.style.gap = '10px';
-            row.style.marginTop = '10px';
-
+            
             const categorySelect = document.createElement('select');
             categorySelect.name = 'job_category[]';
             categorySelect.className = 'job-category-select';
@@ -754,9 +802,34 @@
             titleSelect.style.flex = '1';
             titleSelect.innerHTML = '<option value="">Select Job Title</option>';
 
+            // Create delete button
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fa fa-trash"></i>';
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'delete-job-btn';
+            deleteBtn.onclick = function() {
+                row.remove();
+                // Don't allow deleting the first row
+                const rows = document.querySelectorAll('.job-selection-row');
+                if (rows.length === 1) {
+                    rows[0].querySelector('.delete-job-btn').style.display = 'none';
+                }
+            };
+
             row.appendChild(categorySelect);
             row.appendChild(titleSelect);
+            row.appendChild(deleteBtn);
             container.appendChild(row);
+
+            // Show delete button for all rows except the first one
+            const rows = document.querySelectorAll('.job-selection-row');
+            if (rows.length > 1) {
+                rows.forEach((row, index) => {
+                    if (index > 0) {
+                        row.querySelector('.delete-job-btn').style.display = 'block';
+                    }
+                });
+            }
 
             // Populate categories for the new select
             jobCategoriesCache.forEach(category => {
