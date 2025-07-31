@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description')->nullable();
-
+            $table->enum('status', ['available', 'unavailable'])->default('available')->after('description');
             $table->softDeletes();
             $table->timestamps();
         });

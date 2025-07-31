@@ -85,18 +85,22 @@ public function index(Request $request)
         'email'            => 'required|email|unique:clients,email',
         'phone_number'     => 'required|string|max:20',
         'passport_number'  => 'nullable|string|max:50',
+        'passport_expiry_date' => 'nullable|date|after:today',
         'id_number'        => 'required|string|max:50',
 
         // Files
         'cv'               => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
         // Job selection
-        'job_title'        => 'required|exists:careers,id',
-        'job_category'     => 'nullable|exists:job_categories,id', // optional, just for chaining
+        'job_title'    => 'required|array',
+        'job_title.*'  => 'exists:careers,id',
+        'job_category' => 'nullable|array',
+        'job_category.*' => 'exists:job_categories,id',
 
         // Optional additional fields
         'remarks'          => 'nullable|string|max:255',
@@ -125,9 +129,11 @@ if ($validator->fails()) {
         $docFields = [
             'cv'              => null,
             'passport_copy'   => null,
+            'passport_photo'   => null,
             'client_id_front' => null,
             'client_id_back'  => null,
             'good_conduct'=> null,
+            
         ];
 
 
@@ -150,11 +156,14 @@ if ($validator->fails()) {
             ]);
         }
 
+        foreach ($request->job_title as $jobId) {
         $application = Application::create([
-            'client_id' => $client->id,
-            'career_id' => $request->get('job_title'),
-            'remarks' => $request->get('experience_brief'),
-        ]);
+                'client_id' => $client->id,
+                'career_id' => $jobId,
+                'remarks'   => $request->get('experience_brief'),
+            ]);
+        }
+
 
         $data = [
             'application_code' => $application->application_code,
@@ -167,7 +176,7 @@ if ($validator->fails()) {
         if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
             $payment = Payment::create([
                 'client_id'            => $client->id,
-                'amount'               => 100,
+                'amount'               => 1000,
                 'status_id'            => loadStatusId('Draft'),
                 'transaction_reference'=> '',
                 'remarks'              => 'payment for application coded '.$application->application_code,

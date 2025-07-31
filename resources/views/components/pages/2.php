@@ -5,9 +5,9 @@
     .form-step.active { display: block; }
     .step-indicator.active { background: #2D78C9; color: white; }
     .step-indicator { cursor: pointer; }
-    .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: 1; }
+    .progress-line { background: #B3B3B3; height: 3px; position: absolute; top: 2rem; width: 100%; z-index: -1; }
     .progress-line.active { background: #2D78C9; }
-    .form-section { margin-top: 40px; position: relative; z-index: 1; }
+    .form-section { margin-top: 40px; }
     .form-section input, .form-section select { margin: 10px 0; width: 48%; }
     .form-section p { display: flex; justify-content: space-between; flex-wrap: wrap; }
     .form-section button {
@@ -32,7 +32,6 @@
         align-items: flex-start;
         margin: 20px auto 10px;
         padding: 0 20px;
-        z-index: 2;
     }
 
     .progress-line {
@@ -42,7 +41,7 @@
         right: 10px;
         height: 4px;
         background-color: #E0E0E0;
-        z-index: 1;
+        z-index: 0;
         border-radius: 2px;
     }
 
@@ -57,7 +56,7 @@
         align-items: center;
         flex: 1;
         min-width: 100px;
-        z-index: 2;
+        z-index: 1;
         position: relative;
     }
 
@@ -99,11 +98,12 @@
         max-width: 120px;
     }
     .step-indicator[data-step="4"].active {
-        background: #1E40AF;
+        background: #1E40AF; /* A deeper blue for final step */
         outline-color: #1E40AF;
         box-shadow: 0 0 10px rgba(30, 64, 175, 0.4);
         transition: all 0.3s ease-in-out;
     }
+
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
@@ -112,7 +112,7 @@
             flex-direction: row;
             overflow-x: auto;
             white-space: nowrap;
-            gap: 10px;
+            gap: 10px; /* Reduced from 25px */
             padding: 10px;
             margin: 20px auto;
             scroll-behavior: smooth;
@@ -124,11 +124,11 @@
         }
 
         .step-container {
-            flex: 0 0 auto;
+            flex: 0 0 auto; /* Prevent shrinking */
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            min-width: 150px;
+            min-width: 150px; /* Adjust as needed for readability */
             gap: 10px;
         }
 
@@ -144,13 +144,6 @@
             font-size: 12px;
             text-align: left;
         }
-        .summary-grid {
-      display: block !important;
-    }
-    .summary-grid > div {
-      width: 100% !important;
-      margin-bottom: 10px;
-    }
     }
     .form-step[data-step="4"] button[type="submit"] {
         background: #10B981;
@@ -161,6 +154,7 @@
         transition: background 0.2s ease;
     }
 
+
     .form-step[data-step="4"] button[type="submit"]:hover {
         background: #059669;
     }
@@ -169,17 +163,17 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        justify-content: space-between;
+        justify-content: space-between; /* Spread evenly across two columns */
         width: 100%;
     }
 
     .upload-section > div {
-        flex: 0 0 calc(50% - 10px);
+        flex: 0 0 calc(50% - 10px); /* Two columns with gap accounted for */
     }
 
     @media (max-width: 768px) {
         .upload-section > div {
-            flex: 0 0 100%;
+            flex: 0 0 100%; /* Stack on smaller screens */
         }
     }
     .upload-box {
@@ -213,6 +207,7 @@
         border: 1px solid red !important;
     }
 
+
     input[type="file"].shake {
         box-shadow: 0 0 0 2px #f87171;
     }
@@ -226,6 +221,8 @@
             width: 100%;
         }
     }
+
+
 
     @media (max-width: 480px) {
         .step-indicator {
@@ -243,39 +240,10 @@
         }
     }
 
-    /* Fix for menu z-index */
-    .navbar {
-        position: relative;
-        z-index: 1000;
-    }
-
-    /* Job selection styles */
-    .job-selection-row {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .job-selection-row select {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .add-job-btn {
-        background: #2D78C9;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
 </style>
 
     @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; margin: 0; border-radius: 0;">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -344,37 +312,37 @@
                                 </p>
                                 <p>
                                     <input type="text" name="id_number" id="id_number" placeholder="ID Number" required>
-                                    <input type="text" name="passport_number" id="passport_number" placeholder="Passport Number(optional)">
-                                </p>
-                                <div id="passport_expiry_wrapper" style="display: none; width: 100%; margin-top: 20px;">
+
+                                    <input type="text" name="passport_number" id="passport_number" placeholder="Passport Number(optional)" >
+                                <div id="passport_expiry_wrapper"
+                                     style="display: none; width: 100%; margin-top: 20px; position: relative; z-index: 10;">
+
                                     <label for="passport_expiry" style="color: #2d2c2c; float: left; margin-bottom: 5px; display: block;">
                                         Passport Expiry Date
                                     </label>
-                                    <input type="date" class="form-control" id="passport_expiry" name="passport_expiry" placeholder="Passport Expiry Date" style="width: 100%; height: 50px; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
+
+                                    <input type="date"
+                                           class="form-control"
+                                           id="passport_expiry"
+                                           name="passport_expiry"
+                                           placeholder="Passport Expiry Date"
+                                           style="width: 100%; height: 50px; padding: 10px; border: 1px solid #ccc; border-radius: 10px;">
                                 </div>
+
+                                </p>
                                 <button type="button" onclick="nextStep(2)">Next</button>
                             </div>
-
+                            <!-- Docs Upload -->
                             <div class="form-step" data-step="2">
                                 <h3 style="color: black;">Upload Documents</h3>
                                 <div class="upload-section">
-                                    <div class="upload-box full-width">
-                                        <div class="upload-content">
-                                            <i class="fa fa-id-card"></i>
-                                            <p>Passport Photo</p>
-                                            <input type="file" name="passport_photo" accept=".pdf,.doc,.docx" id="passportPhotoFile">
-                                            <label for="passportPhotoFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="passportPhotoInfo"></div>
-                                        </div>
-                                    </div>
-
                                     <div>
                                         <h4 style="color: black;">Upload ID Front</h4>
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
                                                 <p>Upload ID Front</p>
-                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile">
+                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile" >
                                                 <label for="idCardFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardInfo"></div>
                                             </div>
@@ -396,16 +364,17 @@
 
                                     <div>
                                         <h4 style="color: black;">Upload Passport</h4>
-                                        <div class="upload-box">
+                                        <div class="upload-box ">
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
                                                 <p>Upload Passport</p>
-                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile">
+                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile" >
                                                 <label for="passportFile" class="upload-btn">Choose File(optional)</label>
                                                 <div class="file-info" id="passportInfo"></div>
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div>
                                         <h4 style="color: black;">Upload Good Conduct Certificate</h4>
@@ -413,12 +382,14 @@
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
                                                 <p>Good Conduct Certificate</p>
-                                                <input type="file" name="good_conduct" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="goodConductFile">
+                                                <input type="file" name="good_conduct" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="goodConductFile" >
                                                 <label for="goodConductFile" class="upload-btn">Choose File(optional)</label>
                                                 <div class="file-info" id="goodConductInfo"></div>
                                             </div>
-                                        </div>
                                     </div>
+                                    </div>
+
+
                                 </div>
 
                                 <p>
@@ -426,42 +397,39 @@
                                     <button type="button" onclick="nextStep(3)">Next</button>
                                 </p>
                             </div>
-
                             <div class="form-step" data-step="3">
                                 <h3 style="color: black;">Job Selection</h3>
                                 <div class="upload-section">
-                                    <div class="upload-box full-width">
-                                        <div class="upload-content">
-                                            <i class="fa fa-file-text"></i>
-                                            <p>Upload CV</p>
-                                            <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile">
-                                            <label for="cvFile" class="upload-btn">Choose File</label>
-                                            <div class="file-info" id="cvInfo"></div>
+                                        <div class="upload-box full-width">
+                                            <div class="upload-content">
+                                                <i class="fa fa-file-text"></i>
+                                                <p>Upload CV</p>
+                                                <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile" >
+                                                <label for="cvFile" class="upload-btn">Choose File</label>
+                                                <div class="file-info" id="cvInfo"></div>
+                                            </div>
                                         </div>
+
+                                </div>
+                                <div id="jobSelectionsContainer">
+                                    <div class="job-selection-row">
+                                        <select name="job_category[]" class="form-control job-category-select">
+                                            <option value="">Select Job Category</option>
+                                        </select>
+
+                                        <select name="job_title[]" class="form-control job-title-select">
+                                            <option value="">Select Job Title</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="job-selection-container">
-                                    <h4 style="margin-bottom: 15px; color: #333;">Select Your Job Preferences</h4>
-                                    <div id="jobSelections">
-                                        <div class="job-selection-row">
-                                            <select name="job_category[]" class="job-category-select">
-                                                <option value="">Select Job Category</option>
-                                            </select>
-                                            <select name="job_title[]" class="job-title-select">
-                                                <option value="">Select Job Title</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="button" onclick="addJobSelection()" class="add-job-btn">
-                                        <i class="fa fa-plus"></i> Add Another Job Preference
-                                    </button>
-                                </div>
+
+                                <button type="button" onclick="addJobSelection()" style="margin-top: 10px;">+ Add Another</button>
+
                                 <p>
                                     <button type="button" onclick="prevStep(2)">Previous</button>
                                     <button type="button" onclick="nextStep(4)">Next</button>
                                 </p>
                             </div>
-
                             <div class="form-step" data-step="4">
                                 <div style="background: #F9FAFB; color: black; padding: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
                                     <div id="form-summary"></div>
@@ -477,50 +445,48 @@
                 </div>
             </div>
         </div>
+
     </div>
-
     <script>
-    let currentStep = 1;
-    let jobCategoriesCache = [];
+        let currentStep = 1;
 
-    // Basic step navigation functions
-    function scrollToStep(stepNumber) {
-        const step = document.querySelector(`.step-indicator[data-step="${stepNumber}"]`);
-        if (step) {
-            step.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        }
-    }
-
-    function updateProgressLine(step) {
-        const progressLine = document.getElementById('progress-line');
-        const widthPercentage = ((step - 1) / 3) * 100;
-        progressLine.style.width = `${widthPercentage}%`;
-        progressLine.classList.add('active');
-    }
-
-    function updateStepIndicators(step) {
-        document.querySelectorAll('.step-indicator').forEach(indicator => {
-            indicator.classList.remove('active');
-            indicator.style.outlineColor = '#CCCCCC';
-            if (parseInt(indicator.dataset.step) <= step) {
-                indicator.classList.add('active');
-                indicator.style.outlineColor = '#2D78C9';
+        function scrollToStep(stepNumber) {
+            const step = document.querySelector(`.step-indicator[data-step="${stepNumber}"]`);
+            if (step) {
+                step.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
-        });
-    }
+        }
 
-    function showStep(step) {
-        document.querySelectorAll('.form-step').forEach(stepElement => {
-            stepElement.classList.remove('active');
-        });
-        document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
-        updateStepIndicators(step);
-        updateProgressLine(step);
-        scrollToStep(step);
-        currentStep = step;
-    }
+        function updateProgressLine(step) {
+            const progressLine = document.getElementById('progress-line');
+            const widthPercentage = ((step - 1) / 3) * 100;
+            progressLine.style.width = `${widthPercentage}%`;
+            progressLine.classList.add('active');
+        }
 
-    function nextStep(step) {
+        function updateStepIndicators(step) {
+            document.querySelectorAll('.step-indicator').forEach(indicator => {
+                indicator.classList.remove('active');
+                indicator.style.outlineColor = '#CCCCCC';
+                if (parseInt(indicator.dataset.step) <= step) {
+                    indicator.classList.add('active');
+                    indicator.style.outlineColor = '#2D78C9';
+                }
+            });
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(stepElement => {
+                stepElement.classList.remove('active');
+            });
+            document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+            updateStepIndicators(step);
+            updateProgressLine(step);
+            scrollToStep(step);
+            currentStep = step;
+        }
+
+        function nextStep(step) {
         const currentInputs = document.querySelectorAll(`.form-step[data-step="${currentStep}"] input[required], .form-step[data-step="${currentStep}"] select[required]`);
         let valid = true;
 
@@ -533,11 +499,29 @@
             }
         });
 
+        // Remove shake class after animation ends so it can re-trigger next time
         setTimeout(() => {
             currentInputs.forEach(input => input.classList.remove('shake'));
         }, 500);
 
         if (valid) {
+            // Check passport expiry is at least 6 months away if a passport is entered
+            // const passportNumber = document.getElementById('passport_number').value.trim();
+            // const passportExpiryInput = document.getElementById('passport_expiry');
+            //
+            // if (passportNumber !== '') {
+            //     const expiryDate = new Date(passportExpiryInput.value);
+            //     const today = new Date();
+            //     const sixMonthsFromNow = new Date();
+            //     sixMonthsFromNow.setMonth(today.getMonth() + 6);
+            //
+            //     if (expiryDate < sixMonthsFromNow) {
+            //         passportExpiryInput.classList.add('shake');
+            //         document.getElementById('form-error-message').innerText = 'Passport expiry date must be at least 6 months from today.';
+            //         document.getElementById('form-error-message').style.display = 'block';
+            //         return; // stop the step change
+            //     }
+            // }
             document.getElementById('form-error-message').style.display = 'none';
             if (step === 4) {
                 displaySummary();
@@ -549,6 +533,7 @@
         }
     }
 
+
     function prevStep(step) {
         showStep(step);
     }
@@ -558,7 +543,8 @@
         const formData = new FormData(form);
 
         const personalFields = ['first_name', 'surname', 'email', 'phone_number', 'passport_number', 'id_number', 'passport_expiry'];
-        const documentFields = ['client_id_front', 'client_id_back', 'passport_copy', 'passport_photo' , 'good_conduct', 'cv'];
+        const documentFields = ['client_id_front', 'client_id_back', 'passport_copy', 'good_conduct', 'cv'];
+        const jobFields = ['job_category', 'job_title'];
 
         const fieldLabels = {
             first_name: "First Name",
@@ -571,27 +557,40 @@
             client_id_front: "ID Front",
             client_id_back: "ID Back",
             passport_copy: "Passport Copy",
-            passport_photo: "Passport Photo", // <--- Add this
             good_conduct: "Good Conduct",
             cv: "Curriculum Vitae (CV)",
             job_category: "Job Category",
             job_title: "Job Title",
         };
 
+        const seen = new Set();
         const summary = {
             personal: [],
             documents: [],
-            jobs: []
+            job: [],
         };
 
-        // Process personal and document fields
         for (let [key, value] of formData.entries()) {
-            if (key === '_token') continue;
+            if (key === '_token') continue; // skip token
+
+            if (seen.has(key)) continue;
+            seen.add(key);
 
             let label = fieldLabels[key] || key;
             let displayValue = value;
 
-            if (value instanceof File) {
+            // Replace job_category and job_title IDs with their text
+            if (key === 'job_category') {
+                const selectedOption = document.querySelector(`#jobCategorySelect option[value="${value}"]`);
+                if (selectedOption) {
+                    displayValue = selectedOption.textContent;
+                }
+            } else if (key === 'job_title') {
+                const selectedOption = document.querySelector(`#jobTitleSelect option[value="${value}"]`);
+                if (selectedOption) {
+                    displayValue = selectedOption.textContent;
+                }
+            } else if (value instanceof File) {
                 displayValue = value.name || 'Not uploaded';
             }
 
@@ -599,211 +598,191 @@
                 summary.personal.push({ label, displayValue });
             } else if (documentFields.includes(key)) {
                 summary.documents.push({ label, displayValue });
+            } else if (jobFields.includes(key)) {
+                summary.job.push({ label, displayValue });
             }
         }
-
-        // Process job selections
-        const jobCategories = formData.getAll('job_category[]');
-        const jobTitles = formData.getAll('job_title[]');
-        
-        for (let i = 0; i < jobCategories.length; i++) {
-            if (jobCategories[i] && jobTitles[i]) {
-                const categorySelect = document.querySelectorAll('.job-category-select')[i];
-                const titleSelect = document.querySelectorAll('.job-title-select')[i];
-                
-                const categoryText = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : jobCategories[i];
-                const titleText = titleSelect ? titleSelect.options[titleSelect.selectedIndex].text : jobTitles[i];
-                
-                summary.jobs.push({
-                    number: i + 1,
-                    category: categoryText,
-                    title: titleText
-                });
-            }
-        }
-
-        // Generate HTML for jobs table
-        let jobsTableHtml = `
-            <div style="width: 100%;">
-                <table class="summary-table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
-                    <thead>
-                        <tr style="background-color: #f3f4f6; text-align: left;">
-                            <th style="padding: 10px; border-bottom: 1px solid #ccc;">Job Category</th>
-                            <th style="padding: 10px; border-bottom: 1px solid #ccc;">Job Title</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${summary.jobs.map(job => `
-                            <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #eee;">${job.category}</td>
-                                <td style="padding: 10px; border-bottom: 1px solid #eee;">${job.title}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
-
 
         let html = `
-            <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
+    <h3 style="font-size: 20px; margin-bottom: 15px; color: #2D78C9;">Application Summary</h3>
 
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
-                <div  class="summary-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                    ${summary.personal.map(item => `
-                        <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                            <strong>${item.label}:</strong> ${item.displayValue}
-                        </div>`).join('')}
-                </div>
-            </div>
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Personal Details</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.personal.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
 
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Uploaded Documents</h4>
-                <div class="summary-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                    ${summary.documents.map(item => `
-                        <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                            <strong>${item.label}:</strong> ${item.displayValue}
-                        </div>`).join('')}
-                </div>
-            </div>
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Uploaded Documents</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.documents.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
 
-            <div style="margin-bottom: 20px;">
-                <h4 style="color: #1E3A8A; margin-bottom: 10px;">Job Details</h4>
-                ${jobsTableHtml}
-            </div>
-        `;
+    <div style="margin-bottom: 20px;">
+        <h4 style="color: #1E3A8A; margin-bottom: 10px;">Job Details</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+            ${summary.job.map(item => `
+                <div style="background: #fff; padding: 10px 16px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                    <strong>${item.label}:</strong> ${item.displayValue}
+                </div>`).join('')}
+        </div>
+    </div>
+`;
+
 
         document.getElementById('form-summary').innerHTML = html;
+
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize passport expiry field
-        const passportInput = document.getElementById('passport_number');
-        const expiryWrapper = document.getElementById('passport_expiry_wrapper');
 
-        passportInput.addEventListener('input', function() {
-            expiryWrapper.style.display = this.value.trim() ? 'block' : 'none';
-        });
 
-        // Initialize job categories
-        fetch('/api/v1/job-categories')
-            .then(response => response.json())
-            .then(data => {
-                jobCategoriesCache = data.data || data;
-                
-                // Initialize ALL existing job category selects (including the first one)
-                document.querySelectorAll('.job-category-select').forEach(select => {
-                    // Clear existing options
-                    select.innerHTML = '<option value="">Select Job Category</option>';
-                    
-                    // Add new options
+
+
+            // Optional: keep summary display before submission
+    document.getElementById('application-form').addEventListener('submit', function(e) {
+        displaySummary(); // Optional
+        // Do NOT preventDefault — allow Laravel to handle it
+    });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const categorySelect = document.getElementById('jobCategorySelect');
+            const titleSelect = document.getElementById('jobTitleSelect');
+            const passportInput = document.getElementById('passport_number');
+            const expiryWrapper = document.getElementById('passport_expiry_wrapper');
+
+            passportInput.addEventListener('input', function () {
+                if (passportInput.value.trim() !== '') {
+                    expiryWrapper.style.display = 'block';
+                } else {
+                    expiryWrapper.style.display = 'none';
+                }
+            });
+            // Fetch job categories
+            fetch('/api/v1/job-categories')
+                .then(response => response.json())
+                .then(response => {
+                    jobCategoriesCache = response.data || response;
+
+                    const initialCategorySelect = document.querySelector('.job-category-select');
+                    const initialTitleSelect = document.querySelector('.job-title-select');
+
                     jobCategoriesCache.forEach(category => {
-                        if(category.status === 'available'){
-                            select.add(new Option(category.name, category.id));
-                        }   
+                        const option = document.createElement('option');
+                        option.value = category.id;
+                        option.textContent = category.name;
+                        initialCategorySelect.appendChild(option);
                     });
-                    
-                    // Add change handler to load job titles
-                    select.addEventListener('change', function() {
+
+                    initialCategorySelect.addEventListener('change', function () {
                         const categoryId = this.value;
-                        const titleSelect = this.closest('.job-selection-row').querySelector('.job-title-select');
-                        
-                        titleSelect.innerHTML = '<option value="">Loading...</option>';
+                        initialTitleSelect.innerHTML = '<option value="">Loading...</option>';
 
                         if (!categoryId) {
-                            titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+                            initialTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
                             return;
                         }
 
                         fetch(`/api/v1/careers/by-category/${categoryId}`)
                             .then(response => response.json())
                             .then(data => {
-                                titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+                                initialTitleSelect.innerHTML = '<option value="">Select Job Title</option>';
                                 data.forEach(job => {
-                                    titleSelect.add(new Option(job.name, job.id));
+                                    const option = document.createElement('option');
+                                    option.value = job.id;
+                                    option.textContent = job.name;
+                                    initialTitleSelect.appendChild(option);
                                 });
                             })
                             .catch(error => {
-                                console.error('Error:', error);
-                                titleSelect.innerHTML = '<option value="">Error loading</option>';
+                                console.error('Error fetching job titles:', error);
+                                initialTitleSelect.innerHTML = '<option value="">Failed to load titles</option>';
                             });
                     });
-                });
-            });
-
-        // Make addJobSelection available globally
-        window.addJobSelection = function() {
-            const container = document.getElementById('jobSelections');
+                });     
             
-            const row = document.createElement('div');
-            row.className = 'job-selection-row';
-            row.style.display = 'flex';
-            row.style.gap = '10px';
-            row.style.marginTop = '10px';
-
-            const categorySelect = document.createElement('select');
-            categorySelect.name = 'job_category[]';
-            categorySelect.className = 'job-category-select';
-            categorySelect.style.flex = '1';
-            categorySelect.innerHTML = '<option value="">Select Job Category</option>';
-
-            const titleSelect = document.createElement('select');
-            titleSelect.name = 'job_title[]';
-            titleSelect.className = 'job-title-select';
-            titleSelect.style.flex = '1';
-            titleSelect.innerHTML = '<option value="">Select Job Title</option>';
-
-            row.appendChild(categorySelect);
-            row.appendChild(titleSelect);
-            container.appendChild(row);
-
-            // Populate categories for the new select
-            jobCategoriesCache.forEach(category => {
-                if(category.status === 'available'){
-                    categorySelect.add(new Option(category.name, category.id));
-                }    
-            });
-
-            // Add change handler for the new select
-            categorySelect.addEventListener('change', function() {
-                const categoryId = this.value;
-                titleSelect.innerHTML = '<option value="">Loading...</option>';
-
-                if (!categoryId) {
-                    titleSelect.innerHTML = '<option value="">Select Job Title</option>';
-                    return;
-                }
-
-                fetch(`/api/v1/careers/by-category/${categoryId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        titleSelect.innerHTML = '<option value="">Select Job Title</option>';
-                        data.forEach(job => {
-                            titleSelect.add(new Option(job.name, job.id));
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        titleSelect.innerHTML = '<option value="">Error loading</option>';
-                    });
-            });
-        };
-
-        // Auto-close alerts
-        const alerts = document.querySelectorAll('.alert');
+        });
+document.addEventListener('DOMContentLoaded', function () {
+    const alerts = document.querySelectorAll('[style*="padding: 15px 20px"]');
+    setTimeout(() => {
         alerts.forEach(alert => {
-            setTimeout(() => {
-                alert.style.transition = 'opacity 0.5s ease';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
-            }, 4000);
+            alert.style.transition = 'opacity 0.5s ease';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
         });
+    }, 4000);
 
-        // Form submission
-        document.getElementById('application-form').addEventListener('submit', function(e) {
-            displaySummary();
-        });
+
+    let jobCategoriesCache = [];
+
+// Add a new row of job category/title selectors
+function addJobSelection() {
+    const container = document.getElementById('jobSelectionsContainer');
+
+    const row = document.createElement('div');
+    row.className = 'job-selection-row';
+    row.style.marginTop = '10px';
+
+    const categorySelect = document.createElement('select');
+    categorySelect.name = 'job_category[]';
+    categorySelect.className = 'form-control job-category-select';
+    categorySelect.innerHTML = '<option value="">Select Job Category</option>';
+
+    const titleSelect = document.createElement('select');
+    titleSelect.name = 'job_title[]';
+    titleSelect.className = 'form-control job-title-select';
+    titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+
+    // Append both selects to the row
+    row.appendChild(categorySelect);
+    row.appendChild(titleSelect);
+    container.appendChild(row);
+
+    // Populate category options
+    jobCategoriesCache.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
     });
+
+    // Add change listener for job titles
+    categorySelect.addEventListener('change', function () {
+        const categoryId = this.value;
+        titleSelect.innerHTML = '<option value="">Loading...</option>';
+
+        if (!categoryId) {
+            titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+            return;
+        }
+
+        fetch(`/api/v1/careers/by-category/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                titleSelect.innerHTML = '<option value="">Select Job Title</option>';
+                data.forEach(job => {
+                    const option = document.createElement('option');
+                    option.value = job.id;
+                    option.textContent = job.name;
+                    titleSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching job titles:', error);
+                titleSelect.innerHTML = '<option value="">Failed to load titles</option>';
+            });
+    });
+}
+
+});
+
     </script>
 @endsection
