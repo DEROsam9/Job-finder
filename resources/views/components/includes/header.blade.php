@@ -18,9 +18,10 @@
                 <ul class="menu">
                     <li class="active"><a href="{{ route('landing') }}#home">Home</a></li>
                     <li><a href="{{ route('landing') }}#about-us">About Us</a></li>
-                    <li><a href="{{ route('landing') }}#services">Services</a></li>
                     <li><a href="{{ route('landing') }}#testimonials">Testimonials</a></li>
                     <li><a href="{{ route('landing') }}#partners">Partners</a></li>
+                    <li><a href="/service">Services</a></li>
+                    
                     <div class="rightmenu">
                         <li class="apply"><a href="{{ route('application') }}">Apply Now</a></li>
                         <li class="track"><a href="{{ route('track.application') }}">Track Application</a></li>

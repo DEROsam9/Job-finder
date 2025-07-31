@@ -2,10 +2,10 @@
     box-sizing: border-box;
 }
 
-.montserrat-<uniquifier> {
+.montserrat-uniquifier {
                  font-family: "Montserrat", sans-serif;
                  font-optical-sizing: auto;
-                 font-weight: <weight>;
+                 font-weight: weight;
                  font-style: normal;
              }
 html{overflow-x: hidden;}
@@ -273,7 +273,7 @@ li.apply, li.track{
         width: 80%;
         font-size: 16px;
     }
-    .pg-title h1{
+    .pg-title h2{
         font-size: 2.5em;
     }
     .partners-pics .col-md-3{
@@ -619,9 +619,9 @@ li.apply a {
     margin-right: auto;
     text-align: center;
 }
-.pg-title h1{
+.pg-title h2{
     font-family: "Montserrat", sans-serif !important;
-    font-weight: 800;
+    font-weight: 550;
     font-size: 3em;
     color: #000;
     text-align: center;
