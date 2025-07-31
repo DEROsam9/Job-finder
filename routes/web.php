@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ClientController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\TrackApplicationController;
 
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('landing');
@@ -19,3 +20,8 @@ Route::get('service', [HomeController::class, 'service'])->name('service');
 
 Route::get('/track-application', [HomeController::class, 'trackApplication'])->name('track.application');
 
+Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('track.search');
+
+Route::get('/track-app', function () {
+    return view('components.pages.track-application');
+})->name('track.form');

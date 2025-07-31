@@ -1,0 +1,9 @@
+[33mad25eb3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/home-layout-update[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{0}: pull origin master: Fast-forward
+[33m15b784a[m[33m ([m[1;31morigin/feature/home-layout-update[m[33m)[m HEAD@{1}: commit: Addded in the style and removed the search input from home
+[33meb82e9a[m HEAD@{2}: commit: Removed Padding from home and application
+[33m1a54253[m HEAD@{3}: pull origin master: Fast-forward
+[33m83f3cdb[m HEAD@{4}: cherry-pick: Styled Mobile view for the apply button
+[33m3830e4c[m HEAD@{5}: checkout: moving from master to feature/home-layout-update
+[33m87b128a[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{6}: commit: Styled Mobile view for the apply button
+[33mf34acb4[m HEAD@{7}: checkout: moving from main to master
+[33mc469396[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{8}: clone: from https://gitlab.com/kibetbrian/skyworld-career.git

@@ -107,13 +107,7 @@ body {
 .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before, .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
     top: 0;
 }
-.header .menu-icon {
-    cursor: pointer;
-    float: right;
-    padding: 28px 0px 28px 20px;
-    position: relative;
-    user-select: none;
-}
+
 .header .menu-icon {
     display: none;
 }

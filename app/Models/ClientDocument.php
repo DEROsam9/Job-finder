@@ -14,7 +14,8 @@ class ClientDocument extends Model
         'remarks',
         'document_type',
         'passport_expiry_date',
-        'document_url'
+        'document_url',
+        'status'
     ];
 
     public function client()

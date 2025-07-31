@@ -31,14 +31,15 @@ class JobCategoryController extends Controller
     //     return response()->json($jobCategories, 200);
     // }
     public function index(Request $request): JsonResponse
-{
-    $perPage = $request->get('limit', 10);
-    $page = $request->get('page', 1);
+    {
+        $perPage = $request->get('limit', 10);
+        $page = $request->get('page', 1);
 
-    $jobCategories = JobCategory::paginate($perPage, ['*'], 'page', $page);
+        $jobCategories = JobCategory::where('status', 'available')
+                                ->paginate($perPage, ['*'], 'page', $page);
 
-    return response()->json($jobCategories, 200);
-}
+        return response()->json($jobCategories, 200);
+    }
 
 
     /**
