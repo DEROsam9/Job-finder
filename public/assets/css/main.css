@@ -10,13 +10,32 @@
              }
 html{overflow-x: hidden;}
 
-body {
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
     background: #f6f6f6;
     font-size: 14px;
-    margin-top: 0;
-    padding-top: 0;
     font-family: "Montserrat", sans-serif !important;
+}
+
+.application-pg {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin-top: 9em;
+}
+
+.layout-main {
+    flex: 1;
+}
+
+
+.layout-main {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .form-section p textarea{
     background: #ffffff;
@@ -186,7 +205,7 @@ li.apply, li.track{
     .track{
         border-radius: 10px;
     }
-    
+
     .apply-now-mobile {
         display: block;
         float: right;
@@ -454,13 +473,12 @@ li.apply, li.track{
     float: left;
 }
 
-.footer{
+.footer {
     width: 100%;
-    margin-top: 8%;
     background: #ffffff;
-    float: left;
     padding-top: 20px;
     padding-bottom: 20px;
+    text-align: center;
 }
 
 .header {
@@ -474,9 +492,7 @@ li.apply, li.track{
     z-index: 999;
     padding-top: 15px;
 }
-.application-pg {
-    margin-top: 9em;
-}
+
 .header .menu li{
     float: left;
     list-style: none;
@@ -2480,12 +2496,6 @@ html, body, .layout-wrapper {
     height: 100%;
     margin: 0;
     padding: 0;
-}
-
-.layout-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .layout-wrapper {

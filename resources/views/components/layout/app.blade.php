@@ -2,13 +2,12 @@
 <html class="no-js" lang="en">
 @include('components.includes.head')
 
-<body class="layout-body">
+<body>
     @include('components.includes.header')
     <div class="application-pg">
         <main class="layout-main">
             @yield('content')
         </main>
-
         @include('components.includes.footer')
     </div>
 </body>
