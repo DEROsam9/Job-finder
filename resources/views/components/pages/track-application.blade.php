@@ -32,7 +32,6 @@
         border: 1px solid #ced4da;
         border-radius: 8px;
         font-size: 14px; /* Increased font size */
-        min-height: 55px; /* Increased height */
         box-sizing: border-box;
         transition: all 0.3s ease;
         background-color: #fff;
@@ -59,7 +58,6 @@
         transition: all 0.3s ease;
         background-color: #2D78C9;
         border: none;
-        min-height: 55px; /* Match input height */
     }
 
     .form-track .btn:hover {
@@ -147,7 +145,6 @@
         flex: 1 1 auto;
         font-size: 14px;
         padding: 10px 14px;
-        min-height: 40px;
     }
     .form-track {
         padding: 1.2rem;
