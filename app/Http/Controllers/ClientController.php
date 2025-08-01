@@ -59,7 +59,7 @@ class ClientController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name'       => 'required|string|max:255',
             'surname'          => 'required|string|max:255',
-            'email'            => 'required|email|unique:clients,email',
+            'email'            => 'required|email',
             'phone_number'     => 'required|string|max:20',
             'passport_number'  => 'nullable|string|max:50',
             'passport_expiry_date' => 'nullable|date|after:today',
@@ -93,44 +93,48 @@ class ClientController extends Controller
             DB::beginTransaction();
             $input = $request->all();
 
-            $client = $this->clientRepository->create([
-                'surname' => $input['surname'],
-                'first_name' => $input['first_name'],
-                'email' => $input['email'],
-                'phone_number' => $input['phone_number'],
-                'passport_number' => $input['passport_number'],
-                // 'passport_number' => $input['passport_number'] ?? '',
-                'id_number' => $input['id_number'],
-            ]);
+            $client = $this->clientRepository->where('email',$input['email'] )
+                ->orWhere('phone_number', $input['phone_number'])
+                ->first();
 
-            $docFields = [
-                'cv'              => null,
-                'passport_copy'   => null,
-                'passport_photo'   => null,
-                'client_id_front' => null,
-                'client_id_back'  => null,
-                'good_conduct'=> null,
-
-            ];
-
-
-            foreach ($docFields as $field => $expiryField) {
-                $uploadedFile = $request->file($field);
-
-                if (!$uploadedFile || !$uploadedFile->isValid()) {
-                    continue;
-                }
-
-                $document_url = uploadToOBS($uploadedFile);
-                $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
-
-                ClientDocument::create([
-                    'client_id'            => $client->id,
-                    'remarks'              => $request->input('remarks'),
-                    'document_type'        => $field,
-                    'passport_expiry_date' => $passport_expiry_date,
-                    'document_url'         => $document_url,
+            if (!$client) {
+                $client = $this->clientRepository->create([
+                    'surname' => $input['surname'],
+                    'first_name' => $input['first_name'],
+                    'email' => $input['email'],
+                    'phone_number' => $input['phone_number'],
+                    'passport_number' => $input['passport_number'],
+                    // 'passport_number' => $input['passport_number'] ?? '',
+                    'id_number' => $input['id_number'],
                 ]);
+
+                $docFields = [
+                    'cv'              => null,
+                    'passport_copy'   => null,
+                    'passport_photo'   => null,
+                    'client_id_front' => null,
+                    'client_id_back'  => null,
+                    'good_conduct'=> null,
+                ];
+
+                foreach ($docFields as $field => $expiryField) {
+                    $uploadedFile = $request->file($field);
+
+                    if (!$uploadedFile || !$uploadedFile->isValid()) {
+                        continue;
+                    }
+
+                    $document_url = uploadToOBS($uploadedFile);
+                    $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
+
+                    ClientDocument::create([
+                        'client_id'            => $client->id,
+                        'remarks'              => $request->input('remarks'),
+                        'document_type'        => $field,
+                        'passport_expiry_date' => $passport_expiry_date,
+                        'document_url'         => $document_url,
+                    ]);
+                }
             }
 
             foreach ($request->job_title as $jobId) {
