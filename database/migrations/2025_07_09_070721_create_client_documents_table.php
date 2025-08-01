@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->string('remarks')->nullable();
-            $table->enum('document_type', ['client_id_front', 'client_id_back', 'passport_copy', 'cv', 'good_conduct','passport_photo']);
+            $table->enum('document_type', ['client_id_front', 'client_id_back', 'passport_copy', 'cv', 'good_conduct']);
             $table->date('passport_expiry_date')->nullable();
             $table->string('document_url')->nullable();
             $table->string('status')->default('Pending');

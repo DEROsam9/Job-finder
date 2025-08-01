@@ -483,7 +483,7 @@
                                         <div class="upload-content">
                                             <i class="fa fa-file-text"></i>
                                             <p>Upload CV</p>
-                                            <input type="file" name="cv" accept=".pdf,.doc,.docx" id="cvFile">
+                                            <input type="file" name="cv" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="cvFile">
                                             <label for="cvFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="cvInfo"></div>
                                         </div>

@@ -89,7 +89,7 @@ public function index(Request $request)
         'id_number'        => 'required|string|max:50',
 
         // Files
-        'cv'               => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',

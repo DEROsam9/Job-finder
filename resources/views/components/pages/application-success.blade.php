@@ -12,10 +12,10 @@
         <div style="width: 426px; display: inline-flex; gap: 24px">
           <div style="flex-direction: column; display: inline-flex; align-items: center; gap: 24px">
             <!-- Success Icon Placeholder -->
-            <div style="width: 120px; height: 120px; position: relative">
-              <div style="background: #8DC63F; width: 119.90px; height: 114.89px; position: absolute; top: 2.51px"></div>
-              <div style="background: white; width: 60.21px; height: 44.74px; position: absolute; top: 41.56px; left: 32.26px"></div>
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: #8DC63F; display: flex; align-items: center; justify-content: center;">
+              <span style="color: white; font-size: 64px;">&#10003;</span>
             </div>
+
 
             <!-- Confirmation Message -->
             <div style="font-size: 24px; font-weight: 700">Application Sent Successfully</div>
