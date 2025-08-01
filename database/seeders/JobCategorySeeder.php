@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Career;
 use App\Models\JobCategory;
+use App\Models\Status;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -80,6 +81,7 @@ class JobCategorySeeder extends Seeder
                 [
                     'name' => $categoryName,
                     'description' => "$categoryName related roles.",
+                    'status_id' => Status::where('code','ACTIVE')->first()->id,
                     'slug' => Str::slug($categoryName),
                 ]);
 
@@ -92,6 +94,7 @@ class JobCategorySeeder extends Seeder
                         'name' => $title,
                         'slug' => Str::slug($title),
                         'description' => "$title description",
+                        'status_id' => Status::where('code','ACTIVE')->first()->id,
                         'job_category_id' => $jobCategory->id,
                         'slots' => 0,
                     ]);

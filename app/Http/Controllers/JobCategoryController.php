@@ -6,6 +6,8 @@ use App\Http\Requests\StoreJobCategoryRequest;
 use App\Http\Requests\UpdateJobCategoryRequest;
 use App\Models\JobCategory;
 use App\Models\Career;
+use App\Models\Status;
+use App\Repositories\JobCategoryRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,28 +17,23 @@ use App\Repositories\BaseRepository;
 
 class JobCategoryController extends Controller
 {
+    private JobCategoryRepository $jobCategoryRepository;
 
-    private BaseRepository $baseRepository;
-
-    public function __construct(BaseRepository $baseRepo)
+    public function __construct(
+        JobCategoryRepository $jobCategoryRepo
+    )
     {
-        $this->baseRepository = $baseRepo;
+        $this->jobCategoryRepository = $jobCategoryRepo;
     }
     /**
      * List all job categories.
      */
-    // public function index(): JsonResponse
-    // {
-    //     $jobCategories = JobCategory::all();
-    //     return response()->json($jobCategories, 200);
-    // }
+
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->get('limit', 10);
-        $page = $request->get('page', 1);
-
-        $jobCategories = JobCategory::where('status', 'available')
-                                ->paginate($perPage, ['*'], 'page', $page);
+        $jobCategories = $this->jobCategoryRepository
+            ->where('status_id', Status::where('code','ACTIVE')->first()->id)
+            ->paginate($request->get('limit', 10));
 
         return response()->json($jobCategories, 200);
     }
@@ -45,23 +42,12 @@ class JobCategoryController extends Controller
     /**
      * Create and store a new job category.
      */
-    // public function store(StoreJobCategoryRequest $request): JsonResponse
-    // {
-    //     try {
-    //         $jobCategory = JobCategory::create($request->validated());
-    //         return response()->json($jobCategory, 201);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'error' => 'Failed to create job category',
-    //             'message' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-    public function store(StoreJobCategoryRequest $request)
+
+    public function store(StoreJobCategoryRequest $request): JsonResponse
     {
         $slug = \Illuminate\Support\Str::slug($request->name);
 
-        $jobCategory = JobCategory::create([
+        $jobCategory = $this->jobCategoryRepository->create([
             'name' => $request->name,
             'slug' => $slug,
             'description' => $request->description,
@@ -77,7 +63,12 @@ class JobCategoryController extends Controller
     public function show($id): JsonResponse
     {
         try {
-            $jobCategory = JobCategory::findOrFail($id);
+            $jobCategory = $this->jobCategoryRepository->find($id);
+
+            if (!$jobCategory) {
+                return response()->json(['error' => 'Job category not found'], 404);
+            }
+
             return response()->json($jobCategory, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Job category not found'], 404);
@@ -90,8 +81,14 @@ class JobCategoryController extends Controller
     public function update(UpdateJobCategoryRequest $request, $id): JsonResponse
     {
         try {
-            $jobCategory = JobCategory::findOrFail($id);
+            $jobCategory = $this->jobCategoryRepository->find($id);
+
+            if (!$jobCategory) {
+                return response()->json(['error' => 'Job category not found'], 404);
+            }
+
             $jobCategory->update($request->validated());
+
             return response()->json($jobCategory, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Job category not found'], 404);
@@ -109,7 +106,12 @@ class JobCategoryController extends Controller
     public function destroy($id): JsonResponse
     {
         try {
-            $jobCategory = JobCategory::findOrFail($id);
+            $jobCategory = $this->jobCategoryRepository->find($id);
+
+            if (!$jobCategory) {
+                return response()->json(['error' => 'Job category not found'], 404);
+            }
+
             $jobCategory->delete();
             return response()->json(null, 204);
         } catch (ModelNotFoundException $e) {

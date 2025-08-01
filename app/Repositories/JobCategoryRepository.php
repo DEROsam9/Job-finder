@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Career;
+use App\Models\JobCategory;
 
-class CareerRepository extends BaseRepository
+class JobCategoryRepository extends BaseRepository
 {
     /**
      * Specify Model class name
@@ -13,7 +14,7 @@ class CareerRepository extends BaseRepository
      */
     public function model()
     {
-        return Career::class;
+        return JobCategory::class;
     }
 
     /**
@@ -24,12 +25,7 @@ class CareerRepository extends BaseRepository
     public function getFieldsSearchable()
     {
         return [
-            'name',
-            'slug',
-            'description',
-            'job_category_id',
-            'slots',
-            'status_id'
+            'name', 'slug', 'description', 'status_id'
         ];
     }
 }
