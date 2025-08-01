@@ -193,25 +193,25 @@
             font-size: 12px;
             text-align: left;
         }
-        
+
         .summary-grid {
             display: block !important;
         }
-        
+
         .summary-grid > div {
             width: 100% !important;
             margin-bottom: 10px;
         }
-        
-        .form-section input, 
+
+        .form-section input,
         .form-section select {
             width: 100%;
         }
-        
+
         .job-selection-row {
             gap: 8px;
         }
-        
+
         .job-selection-row select {
             min-width: calc(50% - 15px);
         }
@@ -225,7 +225,7 @@
         .form-step[data-step="4"] button[type="submit"] {
             width: 100%;
         }
-        
+
         .step-indicator {
             width: 30px;
             height: 30px;
@@ -239,11 +239,11 @@
         .step-container div:nth-child(3) {
             font-size: 9px;
         }
-        
+
         .job-selection-row select {
             min-width: 100%;
         }
-        
+
         .job-selection-row .delete-job-btn {
             width: 100%;
             justify-content: center;
@@ -286,7 +286,7 @@
             flex: 0 0 100%;
         }
     }
-    
+
     .upload-box {
         background: #F1F5F9;
         padding: 20px;
@@ -657,15 +657,15 @@
         // Process job selections
         const jobCategories = formData.getAll('job_category[]');
         const jobTitles = formData.getAll('job_title[]');
-        
+
         for (let i = 0; i < jobCategories.length; i++) {
             if (jobCategories[i] && jobTitles[i]) {
                 const categorySelect = document.querySelectorAll('.job-category-select')[i];
                 const titleSelect = document.querySelectorAll('.job-title-select')[i];
-                
+
                 const categoryText = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : jobCategories[i];
                 const titleText = titleSelect ? titleSelect.options[titleSelect.selectedIndex].text : jobTitles[i];
-                
+
                 summary.jobs.push({
                     number: i + 1,
                     category: categoryText,
@@ -741,25 +741,26 @@
         fetch('/api/v1/job-categories')
             .then(response => response.json())
             .then(data => {
+
                 jobCategoriesCache = data.data || data;
-                
+
+                console.log(jobCategoriesCache)
+
                 // Initialize ALL existing job category selects (including the first one)
                 document.querySelectorAll('.job-category-select').forEach(select => {
                     // Clear existing options
                     select.innerHTML = '<option value="">Select Job Category</option>';
-                    
+
                     // Add new options
                     jobCategoriesCache.forEach(category => {
-                        if(category.status === 'available'){
-                            select.add(new Option(category.name, category.id));
-                        }   
+                        select.add(new Option(category.name, category.id));
                     });
-                    
+
                     // Add change handler to load job titles
                     select.addEventListener('change', function() {
                         const categoryId = this.value;
                         const titleSelect = this.closest('.job-selection-row').querySelector('.job-title-select');
-                        
+
                         titleSelect.innerHTML = '<option value="">Loading...</option>';
 
                         if (!categoryId) {
@@ -786,10 +787,10 @@
         // Make addJobSelection available globally
         window.addJobSelection = function() {
             const container = document.getElementById('jobSelections');
-            
+
             const row = document.createElement('div');
             row.className = 'job-selection-row';
-            
+
             const categorySelect = document.createElement('select');
             categorySelect.name = 'job_category[]';
             categorySelect.className = 'job-category-select';
@@ -833,9 +834,7 @@
 
             // Populate categories for the new select
             jobCategoriesCache.forEach(category => {
-                if(category.status === 'available'){
-                    categorySelect.add(new Option(category.name, category.id));
-                }    
+                categorySelect.add(new Option(category.name, category.id));
             });
 
             // Add change handler for the new select
