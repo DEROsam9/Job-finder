@@ -10,5 +10,5 @@ class JobCategory extends Model
     /** @use HasFactory<\Database\Factories\JobCategoryFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description'];
+    protected $fillable = ['name', 'slug', 'description', 'status_id'];
 }
