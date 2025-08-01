@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Repositories\ClientRepository;
 use DB;
 use App\Models\Payment;
@@ -141,6 +142,7 @@ class ClientController extends Controller
                 $application = Application::create([
                     'client_id' => $client->id,
                     'career_id' => $jobId,
+                    'status_id' => Status::where('code','DRAFT')->first()->id,
                     'remarks'   => $request->get('experience_brief'),
                 ]);
             }
