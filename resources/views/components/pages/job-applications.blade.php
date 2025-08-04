@@ -1,224 +1,158 @@
 @extends('components.layout.app')
+
 @section('content')
-<div style="width: 1280px; height: 832px; min-height: 832px; padding-bottom: 100px; position: relative; background: #F6F6F6; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: flex-start; display: inline-flex">
- 
-  <div style="align-self: stretch; flex: 1 1 0; padding-top: 32px; padding-left: 40px; padding-right: 40px; justify-content: flex-start; align-items: flex-start; gap: 32px; display: inline-flex">
-    <div style="flex: 1 1 0; align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: inline-flex">
-      <div style="color: black; font-size: 40px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Filters</div>
-      <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 20px; display: flex">
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(226, 31, 37, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Categories</div>
-          <div style="width: 24px; height: 24px; position: relative">
-            <div style="width: 12px; height: 7.40px; left: 6px; top: 8px; position: absolute; background: var(--Schemes-On-Surface, #1D1B20)"></div>
-          </div>
+<div class="container" style="padding-top: 20px;">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-md-3">
+      <!-- Filter -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Filters</h4>
         </div>
-        <div style="align-self: stretch; height: 0px; outline: 1px #CCCCCC solid; outline-offset: -0.50px"></div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(226, 31, 37, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Location </div>
-          <div style="width: 24px; height: 24px; position: relative">
-            <div style="width: 12px; height: 7.40px; left: 6px; top: 8px; position: absolute; background: var(--Schemes-On-Surface, #1D1B20)"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="width: 560px; align-self: stretch; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex">
-      <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">
-        <div style="align-self: stretch; height: 56px; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(226, 31, 37, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="color: black; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Secretary</div>
-          <div style="width: 24px; height: 24px; position: relative">
-            <div style="width: 18px; height: 18px; left: 3px; top: 3px; position: absolute; background: var(--Schemes-On-Surface, #1D1B20)"></div>
-          </div>
-        </div>
-        <div style="justify-content: flex-start; align-items: flex-start; gap: 8px; display: inline-flex">
-          <div style="color: black; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Searching For</div>
-          <div style="color: black; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Secretary</div>
-        </div>
-      </div>
-      <div style="align-self: stretch; flex: 1 1 0; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: flex">
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Project Manager</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Abu Dhabi</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Software Developer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Riyadh</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Graphic Designer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Doha</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Civil Engineer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Kuwait City</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Marketing Specialist</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Muscat</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Data Analyst</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Manama</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; justify-content: space-between; align-items: center; display: inline-flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: inline-flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Sales Executive</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Jeddah</div>
-            </div>
-          </div>
-          <div style="padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; justify-content: center; align-items: center; gap: 10px; display: flex">
-            <div style="color: #2D78C9; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">View</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #2D78C9"></div>
-            </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="categoryFilter">Categories</label>
+            <select id="categoryFilter" class="form-control">
+              <option value="">Categories</option>
+              @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @endforeach
+            </select>
           </div>
         </div>
       </div>
-    </div>
-    <div style="flex: 1 1 0; align-self: stretch; overflow: hidden; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: inline-flex">
-      <div style="color: black; font-size: 24px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Trending Jobs</div>
-      <div style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 16px; display: flex">
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px; display: flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Project Manager</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Abu Dhabi</div>
+
+      <!-- Trending Jobs -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Trending Jobs</h4>
+        </div>
+        <div class="panel-body">
+          @foreach($trendingJobs as $job)
+          <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+            <div class="media-body">
+              <strong>{{ $job->title }}</strong><br>
+              <small class="text-muted">{{ $job->jobCategory->name ?? 'N/A' }}</small>
+            </div>
+            <div class="media-right">
+              <button class="btn btn-default btn-xs apply-btn" data-job-id="{{ $job->id }}">Apply</button>
             </div>
           </div>
-          <div style="align-self: stretch; height: 35px; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; outline: 1px #2D78C9 solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-            <div style="color: #4D4D4D; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Apply</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #4D4D4D"></div>
-            </div>
+          @endforeach
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="col-md-9">
+      <h3 class="page-header">Job Listings</h3>
+
+      {{-- <!-- Search -->
+      <div class="form-group" style="margin: 20px 0;">
+        <input id="jobSearch" type="text" placeholder="Search for jobs" class="form-control">
+      </div> --}}
+
+      <!-- Job List -->
+      <div id="jobList">
+        @foreach($jobs as $job)
+        <div class="job-item media" style="border-bottom: 1px solid #eee; padding: 15px 0;"
+             data-job-id="{{ $job->id }}"
+             data-job-category="{{ $job->job_category_id }}"
+             data-job-name="{{ strtolower($job->title) }}">
+          <div class="media-body">
+            <strong>{{ $job->title }}</strong><br>
+            <small class="text-muted">{{ $job->jobCategory->name ?? 'N/A' }}</small>
+          </div>
+          <div class="media-right">
+            <button class="btn btn-link btn-xs view-details-btn" data-job-id="{{ $job->id }}">View</button>
           </div>
         </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px; display: flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Software Developer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Riyadh</div>
-            </div>
-          </div>
-          <div style="align-self: stretch; height: 35px; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; outline: 1px #2D78C9 solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-            <div style="color: #4D4D4D; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Apply</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #4D4D4D"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px; display: flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Graphic Designer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Doha</div>
-            </div>
-          </div>
-          <div style="align-self: stretch; height: 35px; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; outline: 1px #2D78C9 solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-            <div style="color: #4D4D4D; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Apply</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #4D4D4D"></div>
-            </div>
-          </div>
-        </div>
-        <div style="align-self: stretch; padding: 16px; background: white; box-shadow: 0px 0px 36px rgba(0, 122, 255, 0.08); border-radius: 8px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px; display: flex">
-          <div style="flex-direction: column; justify-content: center; align-items: flex-start; gap: 10px; display: flex">
-            <div style="text-align: center; color: #1A1A1A; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Civil Engineer</div>
-            <div style="justify-content: flex-start; align-items: center; gap: 10px; display: inline-flex">
-              <div style="width: 24px; height: 24px; background: #D9D9D9"></div>
-              <div style="width: 16px; height: 20px; background: #808080"></div>
-              <div style="text-align: center; color: #808080; font-size: 16px; font-family: Source Sans Pro; font-weight: 400; word-wrap: break-word">Kuwait City</div>
-            </div>
-          </div>
-          <div style="align-self: stretch; height: 35px; padding-left: 32px; padding-right: 32px; padding-top: 16px; padding-bottom: 16px; border-radius: 100px; outline: 1px #2D78C9 solid; outline-offset: -1px; justify-content: center; align-items: center; gap: 10px; display: inline-flex">
-            <div style="color: #4D4D4D; font-size: 16px; font-family: Source Sans Pro; font-weight: 700; word-wrap: break-word">Apply</div>
-            <div style="width: 24px; height: 24px; position: relative; transform: rotate(-180deg); transform-origin: top left">
-              <div style="width: 16px; height: 16px; left: 4px; top: 4px; position: absolute; background: #4D4D4D"></div>
-            </div>
-          </div>
-        </div>
+        @endforeach
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Job Details Modal -->
+<div id="jobDetailsModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Job Details</h4>
+      </div>
+      <div id="jobDetailsContent" class="modal-body">
+        <!-- Content gets injected here -->
       </div>
     </div>
   </div>
-
 </div>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryFilter = document.getElementById('categoryFilter');
+    const jobSearch = document.getElementById('jobSearch');
+    const jobList = document.getElementById('jobList');
+    const jobItems = Array.from(document.querySelectorAll('.job-item'));
+    const applyButtons = document.querySelectorAll('.apply-btn');
+    const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+    const jobDetailsModal = $('#jobDetailsModal');
+    const jobDetailsContent = document.getElementById('jobDetailsContent');
+    const closeModal = document.getElementById('closeModal');
+
+    function filterJobs() {
+        const selectedCategory = categoryFilter.value;
+        const searchTerm = jobSearch.value.toLowerCase();
+
+        jobItems.forEach(item => {
+            const matchesCategory = selectedCategory === '' || item.dataset.jobCategory === selectedCategory;
+            const matchesSearch = item.dataset.jobName.includes(searchTerm);
+
+            if (matchesCategory && matchesSearch) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    categoryFilter.addEventListener('change', filterJobs);
+    jobSearch.addEventListener('input', filterJobs);
+
+    applyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const jobId = this.dataset.jobId;
+            alert('Apply clicked for job ID: ' + jobId);
+        });
+    });
+
+    viewDetailsButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const jobId = this.dataset.jobId;
+            fetch(`/jobs/${jobId}/details`)
+                .then(response => response.json())
+                .then(data => {
+                    jobDetailsContent.innerHTML = `
+                        <h4>${data.title}</h4>
+                        <p><strong>Category:</strong> ${data.jobCategory?.name || 'N/A'}</p>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                        <p><strong>Available Slots:</strong> ${data.slots}</p>
+                    `;
+                    jobDetailsModal.modal('show');
+                })
+                .catch(error => {
+                    jobDetailsContent.innerHTML = '<p>Error loading job details</p>';
+                    jobDetailsModal.modal('show');
+                });
+        });
+    });
+
+    closeModal.addEventListener('click', function () {
+        jobDetailsModal.modal('hide');
+        jobDetailsContent.innerHTML = '';
+    });
+});
+</script>
 @endsection

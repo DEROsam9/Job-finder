@@ -28,3 +28,4 @@ Route::get('/track-app', function () {
 })->name('track.form');
 
 Route::get('/job-applications', [\App\Http\Controllers\ClientController::class, 'jobapplications'])->name('job.applications');
+Route::get('/jobs/{id}/details', [ClientController::class, 'jobDetails'])->name('jobs.details');

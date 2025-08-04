@@ -11,4 +11,9 @@ class JobCategory extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'status_id'];
+
+     public function careers()
+    {
+        return $this->hasMany(Career::class);
+    }
 }
