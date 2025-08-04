@@ -26,3 +26,5 @@ Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('t
 Route::get('/track-app', function () {
     return view('components.pages.track-application');
 })->name('track.form');
+
+Route::get('/job-applications', [\App\Http\Controllers\ClientController::class, 'jobapplications'])->name('job.applications');

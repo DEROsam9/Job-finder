@@ -186,7 +186,7 @@ class ClientController extends Controller
         } catch (\Exception $exception) {
             \Log::error($exception);
             DB::rollBack();
-            session()->flash('error', 'Something went wrong. Please try again later.');
+            // session()->flash('error', 'Something went wrong. Please try again later.');
             return redirect()->back();
         }
     }
@@ -251,5 +251,9 @@ class ClientController extends Controller
     public function applicationSuccess($reference)
     {
         return view('components.pages.application-success', ['reference' => $reference]);
+    }
+    public function jobapplications()
+    {
+        return view('components.pages.job-applications');
     }
 }
