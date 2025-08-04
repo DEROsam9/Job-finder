@@ -39,6 +39,10 @@ trait mpesa
      * @var \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
     private mixed $mpesa_base_url;
+    private mixed $consumer_secret;
+    private mixed $pass_key;
+    private mixed $consumer_key;
+    private mixed $short_code;
 
     public function __construct()
     {
@@ -52,13 +56,12 @@ trait mpesa
         $this->stk_push_url = "mpesa/stkpush/v1/processrequest";
         $this->stk_transaction_query = "mpesa/stkpushquery/v1/query";
 
-        // $this->skyworld_base_url = url('/');
         $this->skyworld_base_url= "https://talentbridge.co.ke";
-
         $this->short_code = config('mpesa.short_code');
         $this->consumer_secret = config('mpesa.consumer_secret');
         $this->pass_key = config('mpesa.pass_key');
         $this->consumer_key = config('mpesa.consumer_key');
+
     }
 
     /**
@@ -73,7 +76,9 @@ trait mpesa
     public function post($end_url, $requestBody, $consumer_secret, $consumer_key): mixed
     {
         try {
-            $response = $this->client->post($this->mpesa_base_url . $end_url, [
+            $client = new Client();
+            $mpesa_base_url = "https://api.safaricom.co.ke/";
+            $response = $client->post($mpesa_base_url . $end_url, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->generateToken($consumer_secret, $consumer_key),
                     'Content-Type' => 'application/json',
@@ -95,7 +100,7 @@ trait mpesa
      */
     public function getPassword($pass_key, $shortcode): string
     {
-        return base64_encode($shortcode . $pass_key . $this->timestamp);
+        return base64_encode($shortcode . $pass_key . date('YmdHis'));
     }
 
     /**
@@ -107,7 +112,12 @@ trait mpesa
     public function generateToken($consumer_secret, $consumer_key): mixed
     {
         try {
-            $response = $this->client->get($this->mpesa_base_url . $this->generate_token_url, [
+            $client = new Client();
+
+            Log::info($consumer_key);
+            Log::info($consumer_secret);
+
+            $response = $client->get('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', [
                 'headers' => [
                     'Authorization' => 'Basic ' . base64_encode($consumer_key . ':' . $consumer_secret),
                     'Content-Type' => 'application/json',
@@ -130,17 +140,17 @@ trait mpesa
     public function stkPushRequest($data): mixed
     {
         try {
-            $consumer_secret = $this->consumer_secret;
-            $consumer_key = $this->consumer_key;
-            $stk_url = $this->stk_push_url;
-            $pass_key = $this->pass_key;
-            $shortcode = $this->short_code;
-            $call_back_url = $this->skyworld_base_url . '/api/stk-push-response';
+            $consumer_secret = config('mpesa.consumer_secret');
+            $consumer_key = config('mpesa.consumer_key');
+            $stk_url =  "mpesa/stkpush/v1/processrequest";
+            $pass_key = config('mpesa.pass_key');
+            $shortcode = config('mpesa.short_code');
+            $call_back_url = 'https://talentbridge.co.ke/api/stk-push-response';
 
             $requestBody = [
                 'BusinessShortCode' => $shortcode,
                 'Password' => $this->getPassword($pass_key, $shortcode),
-                'Timestamp' => $this->timestamp,
+                'Timestamp' => date('YmdHis'),
                 'TransactionType' => "CustomerPayBillOnline",
                 'Amount' => $data['amount'],
                 'PartyA' =>  str_replace("+", "", formatPhoneNumber($data['phone_number'])),
