@@ -186,7 +186,7 @@ class ClientController extends Controller
         } catch (\Exception $exception) {
             \Log::error($exception);
             DB::rollBack();
-            session()->flash('error', 'Something went wrong. Please try again later.');
+            // session()->flash('error', 'Something went wrong. Please try again later.');
             return redirect()->back();
         }
     }
@@ -252,4 +252,38 @@ class ClientController extends Controller
     {
         return view('components.pages.application-success', ['reference' => $reference]);
     }
+    public function jobapplications()
+{
+    // dd('hello');
+    // Fetch all active job categories 
+    $categories = \App\Models\JobCategory::where('status_id', 2)  
+        ->get(['id', 'name', 'slug']);
+
+    // Fetch trending jobs 
+    $trendingJobs = \App\Models\Career::where('status_id', 2)  
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get(['id', 'name as title', 'description', 'job_category_id', 'slots', 'created_at']);
+
+    // Fetch all active careers 
+    $jobs = \App\Models\Career::where('status_id', 2) 
+        ->with('jobCategory')
+        ->orderBy('name')
+         ->paginate(10);
+;
+
+    return view('components.pages.job-applications', [
+        'categories' => $categories,
+        'trendingJobs' => $trendingJobs,
+        'jobs' => $jobs,
+    ]);
+}
+
+public function jobDetails($id)
+{
+    $job = \App\Models\Career::with('jobCategory')
+        ->findOrFail($id, ['id', 'name as title', 'description', 'job_category_id', 'slots']);
+
+    return response()->json($job);
+}
 }

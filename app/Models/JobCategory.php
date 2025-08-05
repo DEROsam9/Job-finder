@@ -17,4 +17,9 @@ class JobCategory extends Model
     {
         return $this->belongsTo(Status::class);
     }
+    
+     public function careers()
+    {
+        return $this->hasMany(Career::class);
+    }
 }

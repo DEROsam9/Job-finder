@@ -77,6 +77,10 @@
 
         .accordion-item {
             border-bottom: 1px solid #ccc;
+            
+        }
+        .accordion-item:last-child{
+          border-bottom: none;
         }
 
         .accordion button {
@@ -290,74 +294,200 @@
     <!--FAQ-->
     <div class="container">
         <div class="pg-title">
-            <h2>Frequently Asked Questions</h2>
+            <h2 class="bold text-center"> FAQs </h2>
         </div>
         <div class="accordion">
             <div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false">
-                    <span class="accordion-title">Why is the moon sometimes out during the day?</span>
+                    <span class="accordion-title">What does Talent Bridge Careers LTD do?</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                        Ut tortor pretium viverra suspendisse potenti.
-                    </p>
+                        Talent Bridge Careers LTD is a licensed recruitment agency that connects qualified candidates with job opportunities abroad. We specialize in placing individuals in industries like healthcare, education, hospitality, and skilled trades across the Middle East, Europe, and North America.
+                    </p>                
                 </div>
             </div>
             <div class="accordion-item">
                 <button id="accordion-button-2" aria-expanded="false">
-                    <span class="accordion-title">Why is the sky blue?</span>
+                    <span class="accordion-title">Who can apply for overseas jobs through your agency?</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                        Ut tortor pretium viverra suspendisse potenti.
+                        We welcome applications from qualified individuals with verifiable work experience, academic credentials, and valid identification documents. Specific qualifications depend on the job category and destination country.
                     </p>
                 </div>
             </div>
             <div class="accordion-item">
                 <button id="accordion-button-3" aria-expanded="false">
-                    <span class="accordion-title">Will we ever discover aliens?</span>
+                    <span class="accordion-title">How do I apply?</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                        Ut tortor pretium viverra suspendisse potenti.
+                    You can apply by:
+
+                    Filling out our online application form on our website or visiting our office.
+
+                    Submitting your updated CV, academic certificates, work experience documents, and a copy of your ID/passport.
+
+                    Attending scheduled interviews or training (as required).
                     </p>
                 </div>
             </div>
             <div class="accordion-item">
                 <button id="accordion-button-4" aria-expanded="false">
-                    <span class="accordion-title">How much does the Earth weigh?</span>
+                    <span class="accordion-title">What is the registration fee and why is it required?</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                        Ut tortor pretium viverra suspendisse potenti.
+                        The registration fee is a one-time, non-refundable fee that helps us:
+                        Verify and process your documents.
+                        Pre-screen and shortlist your profile for active job openings.
+                        Set up your candidate profile in our system.
+                        Provide initial consultation and recruitment guidance.
+                        This fee ensures serious applicants are considered and helps us manage quality and commitment.
                     </p>
                 </div>
             </div>
             <div class="accordion-item">
-                <button id="accordion-button-5" aria-expanded="false">
-                    <span class="accordion-title">How do airplanes stay up?</span>
+                <button id="accordion-button-2" aria-expanded="false">
+                    <span class="accordion-title">Do you charge an agency fee?</span>
                     <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                        Ut tortor pretium viverra suspendisse potenti.
+
+                        Yes, <strong>we charge an agency fee once you have secured a job offer and are ready for deployment.</strong> This covers:
+                        Job placement facilitation.
+                        Interview preparation.
+                        Visa guidance and documentation assistance.
+                        Pre-departure orientation.
+                        Coordination with the employer or overseas agency.
+                        The fee varies depending on the country, job category, and employer arrangement. It will be clearly communicated before any commitment.                    </p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-5" aria-expanded="false">
+                    <span class="accordion-title">Do you charge an agency fee?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+
+                        Yes, <strong>we charge an agency fee once you have secured a job offer and are ready for deployment.</strong> This covers:
+                        Job placement facilitation.
+                        Interview preparation.
+                        Visa guidance and documentation assistance.
+                        Pre-departure orientation.
+                        Coordination with the employer or overseas agency.
+                        The fee varies depending on the country, job category, and employer arrangement. It will be clearly communicated before any commitment.                    </p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-6" aria-expanded="false">
+                    <span class="accordion-title">Is the registration fee a guarantee of employment?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                    No. While we work hard to match you with suitable opportunities, the registration fee is not a guarantee of employment. It supports the administrative and processing services provided during your application process.
                     </p>
                 </div>
             </div>
+            <div class="accordion-item">
+                <button id="accordion-button-7" aria-expanded="false">
+                    <span class="accordion-title">What happens if I’m not selected for a job after registering?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+
+                        Your profile will remain active in our database for up to 12 months. We will continue to match you with any new job opportunities that fit your qualifications and preferences.
+                         </p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-8" aria-expanded="false">
+                    <span class="accordion-title">Can I get a refund of the registration or agency fee?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+                    Registration fees are non-refundable once paid.
+
+Agency fees are only charged upon successful job placement. If an employer cancels or fails to proceed after payment, refund eligibility will depend on the specific case and agreements signed.               </p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-9" aria-expanded="false">
+                    <span class="accordion-title">Will you help me with my visa process?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>
+
+                       Yes. We guide you through the visa application process, help you gather the right documents, and coordinate with employers or immigration consultants where needed. However, we do not guarantee visa approval, as this is at the discretion of the respective embassy or immigration authority.
+</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-10" aria-expanded="false">
+                    <span class="accordion-title">What documents do I need to apply?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>Commonly required documents include:
+
+Updated CV (in English)
+
+National ID or passport
+
+Academic certificates
+
+Professional licenses (if applicable)
+
+Passport-sized photos
+
+Police clearance and medical report (may be needed later</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-10" aria-expanded="false">
+                    <span class="accordion-title">How long does it take to get placed?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>Timelines vary by industry, country, and employer responsiveness. Some placements take a few weeks; others may take several months. We’ll keep you informed at every stage.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-10" aria-expanded="false">
+                    <span class="accordion-title">Will I be trained before deployment?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>Depending on the job and employer requirements, some candidates may undergo training or orientation sessions before departure to ensure they’re job-ready and understand cultural/workplace expectations abroad.</p>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <button id="accordion-button-10" aria-expanded="false">
+                    <span class="accordion-title">How do I know if an overseas job is legitimate?</span>
+                    <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                    <p>All job opportunities we provide come from verified employers and licensed partners. We do not promote unverified jobs. We prioritize ethical recruitment, and you will receive an official employment contract and offer letter before proceeding.</p>
+                </div>
+            </div>
+            
+            
+            
+                
+                
+            </div>
+        </div>
         </div>
     </div>
     <script>

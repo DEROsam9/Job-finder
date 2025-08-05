@@ -16,7 +16,7 @@ class Career extends Model
 
     public function jobCategory()
     {
-        return $this->belongsTo(JobCategory::class);
+        return $this->belongsTo(JobCategory::class, 'job_category_id');
     }
 
     public function status()

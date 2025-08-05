@@ -25,3 +25,11 @@ Route::name('track.')->group(function () {
     Route::get('/track-app', [TrackApplicationController::class, 'showForm'])->name('form');
     Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('search');
 });
+Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('track.search');
+
+Route::get('/track-app', function () {
+    return view('components.pages.track-application');
+})->name('track.form');
+
+Route::get('/job-applications', [\App\Http\Controllers\ClientController::class, 'jobapplications'])->name('job.applications');
+Route::get('/jobs/{id}/details', [ClientController::class, 'jobDetails'])->name('jobs.details');
