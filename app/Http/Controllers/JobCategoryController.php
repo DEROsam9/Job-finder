@@ -39,30 +39,6 @@ public function index(Request $request): JsonResponse
         });
     }
 
-
-
-    // $jobCategories = $this->jobCategoryRepository
-    //     ->with(['status'])
-    //     ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
-    //         $query->where('name', 'like', '%' . $request->get('name') . '%');
-    //     })
-    //     ->when($request->has('JobCategory') && !empty($request->get('JobCategory')), function ($query) use ($request) {
-    //         $query->where('name', 'like', '%' . $request->get('JobCategory') . '%');
-    //     })
-    //     ->when($request->has('JobTitle') && !empty($request->get('JobTitle')), function ($query) use ($request) {
-    //         $query->whereHas('jobs', function($q) use ($request) {
-    //             $q->where('title', 'like', '%' . $request->get('JobTitle') . '%');
-    //         });
-    //     })
-    //     ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
-    //         $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
-    //     })
-    //     ->when($request->has('status_id') && !empty($request->get('status_id')), function ($query) use ($request) {
-    //         $query->where('status_id', $request->get('status_id'));
-    //     })
-    //     ->paginate($request->get('limit', 20));
-    
-
     // Add all your existing filters
     $query->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->get('name') . '%');
