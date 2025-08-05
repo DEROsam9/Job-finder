@@ -116,4 +116,8 @@ class PaymentController extends Controller
             'message' => 'Payment deleted successfully'
         ]);
     }
+      public function count()
+{
+    return response()->json(['total' => Payment::count()]);
+}
 }
