@@ -18,7 +18,7 @@ class PaymentController extends Controller
     public function __construct(PaymentRepository $paymentRepository)
     {
         $this->paymentRepository = $paymentRepository;
-    } 
+    }
    public function index(Request $request)
 {
 
@@ -38,21 +38,8 @@ class PaymentController extends Controller
         ->when($request->filled('from'), function ($query) use ($request) {
             $from = $request->get('from');
             $to = $request->get('to');
-
-
-            try {
-                $fromDate = \Carbon\Carbon::parse($from)->startOfDay();
-                if ($request->filled('to') && $to !== 'null') {
-                    $toDate = \Carbon\Carbon::parse($to)->endOfDay();
-                    $query->whereBetween('transaction_date', [$fromDate, $toDate]);
-                } else {
-                    $query->where('transaction_date', '>=', $fromDate);
-                }
-            } catch (\Exception $e) {
-            }
+            $query->whereBetween('created_at', [$from, $to]);
         })
-        // (rest of filters unchanged)
-        ->orderBy($request->get('orderBy', 'created_at'), $request->get('sortedBy', 'desc'))
         ->paginate($request->get('limit', 20));
 
     return response()->json([
@@ -74,7 +61,7 @@ class PaymentController extends Controller
             'message' => 'Payment created successfully',
             'data' => $payment
         ], 201);
-        
+
     }
 
     /**

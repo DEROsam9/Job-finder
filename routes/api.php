@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DownLoadsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\StatusController;
@@ -29,7 +30,6 @@ Route::post('/clientdocs/{clientDocument}/reject', [ClientDocumentController::cl
 // Status routes
 Route::apiResource( 'statuses', StatusController::class);
 
-
 // Custom routes
 Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'getByClient']);
 Route::get('/careers/categories', [CareerController::class, 'getCategories']);
@@ -37,5 +37,7 @@ Route::get('/careers/categories', [CareerController::class, 'getCategories']);
 Route::resource('careers', CareerController::class);
 Route::resource('job-categories', JobCategoryController::class);
 Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJobsByCategory']);
+
+Route::post('/download-applications-excel', [DownloadsController::class, 'downloadApplicationsExcel']);
 
 
