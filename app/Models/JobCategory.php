@@ -11,4 +11,10 @@ class JobCategory extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'slug', 'description', 'status_id'];
+
+      // Add this relationship
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

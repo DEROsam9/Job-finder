@@ -32,6 +32,7 @@ Route::apiResource( 'statuses', StatusController::class);
 
 // Custom routes
 Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'getByClient']);
+Route::get('/careers/categories', [CareerController::class, 'getCategories']);
 
 Route::resource('careers', CareerController::class);
 Route::resource('job-categories', JobCategoryController::class);

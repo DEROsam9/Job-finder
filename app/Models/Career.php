@@ -18,4 +18,9 @@ class Career extends Model
     {
         return $this->belongsTo(JobCategory::class);
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

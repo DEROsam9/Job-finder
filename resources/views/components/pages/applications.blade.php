@@ -323,20 +323,20 @@
     }
 </style>
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; margin: 0; border-radius: 0;">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
+    <div class="fl-wrapper">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
     <div class="row">
         <div class="container">
             <div class="col-md-12">
@@ -738,7 +738,7 @@
         });
 
         // Initialize job categories
-        fetch('/api/v1/job-categories')
+        fetch('/api/v1/job-categories?active_only=true')
             .then(response => response.json())
             .then(data => {
 
@@ -768,7 +768,7 @@
                             return;
                         }
 
-                        fetch(`/api/v1/careers/by-category/${categoryId}`)
+                        fetch(`/api/v1/careers/by-category/${categoryId}?active_only=true`)
                             .then(response => response.json())
                             .then(data => {
                                 titleSelect.innerHTML = '<option value="">Select Job Title</option>';
@@ -847,7 +847,7 @@
                     return;
                 }
 
-                fetch(`/api/v1/careers/by-category/${categoryId}`)
+                fetch(`/api/v1/careers/by-category/${categoryId}?active_only=true`)
                     .then(response => response.json())
                     .then(data => {
                         titleSelect.innerHTML = '<option value="">Select Job Title</option>';

@@ -28,32 +28,29 @@ class ApplicationController extends Controller
 
         $applications = $this->applicationRepository
             ->with(['client', 'career', 'status', 'payments'])
-            ->when($request->has('search') && !empty($request->get('search')), function ($query) use ($request) {
-                $search = $request->get('search');
+            ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
+                $search = $request->get('name');
                 $query->whereHas('client', function ($q) use ($search) {
                     $q->where('first_name', 'like', "%$search%")
-                        ->orWhere('middle_name', 'like', "%$search%")
                         ->orWhere('surname', 'like', "%$search%")
-                        ->orWhere('email', 'like', "%$search%");
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('phone_number', 'like', "%$search%");
                 });
             })
-            ->when($request->has('passport_id') && !empty($request->get('passport_id')), function ($query) use ($request) {
-                $passportId = $request->get('passport_id');
+            ->when($request->has('passport_or_id') && !empty($request->get('passport_or_id')), function ($query) use ($request) {
+                $passportId = $request->get('passport_or_id');
                 $query->whereHas('client', function ($q) use ($passportId) {
                     $q->where('passport_number', 'like', "%$passportId%")
                         ->orWhere('id_number', 'like', "%$passportId%");
                 });
             })
-            ->when($request->has('from_date') && !empty($request->get('from_date')), function ($query) use ($request) {
-                $from = $request->get('from_date');
-                $query->whereDate('created_at', '>=', $from);
+            ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
+                $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
             })
-            ->when($request->has('status') && !empty($request->get('status')), function ($query) use ($request) {
-                $query->where('status_id', $request->get('status'));
+            ->when($request->has('status_id') && !empty($request->get('status_id')), function ($query) use ($request) {
+                $query->where('status_id', $request->get('status_id'));
             })
-            ->orderBy('created_at', 'desc')
             ->paginate($request->get('limit', 20));
-
 
         return response()->json([
             'data' => $applications

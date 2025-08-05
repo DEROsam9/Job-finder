@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
+use App\Repositories\ClientRepository;
 use DB;
-use App\Models\Client;
 use App\Models\Payment;
 use App\Http\Traits\mpesa;
-use Laracasts\Flash\Flash;
 use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Models\ClientDocument;
@@ -21,72 +21,50 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // Laravel (in ClientController.php)
 
-public function index(Request $request)
-{
-    $query = Client::query();
+    private ClientRepository $clientRepository;
 
-    // 🔹 Grouped filtering for name OR email
-    if ($request->name || $request->email) {
-        $query->where(function ($q) use ($request) {
-            if ($request->name) {
-                $q->where('first_name', 'like', "%{$request->name}%")
-                  ->orWhere('surname', 'like', "%{$request->name}%");
-            }
-
-            if ($request->email) {
-                $q->orWhere('email', 'like', "%{$request->email}%");
-            }
-        });
-    }
-
-    // 🔹 Grouped filtering for passport OR ID
-    if ($request->passport_number || $request->id_number) {
-        $query->where(function ($q) use ($request) {
-            if ($request->passport_number) {
-                $q->where('passport_number', 'like', "%{$request->passport_number}%");
-            }
-
-            if ($request->id_number) {
-                $q->orWhere('id_number', 'like', "%{$request->id_number}%");
-            }
-        });
-    }
-
-    // 🔹 Date filter
-    if ($request->start_date && $request->end_date) {
-        $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
-    }
-
-    return response()->json([
-        'data' => $query->latest()->paginate(10),
-    ]);
-}
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function __construct(ClientRepository $clientRepo)
     {
+        $this->clientRepository = $clientRepo;
+    }
 
+    public function index(Request $request)
+    {
+        $clients = $this->clientRepository
+            ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
+                $query->where('first_name', 'like', "%{$request->name}%")
+                    ->orWhere('surname', 'like', "%{$request->name}%")
+                    ->orWhere('email', 'like', "%{$request->name}%")
+                    ->orWhere('phone_number', 'like', "%{$request->name}%");
+            })
+            ->when($request->has('passport_or_id') && !empty($request->get('passport_or_id')), function ($query) use ($request) {
+                $query->where('passport_number', 'like', "%{$request->passport_or_id}%")
+                    ->orWhere('id_number', 'like', "%{$request->passport_or_id}%");
+            })
+            ->when($request->has('start_date') && $request->has('end_date'), function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            })
+            ->paginate($request->get('limit', 20));
+
+        return response()->json([
+            'data' => $clients->toArray(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'first_name'       => 'required|string|max:255',
-        'surname'          => 'required|string|max:255',
-        'email'            => 'required|email|unique:clients,email',
-        'phone_number'     => 'required|string|max:20',
-        'passport_number'  => 'nullable|string|max:50',
-        'passport_expiry_date' => 'nullable|date|after:today',
-        'id_number'        => 'required|string|max:50',
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name'       => 'required|string|max:255',
+            'surname'          => 'required|string|max:255',
+            'email'            => 'required|email',
+            'phone_number'     => 'required|string|max:20',
+            'passport_number'  => 'nullable|string|max:50',
+            'passport_expiry_date' => 'nullable|date|after:today',
+            'id_number'        => 'required|string|max:50',
 
         // Files
         'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
@@ -96,127 +74,129 @@ public function index(Request $request)
         'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
-        // Job selection
-        'job_title'    => 'required|array',
-        'job_title.*'  => 'exists:careers,id',
-        'job_category' => 'nullable|array',
-        'job_category.*' => 'exists:job_categories,id',
+            // Job selection
+            'job_title'    => 'required|array',
+            'job_title.*'  => 'exists:careers,id',
+            'job_category' => 'nullable|array',
+            'job_category.*' => 'exists:job_categories,id',
 
-        // Optional additional fields
-        'remarks'          => 'nullable|string|max:255',
-    ]);
-
-    // Check for validation errors
-if ($validator->fails()) {
-    return response()->json(['error' => $validator->errors()->first()], 422);
-}
-\Log::info('Client creation request validated', $request->all());
-
-    try {
-        DB::beginTransaction();
-        $input = $request->all();
-
-        $client = Client::create([
-            'surname' => $input['surname'],
-            'first_name' => $input['first_name'],
-            'email' => $input['email'],
-            'phone_number' => $input['phone_number'],
-            'passport_number' => $input['passport_number'],
-            // 'passport_number' => $input['passport_number'] ?? '',
-            'id_number' => $input['id_number'],
+            // Optional additional fields
+            'remarks'          => 'nullable|string|max:255',
         ]);
 
-        $docFields = [
-            'cv'              => null,
-            'passport_copy'   => null,
-            'passport_photo'   => null,
-            'client_id_front' => null,
-            'client_id_back'  => null,
-            'good_conduct'=> null,
-            
-        ];
+        // Check for validation errors
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 422);
+        }
+        \Log::info('Client creation request validated', $request->all());
 
+        try {
+            DB::beginTransaction();
+            $input = $request->all();
 
-        foreach ($docFields as $field => $expiryField) {
-            $uploadedFile = $request->file($field);
+            $client = $this->clientRepository->where('email',$input['email'] )
+                ->orWhere('phone_number', $input['phone_number'])
+                ->first();
 
-            if (!$uploadedFile || !$uploadedFile->isValid()) {
-                continue;
+            if (!$client) {
+                $client = $this->clientRepository->create([
+                    'surname' => $input['surname'],
+                    'first_name' => $input['first_name'],
+                    'email' => $input['email'],
+                    'phone_number' => $input['phone_number'],
+                    'passport_number' => $input['passport_number'],
+                    // 'passport_number' => $input['passport_number'] ?? '',
+                    'id_number' => $input['id_number'],
+                ]);
+
+                $docFields = [
+                    'cv'              => null,
+                    'passport_copy'   => null,
+                    'passport_photo'   => null,
+                    'client_id_front' => null,
+                    'client_id_back'  => null,
+                    'good_conduct'=> null,
+                ];
+
+                foreach ($docFields as $field => $expiryField) {
+                    $uploadedFile = $request->file($field);
+
+                    if (!$uploadedFile || !$uploadedFile->isValid()) {
+                        continue;
+                    }
+
+                    $document_url = uploadToOBS($uploadedFile);
+                    $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
+
+                    ClientDocument::create([
+                        'client_id'            => $client->id,
+                        'remarks'              => $request->input('remarks'),
+                        'document_type'        => $field,
+                        'passport_expiry_date' => $passport_expiry_date,
+                        'document_url'         => $document_url,
+                    ]);
+                }
             }
 
-            $document_url = uploadToOBS($uploadedFile);
-            $passport_expiry_date = $expiryField ? $request->input($expiryField) : null;
+            foreach ($request->job_title as $jobId) {
+                $application = Application::create([
+                    'client_id' => $client->id,
+                    'career_id' => $jobId,
+                    'status_id' => Status::where('code','DRAFT')->first()->id,
+                    'remarks'   => $request->get('experience_brief'),
+                ]);
+            }
 
-            ClientDocument::create([
-                'client_id'            => $client->id,
-                'remarks'              => $request->input('remarks'),
-                'document_type'        => $field,
-                'passport_expiry_date' => $passport_expiry_date,
-                'document_url'         => $document_url,
-            ]);
-        }
+            $data = [
+                'application_code' => $application->application_code,
+                'phone_number'     => $client->phone_number,
+                'amount'           => 1000,
+            ];
 
-        foreach ($request->job_title as $jobId) {
-        $application = Application::create([
-                'client_id' => $client->id,
-                'career_id' => $jobId,
-                'remarks'   => $request->get('experience_brief'),
-            ]);
-        }
+            $response = $this->stkPushRequest($data);
 
+            if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
+                $payment = Payment::create([
+                    'client_id'            => $client->id,
+                    'amount'               => 1000,
+                    'status_id'            => loadStatusId('Draft'),
+                    'transaction_reference'=> '',
+                    'remarks'              => 'payment for application coded '.$application->application_code,
+                    'merchant_request_id'  => $response['MerchantRequestID'],
+                    'checkout_request_id'  => $response['CheckoutRequestID']
+                ]);
 
-        $data = [
-            'application_code' => $application->application_code,
-            'phone_number'     => $client->phone_number,
-            'amount'           => 1000,
-        ];
+                ApplicationPayment::create([
+                    'client_id'     => $client->id,
+                    'payment_id'    => $payment->id,
+                    'application_id'=> $application->id,
+                    'amount'        => 0,
+                    'balance'       => 1000
+                ]);
+            } else {
+                session()->flash('error', 'STK Push failed. Please try again later.');
+                \Log::error($response);
+                return redirect()->back();
+            }
 
-        $response = $this->stkPushRequest($data);
+            DB::commit();
 
-        if (isset($response["ResponseCode"]) && $response["ResponseCode"] == "0") {
-            $payment = Payment::create([
-                'client_id'            => $client->id,
-                'amount'               => 1000,
-                'status_id'            => loadStatusId('Draft'),
-                'transaction_reference'=> '',
-                'remarks'              => 'payment for application coded '.$application->application_code,
-                'merchant_request_id'  => $response['MerchantRequestID'],
-                'checkout_request_id'  => $response['CheckoutRequestID']
-            ]);
-
-            ApplicationPayment::create([
-                'client_id'     => $client->id,
-                'payment_id'    => $payment->id,
-                'application_id'=> $application->id,
-                'amount'        => 0,
-                'balance'       => 1000
-            ]);
-        } else {
-            session()->flash('error', 'STK Push failed. Please try again later.');
-            \Log::error($response);
+            session()->flash('success', 'Your information has been submitted successfully. Check your phone for an STK Push.');
+            return redirect()->route('application.success', ['reference' => $application->application_code]);
+        } catch (\Exception $exception) {
+            \Log::error($exception);
+            DB::rollBack();
+            session()->flash('error', 'Something went wrong. Please try again later.');
             return redirect()->back();
         }
-
-        DB::commit();
-
-        session()->flash('success', 'Your information has been submitted successfully. Check your phone for an STK Push.');
-        return redirect()->route('application.success', ['reference' => $application->application_code]);
-    } catch (\Exception $exception) {
-        \Log::error($exception);
-        DB::rollBack();
-        session()->flash('error', 'Something went wrong. Please try again later.');
-        return redirect()->back();
     }
-}
-
-
 
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $customer = Client::find($id);
+        $customer = $this->clientRepository->find($id);
 
         if(!$customer){
             return response()->json(['message'=>'Client not Found']);
@@ -226,19 +206,11 @@ if ($validator->fails()) {
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Client $client)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-   public function update(UpdateClientRequest $request, $id)
+    public function update(UpdateClientRequest $request, $id)
     {
-        $client = Client::find($id);
+        $client = $this->clientRepository->find($id);
 
         if (!$client) {
             return response()->json(['message' => 'Client not found'], 404);
@@ -262,7 +234,7 @@ if ($validator->fails()) {
      */
     public function destroy($id)
     {
-        $client = Client::find($id);
+        $client = $this->clientRepository->find($id);
 
         if(!$client){
             return response()->json(['data'=>'Client Not found'],404);
@@ -278,7 +250,6 @@ if ($validator->fails()) {
 
     public function applicationSuccess($reference)
     {
-        
         return view('components.pages.application-success', ['reference' => $reference]);
     }
 }
