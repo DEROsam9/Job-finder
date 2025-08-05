@@ -22,6 +22,41 @@
         cursor: pointer;
         transition: background 0.2s ease;
     }
+
+    .form-step input[type="text"],
+    .form-step input[type="tel"],
+    .form-step input[type="email"],
+    .form-step select {
+        flex: 1 1 250px;
+        padding: 15px 20px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 14px; /* Increased font size */
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    /* Focus styling */
+    .form-step input[type="text"]:focus,
+    .form-step input[type="tel"]:focus,
+    .form-step input[type="email"]:focus,
+    .form-step select:focus {
+        border-color: #2D78C9;
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(45, 120, 201, 0.2);
+    }
+
+    /* Placeholder styling (for input only) */
+    .form-step input[type="text"]::placeholder,
+    .form-step input[type="tel"]::placeholder,
+    .form-step input[type="email"]::placeholder {
+        color: #6c757d;
+        opacity: 0.7;
+        font-size: 14px;
+    }
+
+
     .form-section button:disabled { background: #CCCCCC; cursor: not-allowed; }
     .progress-container {
         width: 100%;
