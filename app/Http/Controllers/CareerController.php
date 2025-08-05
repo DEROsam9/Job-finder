@@ -80,6 +80,8 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
+            'status_id' => ['required', 'exists:statuses,id'],
+            'is_featured' => ['sometimes', 'boolean']
         ]);
 
         $career = Career::create($validated);
@@ -120,6 +122,8 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
+            'status_id' => ['sometimes', 'exists:statuses,id'], // Add this line
+
         ]);
 
         $career->update($validated);
@@ -143,20 +147,26 @@ class CareerController extends Controller
         return JobCategory::select('id', 'name')->get();
     }
 
-    public function getJobsByCategory($categoryId , Request $request)
-    {
-        $query = $this->careerRepository
-        ->with(['jobCategory', 'status'])
-        ->where('job_category_id', $categoryId)
-        ->when($request->has('active_only') && $request->boolean('active_only'), function ($query) {
-            $query->whereHas('status', function($q) {
-                $q->where('name', 'Active');
-            });
-        })
-        ->orderBy('created_at', 'desc');
+   public function getJobsByCategory($categoryId, Request $request)
+{
+    try {
+        $careers = $this->careerRepository
+            ->with(['jobCategory', 'status'])
+            ->where('job_category_id', $categoryId)
+            ->when($request->has('active_only') && $request->boolean('active_only'), function ($query) {
+                $query->whereHas('status', function($q) {
+                    $q->where('name', 'Active');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return response()->json([
-        'data' => $query->get(),
-    ], 200);
+        return response()->json($careers, 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Failed to fetch careers',
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
 }

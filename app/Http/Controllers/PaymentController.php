@@ -40,6 +40,24 @@ class PaymentController extends Controller
             $to = $request->get('to');
             $query->whereBetween('created_at', [$from, $to]);
         })
+
+        ->when($request->filled('min_amount') || $request->filled('max_amount'), function($query) use($request) {
+            $min = floatval($request->get('min_amount'));
+            $max = floatval($request->get('max_amount'));
+
+            if ($request->filled('min_amount') && $request->filled('max_amount')) {
+                $query->whereRaw('CAST(amount AS DECIMAL(10,2)) BETWEEN ? AND ?', [$min, $max]);
+            } elseif ($request->filled('min_amount')) {
+                $query->whereRaw('CAST(amount AS DECIMAL(10,2)) >= ?', [$min]);
+            } elseif ($request->filled('max_amount')) {
+                $query->whereRaw('CAST(amount AS DECIMAL(10,2)) <= ?', [$max]);
+            }
+        })
+
+
+        
+        // (rest of filters unchanged)
+        ->orderBy($request->get('orderBy', 'created_at'), $request->get('sortedBy', 'desc'))
         ->paginate($request->get('limit', 20));
 
     return response()->json([
