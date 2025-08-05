@@ -322,26 +322,18 @@
         box-shadow: 0 0 0 2px #f87171;
     }
 </style>
-
-    @if(session('success'))
+@if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; margin: 0; border-radius: 0;">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    </div>
+@endif
 
-    {{-- @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif --}}
-     @if(session('error'))
-                            <div class="text-danger mt-2">
-                                <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
-                            </div>
-                        @endif
-
+@if(session('error'))
+    <div class="text-danger mt-2">
+        <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
+    </div>
+@endif
     <div class="row">
         <div class="container">
             <div class="col-md-12">
@@ -416,7 +408,7 @@
                                         <div class="upload-content">
                                             <i class="fa fa-id-card"></i>
                                             <p>Passport Photo</p>
-                                            <input type="file" name="passport_photo" accept=".pdf,.doc,.docx" id="passportPhotoFile">
+                                            <input type="file" name="passport_photo" accept="image/*,.pdf,.doc,.docx" id="passportPhotoFile">
                                             <label for="passportPhotoFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="passportPhotoInfo"></div>
                                         </div>
@@ -428,7 +420,7 @@
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
                                                 <p>Upload ID Front</p>
-                                                <input type="file" name="client_id_front" accept=".pdf,.doc,.docx" id="idCardFile">
+                                                <input type="file" name="client_id_front" accept="image/*,.pdf,.doc,.docx" id="idCardFile">
                                                 <label for="idCardFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardInfo"></div>
                                             </div>
@@ -441,7 +433,7 @@
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
                                                 <p>Upload ID Back</p>
-                                                <input type="file" name="client_id_back" accept=".pdf,.doc,.docx" id="idCardBackFile">
+                                                <input type="file" name="client_id_back" accept="image/*,.pdf,.doc,.docx" id="idCardBackFile">
                                                 <label for="idCardBackFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardBackInfo"></div>
                                             </div>
@@ -454,7 +446,7 @@
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
                                                 <p>Upload Passport</p>
-                                                <input type="file" name="passport_copy" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="passportFile">
+                                                <input type="file" name="passport_copy" accept="image/*,.pdf,.doc,.docx" id="passportFile">
                                                 <label for="passportFile" class="upload-btn">Choose File(optional)</label>
                                                 <div class="file-info" id="passportInfo"></div>
                                             </div>
@@ -467,7 +459,7 @@
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
                                                 <p>Good Conduct Certificate</p>
-                                                <input type="file" name="good_conduct" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="goodConductFile">
+                                                <input type="file" name="good_conduct" accept="image/*,.pdf,.doc,.docx" id="goodConductFile">
                                                 <label for="goodConductFile" class="upload-btn">Choose File(optional)</label>
                                                 <div class="file-info" id="goodConductInfo"></div>
                                             </div>
@@ -488,7 +480,7 @@
                                         <div class="upload-content">
                                             <i class="fa fa-file-text"></i>
                                             <p>Upload CV</p>
-                                            <input type="file" name="cv" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="cvFile">
+                                            <input type="file" name="cv" accept="image/*,.pdf,.doc,.docx" id="cvFile">
                                             <label for="cvFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="cvInfo"></div>
                                         </div>
