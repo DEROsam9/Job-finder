@@ -744,7 +744,6 @@
 
                 jobCategoriesCache = data.data || data;
 
-                console.log(jobCategoriesCache)
 
                 // Initialize ALL existing job category selects (including the first one)
                 document.querySelectorAll('.job-category-select').forEach(select => {
