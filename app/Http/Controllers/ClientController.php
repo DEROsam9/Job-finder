@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Status;
 use App\Repositories\ClientRepository;
 use DB;
+use App\Models\Client;
 use App\Models\Payment;
 use App\Http\Traits\mpesa;
 use App\Models\Application;
@@ -270,7 +271,8 @@ class ClientController extends Controller
         ->with('jobCategory')
         ->orderBy('name')
          ->paginate(10);
-;
+
+         
 
     return view('components.pages.job-applications', [
         'categories' => $categories,
@@ -285,5 +287,9 @@ public function jobDetails($id)
         ->findOrFail($id, ['id', 'name as title', 'description', 'job_category_id', 'slots']);
 
     return response()->json($job);
+}
+  public function count()
+{
+    return response()->json(['total' => Client::count()]);
 }
 }

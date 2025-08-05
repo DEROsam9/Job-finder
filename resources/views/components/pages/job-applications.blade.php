@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <!-- Trending Jobs -->
+    <!-- Trending Jobs -->
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">Trending Jobs</h4>
@@ -36,7 +36,7 @@
               <small class="text-muted">{{ $job->jobCategory->name ?? 'N/A' }}</small>
             </div>
             <div class="media-right">
-              <button class="btn btn-default btn-xs apply-btn" data-job-id="{{ $job->id }}">Apply</button>
+              <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #007bff; color: white; border: 1px solid #007bff;">Apply</a>
             </div>
           </div>
           @endforeach
@@ -55,24 +55,47 @@
 
       <!-- Job List -->
       <div id="jobList">
-        @foreach($jobs as $job)
-        <div class="job-item media" style="border-bottom: 1px solid #eee; padding: 15px 0;"
-             data-job-id="{{ $job->id }}"
-             data-job-category="{{ $job->job_category_id }}"
-             data-job-name="{{ strtolower($job->title) }}">
-          <div class="media-body">
-            <strong>{{ $job->title }}</strong><br>
-            <small class="text-muted">{{ $job->jobCategory->name ?? 'N/A' }}</small>
-          </div>
-          <div class="media-right">
-            <button class="btn btn-link btn-xs view-details-btn" data-job-id="{{ $job->id }}">View</button>
-          </div>
-        </div>
-        @endforeach
-      </div>
-    </main>
-  </div>
+    <div class="panel-body">
+        @if($jobs->count())
+            @foreach($jobs as $job)
+                <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                    <div class="media-body">
+                        <strong>{{ $job->title ?? $job->name }}</strong><br>
+                        <small class="text-muted">
+                            {{ $job->jobCategory->name ?? 'Category not available' }}
+                        </small>
+                    </div>
+                    <div class="media-right">
+                        <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #007bff; color: white; border: 1px solid #007bff; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 12px;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">Apply</a>
+                    </div>
+                </div>
+            @endforeach
+
+            {{-- Pagination links --}}
+            {{-- <div class="mt-3">
+                {{ $jobs->links() }}
+            </div> --}}
+            <div class="text-center mt-4">
+    @if ($jobs->onFirstPage())
+        <button class="btn bg-blue btn-default" disabled>&lt;</button>
+    @else
+        <a href="{{ $jobs->previousPageUrl() }}" class="btn btn-default">&lt;</a>
+    @endif
+
+    @if ($jobs->hasMorePages())
+        <a href="{{ $jobs->nextPageUrl() }}" class="btn btn-default">&gt;</a>
+    @else
+        <button class="btn  bg-bluebtn-default" disabled>&gt;</button>
+    @endif
 </div>
+
+        @else
+            <p>No jobs found.</p>
+        @endif
+    </div>
+</div>
+      
+
 
 <!-- Job Details Modal -->
 <div id="jobDetailsModal" class="modal fade" tabindex="-1" role="dialog">
@@ -88,6 +111,8 @@
     </div>
   </div>
 </div>
+
+
 
 <!-- JavaScript -->
 <script>

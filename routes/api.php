@@ -19,10 +19,12 @@ Route::post('/auth/logout', [AuthController::class, 'logout']);
 
 // Resource routes
 Route::apiResource('users', UserController::class);
+Route::get('/clients/count', [ClientController::class, 'count']);
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('application-payments', ApplicationPaymentController::class);
 Route::get('/applications/count', [ApplicationController::class, 'count']);
 Route::apiResource('applications', ApplicationController::class);
+Route::get('/payments/count', [PaymentController::class, 'count']);
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('clientdocs', ClientDocumentController::class);
 
