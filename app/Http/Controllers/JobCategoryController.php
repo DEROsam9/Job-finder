@@ -28,32 +28,86 @@ class JobCategoryController extends Controller
     /**
      * List all job categories.
      */
+public function index(Request $request): JsonResponse
+{
 
-    public function index(Request $request): JsonResponse
-    {
-        $jobCategories = $this->jobCategoryRepository
-            ->where('status_id', Status::where('code','ACTIVE')->first()->id)
-            ->paginate($request->get('limit', 10));
+    $query = $this->jobCategoryRepository->with(['status']);
 
-        return response()->json($jobCategories, 200);
+    if($request->has('active_only') && $request->boolean('active_only')){
+        $query->whereHas('status', function($q) {
+            $q->where('name','Active');
+        });
     }
+
+
+
+    // $jobCategories = $this->jobCategoryRepository
+    //     ->with(['status'])
+    //     ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
+    //         $query->where('name', 'like', '%' . $request->get('name') . '%');
+    //     })
+    //     ->when($request->has('JobCategory') && !empty($request->get('JobCategory')), function ($query) use ($request) {
+    //         $query->where('name', 'like', '%' . $request->get('JobCategory') . '%');
+    //     })
+    //     ->when($request->has('JobTitle') && !empty($request->get('JobTitle')), function ($query) use ($request) {
+    //         $query->whereHas('jobs', function($q) use ($request) {
+    //             $q->where('title', 'like', '%' . $request->get('JobTitle') . '%');
+    //         });
+    //     })
+    //     ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
+    //         $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
+    //     })
+    //     ->when($request->has('status_id') && !empty($request->get('status_id')), function ($query) use ($request) {
+    //         $query->where('status_id', $request->get('status_id'));
+    //     })
+    //     ->paginate($request->get('limit', 20));
+    
+
+    // Add all your existing filters
+    $query->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->get('name') . '%');
+        })
+        ->when($request->has('JobCategory') && !empty($request->get('JobCategory')), function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->get('JobCategory') . '%');
+        })
+        ->when($request->has('JobTitle') && !empty($request->get('JobTitle')), function ($query) use ($request) {
+            $query->whereHas('jobs', function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->get('JobTitle') . '%');
+            });
+        })
+        ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
+            $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
+        })
+        ->when($request->has('status_id') && !empty($request->get('status_id')), function ($query) use ($request) {
+            $query->where('status_id', $request->get('status_id'));
+        });
+
+    $jobCategories = $query->paginate($request->get('limit', 20));
+    
+    return response()->json($jobCategories, 200);
+}
+
 
 
     /**
      * Create and store a new job category.
      */
 
-    public function store(StoreJobCategoryRequest $request): JsonResponse
+     public function store(StoreJobCategoryRequest $request): JsonResponse
     {
-        $slug = \Illuminate\Support\Str::slug($request->name);
+        try {
+            $data = $request->validated();
+            $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
+            
+            $jobCategory = $this->jobCategoryRepository->create($data);
 
-        $jobCategory = $this->jobCategoryRepository->create([
-            'name' => $request->name,
-            'slug' => $slug,
-            'description' => $request->description,
-        ]);
-
-        return response()->json($jobCategory, 201);
+            return response()->json($jobCategory, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to create job category',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
 
@@ -87,11 +141,10 @@ class JobCategoryController extends Controller
                 return response()->json(['error' => 'Job category not found'], 404);
             }
 
-            $jobCategory->update($request->validated());
+            $data = $request->validated();
+            $jobCategory->update($data);
 
             return response()->json($jobCategory, 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Job category not found'], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to update job category',
@@ -99,7 +152,6 @@ class JobCategoryController extends Controller
             ], 500);
         }
     }
-
     /**
      * Delete a job category by ID.
      */

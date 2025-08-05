@@ -2,56 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use App\Repositories\PaymentRepository;
+use App\Http\Requests\StorePaymentRequest;
+use App\Http\Requests\UpdatePaymentRequest;
 
 class PaymentController extends Controller
 {
     /**
      * List all payments with pagination
      */
-public function index(Request $request)
+      private PaymentRepository $paymentRepository;
+
+    public function __construct(PaymentRepository $paymentRepository)
+    {
+        $this->paymentRepository = $paymentRepository;
+    } 
+   public function index(Request $request)
 {
-    $query = Payment::with(['status', 'client'])->latest();
 
-    if ($request->filled('name_email')) {
-        $nameEmail = $request->input('name_email');
-        $query->whereHas('client', function ($q) use ($nameEmail) {
-            $q->where('first_name', 'like', "%$nameEmail%")
-              ->orWhere('middle_name', 'like', "%$nameEmail%")
-              ->orWhere('surname', 'like', "%$nameEmail%")
-              ->orWhere('email', 'like', "%$nameEmail%");
-        });
-    }
+    $payments = $this->paymentRepository
+        ->with(['status', 'client'])
+        ->when($request->filled('name'), function ($query) use ($request) {
+            $search = $request->get('name');
+            $query->whereHas('client', function ($q) use ($search) {
+                $q->where('first_name', 'like', "%$search%")
+                    ->orWhere('surname', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%");
+            });
+        })
+        ->when($request->filled('status_id'), function ($query) use ($request) {
+            $query->where('status_id', $request->get('status_id'));
+        })
+        ->when($request->filled('from'), function ($query) use ($request) {
+            $from = $request->get('from');
+            $to = $request->get('to');
 
-    if ($request->filled('passport_id')) {
-        $query->whereHas('client', function ($q) use ($request) {
-            $q->where('passport_number', 'like', "%{$request->input('passport_id')}%");
-        });
-    }
 
-    if ($request->filled('status')) {
-        $query->whereHas('status', function ($q) use ($request) {
-            $q->where('name', $request->input('status'));
-        });
-    }
-
-    if ($request->filled('date_from') && $request->filled('date_to')) {
-        $query->whereBetween('transaction_date', [
-            $request->input('date_from'),
-            $request->input('date_to')
-        ]);
-    }
-
-    $payments = $query->paginate($request->get('limit', 20));
+            try {
+                $fromDate = \Carbon\Carbon::parse($from)->startOfDay();
+                if ($request->filled('to') && $to !== 'null') {
+                    $toDate = \Carbon\Carbon::parse($to)->endOfDay();
+                    $query->whereBetween('transaction_date', [$fromDate, $toDate]);
+                } else {
+                    $query->where('transaction_date', '>=', $fromDate);
+                }
+            } catch (\Exception $e) {
+            }
+        })
+        // (rest of filters unchanged)
+        ->orderBy($request->get('orderBy', 'created_at'), $request->get('sortedBy', 'desc'))
+        ->paginate($request->get('limit', 20));
 
     return response()->json([
         'data' => $payments
     ]);
 }
-
 
 
 

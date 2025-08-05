@@ -19,11 +19,14 @@ class UpdateJobCategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+    public function rules()
+{
+
+    return [
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'status_id' => 'required|exists:statuses,id'
+
         ];
-    }
+}
 }

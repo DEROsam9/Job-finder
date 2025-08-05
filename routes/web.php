@@ -21,8 +21,7 @@ Route::get('service', [HomeController::class, 'service'])->name('service');
 Route::get('/track-application', [HomeController::class, 'trackApplication'])->name('track.application');
 
 Route::get('/application-success/{reference}', [\App\Http\Controllers\ClientController::class, 'applicationSuccess'])->name('application.success');
-Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('track.search');
-
-Route::get('/track-app', function () {
-    return view('components.pages.track-application');
-})->name('track.form');
+Route::name('track.')->group(function () {
+    Route::get('/track-app', [TrackApplicationController::class, 'showForm'])->name('form');
+    Route::post('/track-app', [TrackApplicationController::class, 'track'])->name('search');
+});

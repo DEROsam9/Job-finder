@@ -66,13 +66,13 @@ class ClientController extends Controller
             'passport_expiry_date' => 'nullable|date|after:today',
             'id_number'        => 'required|string|max:50',
 
-            // Files
-            'cv'               => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        // Files
+        'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
             // Job selection
             'job_title'    => 'required|array',
