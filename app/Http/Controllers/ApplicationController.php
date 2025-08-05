@@ -125,4 +125,9 @@ class ApplicationController extends Controller
             'message' => 'Application deleted successfully.'
         ], 200);
     }
+    public function count()
+{
+    return response()->json(['total' => Application::count()]);
+}
+
 }
