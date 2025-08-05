@@ -21,9 +21,12 @@ Route::post('/auth/logout', [AuthController::class, 'logout']);
 Route::apiResource('users', UserController::class);
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('application-payments', ApplicationPaymentController::class);
+Route::get('/applications/count', [ApplicationController::class, 'count']);
 Route::apiResource('applications', ApplicationController::class);
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('clientdocs', ClientDocumentController::class);
+
+
 Route::post('/clientdocs/{clientDocument}/approve', [ClientDocumentController::class, 'approve']);
 Route::post('/clientdocs/{clientDocument}/reject', [ClientDocumentController::class, 'reject']);
 // Status routes
@@ -36,5 +39,6 @@ Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'get
 Route::resource('careers', CareerController::class);
 Route::resource('job-categories', JobCategoryController::class);
 Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJobsByCategory']);
+
 
 

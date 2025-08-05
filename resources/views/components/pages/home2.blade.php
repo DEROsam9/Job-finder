@@ -220,37 +220,30 @@
             </div>
             <div class="col-md-12">
                 <div class="page-content">
+
                     <div class="col-md-3">
                         <div class="partner">
                             <div class="partner-pic">
-                                <img src="images/v54_724.png">
+                                <img src="images/transgroup.jpeg">
                             </div>
-                            <h3>Janta</h3>
+                            <h3>Transguard Group</h3>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="partner">
-                            <div class="partner-pic">
-                                <img src="images/accurex.png">
-                            </div>
-                            <h3>Accurex</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="partner">
+                        {{-- <div class="partner">
                             <div class="partner-pic">
                                 <img src="images/mal.png">
                             </div>
                             <h3>MAL Consultancy</h3>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-md-3">
-                        <div class="partner">
+                        {{-- <div class="partner">
                             <div class="partner-pic">
                                 <img src="images/hr.png">
                             </div>
                             <h3>Hallmark</h3>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
