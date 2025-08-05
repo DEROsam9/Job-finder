@@ -80,6 +80,8 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
+            'status_id' => ['required', 'exists:statuses,id'],
+            'is_featured' => ['sometimes', 'boolean']
         ]);
 
         $career = Career::create($validated);
@@ -120,6 +122,8 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
+            'status_id' => ['sometimes', 'exists:statuses,id'], // Add this line
+
         ]);
 
         $career->update($validated);
