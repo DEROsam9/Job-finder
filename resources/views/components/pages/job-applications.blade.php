@@ -64,9 +64,10 @@
                 <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
                     <div class="media-body">
                         <strong>{{ $job->title ?? $job->name }}</strong>
-                        <span class="badge badge-primary" style="margin-left: 10px; background-color: #d2d3d5ff;">
+                        <span class="badge badge-primary" style="margin-left: 10px; background-color: #007bff;">
                             {{ $job->slots ?? 0 }} slots
-                        </span><br>
+                        </span>
+                        <br>
                         <small class="text-muted">
                             {{ $job->jobCategory->name ?? 'Category not available' }}
                         </small>
@@ -139,14 +140,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return jobs.map(job => {
             const categoryName = job.jobCategory ? job.jobCategory.name : selectedCategoryName || 'Uncategorized';
-            const slots = job.slots || 0;
             return `
                 <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
                     <div class="media-body">
-                        <strong>${job.title || job.name}</strong><span class="badge badge-primary" style="margin-left: 10px; background-color: #007bff;">
-                            ${slots} slots
-                        </span>
-                        <br>
+                        <strong>${job.title || job.name}</strong><br>
                         <small class="text-muted">${categoryName}</small>
                     </div>
                     <div class="media-right">
@@ -162,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     categoryFilter.addEventListener('change', function () {
         const categoryId = this.value;
-        selectedCategoryName = this.options[this.selectedIndex].text; // Get selected category name
+        selectedCategoryName = this.options[this.selectedIndex].text; 
 
         fetch(`/jobs/filter?category_id=${categoryId}`)
             .then(response => response.json())
@@ -175,6 +172,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 });
+
+</script>
+
+@endsection
+@endsection
 
 </script>
 

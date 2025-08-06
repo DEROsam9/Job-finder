@@ -46,3 +46,4 @@ Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJo
 
 Route::post('/download-applications-excel', [DownloadsController::class, 'downloadApplicationsExcel']);
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
+Route::get('/dashboard/stats', [ClientController::class, 'getStats']);
