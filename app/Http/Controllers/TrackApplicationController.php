@@ -35,7 +35,12 @@ class TrackApplicationController extends Controller
         'status' => $application->status->name ?? null,
     ]);
 
-    return view('components.pages.track-application', compact('application'));
+    return view('components.pages.track-application', compact('application')) ->with('success', 'Application Tracked Successfully');
 }
+ // Method to show the form
+    public function showForm()
+    {
+        return view('components.pages.track-application');
+    }
 
 }

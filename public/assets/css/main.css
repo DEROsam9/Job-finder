@@ -493,6 +493,47 @@ li.apply, li.track{
     padding-top: 15px;
 }
 
+/* Flash message container */
+.fl-wrapper {
+  position: fixed;
+  top: 80px; /* Match your header height */
+  right: 20px;
+  z-index: 1001; /* Above header (z-index: 999) */
+  width: auto;
+  max-width: 400px;
+}
+
+/* Flash message styling */
+.fl-container {
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  margin-bottom: 10px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Different flash types */
+.fl-error {
+  background: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.fl-success {
+  background: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.fl-show {
+  display: block !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 .header .menu li{
     float: left;
     list-style: none;

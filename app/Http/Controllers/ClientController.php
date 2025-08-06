@@ -43,9 +43,9 @@ class ClientController extends Controller
                 $query->where('passport_number', 'like', "%{$request->passport_or_id}%")
                     ->orWhere('id_number', 'like', "%{$request->passport_or_id}%");
             })
-            ->when($request->has('start_date') && $request->has('end_date'), function ($query) use ($request) {
-                $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
-            })
+            ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
+            $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
+        })
             ->paginate($request->get('limit', 20));
 
         return response()->json([
@@ -67,13 +67,13 @@ class ClientController extends Controller
             'passport_expiry_date' => 'nullable|date|after:today',
             'id_number'        => 'required|string|max:50',
 
-            // Files
-            'cv'               => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-            'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-            'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        // Files
+        'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
             // Job selection
             'job_title'    => 'required|array',
@@ -292,4 +292,5 @@ public function jobDetails($id)
 {
     return response()->json(['total' => Client::count()]);
 }
+
 }
