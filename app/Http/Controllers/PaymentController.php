@@ -78,6 +78,7 @@ class PaymentController extends Controller
         return response()->json([
             'message' => 'Payment created successfully',
             'data' => $payment
+
         ], 201);
 
     }
@@ -97,6 +98,7 @@ class PaymentController extends Controller
      */
     public function update(UpdatePaymentRequest $request, Payment $payment)
     {
+        
         $payment->update($request->validated());
 
         return response()->json([

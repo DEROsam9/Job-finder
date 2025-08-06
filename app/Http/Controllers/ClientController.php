@@ -151,7 +151,7 @@ class ClientController extends Controller
             $data = [
                 'application_code' => $application->application_code,
                 'phone_number'     => $client->phone_number,
-                'amount'           => 1000,
+                'amount'           => 1000
             ];
 
             $response = $this->stkPushRequest($data);
@@ -212,7 +212,7 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, $id)
     {
         $client = $this->clientRepository->find($id);
-
+        
         if (!$client) {
             return response()->json(['message' => 'Client not found'], 404);
         }
@@ -297,7 +297,7 @@ public function getTotalPayment()
     $totalPayment = \App\Models\Payment::sum('amount');
 
     return response()->json([
-        'total' => $totalPayment
+        'total' => (int) $totalPayment
     ]);
 }
 }
