@@ -292,5 +292,12 @@ public function jobDetails($id)
 {
     return response()->json(['total' => Client::count()]);
 }
+public function getTotalPayment()
+{
+    $totalPayment = \App\Models\Payment::sum('amount');
 
+    return response()->json([
+        'total' => $totalPayment
+    ]);
+}
 }
