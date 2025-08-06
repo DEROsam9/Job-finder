@@ -11,6 +11,7 @@ use App\Http\Controllers\ApplicationPaymentController;
 use App\Http\Controllers\Api\Authentication\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\JobCategoryController;
+use App\Http\Controllers\SettingController;
 
 // Auth routes
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -36,5 +37,7 @@ Route::get('/clientdocs/client/{client}', [ClientDocumentController::class, 'get
 Route::resource('careers', CareerController::class);
 Route::resource('job-categories', JobCategoryController::class);
 Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJobsByCategory']);
+
+Route::apiResource('/setting',SettingController::class);
 
 
