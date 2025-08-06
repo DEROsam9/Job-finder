@@ -122,7 +122,7 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
-            'status_id' => ['sometimes', 'exists:statuses,id'], // Add this line
+            'status_id' => ['sometimes', 'exists:statuses,id'], 
 
         ]);
 
