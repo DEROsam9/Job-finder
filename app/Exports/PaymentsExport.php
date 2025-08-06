@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use Illuminate\Database\Eloquent\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
@@ -15,59 +14,70 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ApplicationsExport implements  ShouldAutoSize, WithHeadings, FromArray, WithStyles, WithTitle, WithDefaultStyles
+class PaymentsExport implements ShouldAutoSize, WithHeadings, FromArray, WithStyles, WithTitle, WithDefaultStyles
 {
 
-    use Exportable;
+    use \Maatwebsite\Excel\Concerns\Exportable;
 
     protected $records;
     protected $title;
 
     public function __construct
-    (
-        Collection $_records,
-                   $title
-    )
-    {
-        $this->records = $_records;
-        $this->title = $title;
-    }
+(
+    Collection $_records,
+               $title
+)
+{
+    $this->records = $_records;
+    $this->title = $title;
+}
+
 
     public function array(): array
     {
         $rows = [];
-        $rows[] = ['', '', '', '', '', '', '', ''];
-        $rows[] = ['', '', '', '', '', '', '', ''];
-        $rows[] = ['', '', '', '', '', '', '', ''];
+        $grandTotal = 0;
+        $rows[] = ['', '', '', '', '', '', '', '', ''];
+        $rows[] = ['', '', '', '', '', '', '', '', ''];
+        $rows[] = ['', '', '', '', '', '', '', '', ''];
         foreach ($this->records as $date => $record) {
-            $rows[] = [$date, '', '', '', '', '', '', ''];
+            $rows[] = [$date, '', '', '', '', '', '', '', ''];
+
+            $dailyTotal = 0;
 
             foreach ($record->items as $item) {
+                $amount = floatval(str_replace(',', '', $item['amount']));
+                $dailyTotal += $amount;
 
                 $rows[] = [
-                    $item['application_code'] ?? '',
                     $item['client_name'] ?? '',
-                    $item['client_email'] ?? '',
                     $item['client_phone_number'] ?? '',
-                    $item['client_passport_number'] ?? '',
-                    $item['client_id_number'] ?? '',
-                    $item['career'] ?? '',
+                    $item['transaction_reference'] ?? '',
+                    $item['application_code'] ?? '',
+                    $item['job_applied'] ?? '',
                     $item['status'] ?? '',
+                    number_format($amount),
                 ];
             }
 
-            $rows[] = ['', '', '', '', '', '', '', ''];
+            $rows[] = ['', '', '', '', '', '', '', '', ''];
+
+            $grandTotal += $dailyTotal;
         }
+
+        $rows[] = [
+            'Total Amount Collected', '', '', '','', '',
+            number_format($grandTotal),
+        ];
 
         return $rows;
     }
-
 
     public function headings(): array
     {
         return [
             [''],
-            ['Application Code', 'Client Name', 'Client Email', 'Mobile Number', 'Passport Number', 'ID Number', 'Job Applied', 'Status'],
+            ['Name', 'Phone Number', 'Transaction Reference', 'Application Code', 'Job Applied', 'Transaction Status', 'Amount'],
         ];
     }
 
@@ -92,7 +102,6 @@ class ApplicationsExport implements  ShouldAutoSize, WithHeadings, FromArray, Wi
     public function styles(Worksheet $sheet): array
     {
         return [
-            // Style the first row .
             2 => [
                 'fill' => [
                     'fillType' => Fill::FILL_SOLID,

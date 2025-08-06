@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exports\ApplicationsExport;
+use App\Exports\PaymentsExport;
 use App\Http\Controllers\Controller;
 use App\Repositories\ApplicationRepository;
+use App\Repositories\PaymentRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,9 +15,14 @@ use Maatwebsite\Excel\Facades\Excel;
 class DownLoadsController extends Controller
 {
     private ApplicationRepository $applicationRepository;
+    private PaymentRepository $paymentRepository;
 
-    public function __construct(ApplicationRepository $applicationRepository){
+    public function __construct(
+        ApplicationRepository $applicationRepository,
+        PaymentRepository $paymentRepository
+    ){
         $this->applicationRepository = $applicationRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
@@ -86,5 +93,87 @@ class DownLoadsController extends Controller
         $eloquentCollection = new Collection($eloquentCollection);
 
         return Excel::download(new ApplicationsExport($eloquentCollection, $title), 'applications_report_' . $timestamp . '.xlsx');
+    }
+
+    public function downloadPaymentsExcel(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse|JsonResponse
+    {
+
+        $payments = $this->paymentRepository
+            ->with(['status', 'client', 'applicationPayment'])
+            ->when($request->filled('name'), function ($query) use ($request) {
+                $search = $request->get('name');
+                $query->whereHas('client', function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%$search%")
+                        ->orWhere('surname', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                });
+            })
+            ->when($request->filled('status_id'), function ($query) use ($request) {
+                $query->where('status_id', $request->get('status_id'));
+            })
+            ->when($request->filled('from'), function ($query) use ($request) {
+                $from = $request->get('from');
+                $to = $request->get('to');
+                $query->whereBetween('created_at', [$from, $to]);
+            })
+
+            ->when($request->filled('min_amount') || $request->filled('max_amount'), function($query) use($request) {
+                $min = floatval($request->get('min_amount'));
+                $max = floatval($request->get('max_amount'));
+
+                if ($request->filled('min_amount') && $request->filled('max_amount')) {
+                    $query->whereRaw('CAST(amount AS DECIMAL(10,2)) BETWEEN ? AND ?', [$min, $max]);
+                } elseif ($request->filled('min_amount')) {
+                    $query->whereRaw('CAST(amount AS DECIMAL(10,2)) >= ?', [$min]);
+                } elseif ($request->filled('max_amount')) {
+                    $query->whereRaw('CAST(amount AS DECIMAL(10,2)) <= ?', [$max]);
+                }
+            })
+            ->get();
+
+        $timestamp = time();
+        $title = 'Payments Report';
+
+        $aggregated_payments = $payments->groupBy(function ($payment) {
+            return $payment->created_at->format('jS M Y');
+        })
+            ->mapWithKeys(function ($group, $data) {
+                $totalAmount = 0;
+
+                $rows = [];
+                foreach ($group as $record) {
+
+                    $rows[] = [
+                        'client_name' => $record->client->surname .' '. $record->client->first_name,
+                        'client_email' => $record->client->email,
+                        'client_phone_number' => $record->client->phone_number,
+                        'amount' => $record->amount,
+                        'transaction_reference' => $record->transaction_reference ?? null,
+                        'application_code' => $record->applicationPayment->application->application_code ?? null,
+                        'job_applied' => $record->applicationPayment->application->career->name ?? null,
+                        'status' => $record->status->name ?? null,
+                    ];
+
+                    $totalAmount +=  $record->amount;
+                }
+                return [
+                    $data => [
+                        'amount' => number_format($totalAmount, 2),
+                        'items' => $rows,
+                    ],
+                ];
+            });
+
+        $aggregated_array = $aggregated_payments->toArray();
+
+        $eloquentCollection = collect($aggregated_array)->map(function ($item) {
+            return (object) $item;
+        });
+
+        $eloquentCollection = new Collection($eloquentCollection);
+
+        return Excel::download(new PaymentsExport($eloquentCollection, $title), 'payments_report_' . $timestamp . '.xlsx');
+
+
     }
 }

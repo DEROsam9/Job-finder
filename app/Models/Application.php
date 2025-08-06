@@ -13,22 +13,22 @@ class Application extends AppBaseModel
     ];
 
     // Relationships
-    public function client()
+    public function client(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    public function career()
+    public function career(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Career::class);
     }
 
-    public function status()
+    public function status(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
 
-    public function payments()
+    public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ApplicationPayment::class);
     }

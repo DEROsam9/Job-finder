@@ -22,4 +22,8 @@ class Payment extends Model
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
+
+    public function applicationPayment() {
+        return $this->hasOne(ApplicationPayment::class, 'payment_id')->with('application');
+    }
 }

@@ -14,18 +14,18 @@ class ApplicationPayment extends Model
         'client_id', 'payment_id', 'application_id', 'amount', 'balance'
     ];
 
-    public function client()
-{
+    public function client(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
     return $this->belongsTo(\App\Models\Client::class);
 }
-    public function payment()
-{
+    public function payment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
     return $this->belongsTo(Payment::class);
 }
 
-    public function application()
+public function application() : \Illuminate\Database\Eloquent\Relations\BelongsTo
 {
-    return $this->belongsTo(Application::class);
+    return $this->belongsTo(Application::class)->with('career:id,name');
 
 }
 }

@@ -44,6 +44,7 @@ Route::resource('job-categories', JobCategoryController::class);
 Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJobsByCategory']);
 
 Route::post('/download-applications-excel', [DownloadsController::class, 'downloadApplicationsExcel']);
+Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPaymentsExcel']);
 
 
 
