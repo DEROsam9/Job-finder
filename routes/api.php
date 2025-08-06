@@ -12,6 +12,7 @@ use App\Http\Controllers\ApplicationPaymentController;
 use App\Http\Controllers\Api\Authentication\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\JobCategoryController;
+use App\Http\Controllers\SettingController;
 
 // Auth routes
 Route::post('/auth/register', [AuthController::class, 'register']);
@@ -47,5 +48,4 @@ Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJo
 Route::post('/download-applications-excel', [DownloadsController::class, 'downloadApplicationsExcel']);
 Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPaymentsExcel']);
 
-
-
+Route::apiResource('/setting',SettingController::class);
