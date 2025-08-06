@@ -300,4 +300,19 @@ public function getTotalPayment()
         'total' => (int) $totalPayment
     ]);
 }
+public function getStats()
+{
+    $totalApplications = Application::count();
+    $totalClients = Client::count();
+    $totalPayments = Payment::count();
+    $totalPaymentAmount = Payment::sum('amount');
+
+    return response()->json([
+        'applications' => $totalApplications,
+        'clients' => $totalClients,
+        'payments' => $totalPayments,
+        'paymentAmount' => $totalPaymentAmount,
+    ]);
+}
+
 }

@@ -50,3 +50,5 @@ Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPa
 
 Route::apiResource('/setting',SettingController::class);
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
+Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
+Route::get('/dashboard/stats', [ClientController::class, 'getStats']);
