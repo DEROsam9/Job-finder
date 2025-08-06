@@ -15,7 +15,7 @@
         <div class="panel-body">
           <div class="form-group">
             <label for="categoryFilter">Categories</label>
-            <select id="categoryFilter" class="form-control">
+            <select id="categoryFilter" class="form-control" width="5" >
               <option value="">Categories</option>
               @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -181,9 +181,42 @@ document.addEventListener('DOMContentLoaded', function () {
 /* Scoped to job-application-wrapper to avoid affecting global header */
 .job-application-wrapper {
     padding-top: 20px;
+    width: 100%;
+    padding: 10px;
+}
+
+.job-application-wrapper #categoryFilter {
+    width: 100% !important;
+    max-width: 80% !important;
+    box-sizing: border-box !important;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #fff;
 }
 
 @media screen and (max-width: 768px) {
+     .job-application-wrapper #categoryFilter {
+        font-size: 16px !important;
+        padding: 12px 10px !important;
+        border-radius: 6px !important;
+    }
+
+    .job-application-wrapper .panel-heading h4 {
+        font-size: 18px !important;
+    }
+
+    .job-application-wrapper .form-group label {
+        font-size: 14px !important;
+        display: block !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Ensure panel does not shrink */
+    .job-application-wrapper .panel-body {
+        padding: 10px !important;
+    }
     .job-application-wrapper {
         width: 100% !important;
         max-width: 100% !important;
@@ -269,11 +302,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 
-/* Responsive images inside job section */
-.job-application-wrapper img {
+/* Responsive images inside job section - exclude header logo */
+.job-application-wrapper img:not(header img):not(.navbar img):not(.logo img) {
     max-width: 100% !important;
     height: auto !important;
 }
+
+/* Ensure logo in header maintains original size */
+header img.logo,
+.navbar img.logo,
+.logo img {
+    max-width: none !important;
 
 </style>
 
