@@ -163,4 +163,19 @@ public function index(Request $request): JsonResponse
 
         return response()->json($titles, 200);
     }
+    public function filter(Request $request)
+{
+    $categoryId = $request->get('category_id');
+
+    $jobs = \App\Models\Career::where('status_id', 2)
+        ->when($categoryId, function ($query) use ($categoryId) {
+            return $query->where('job_category_id', $categoryId);
+        })
+        ->with('jobCategory')
+        ->orderBy('name')
+        ->get();
+
+    return response()->json($jobs);
+}
+
 }

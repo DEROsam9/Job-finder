@@ -46,7 +46,10 @@
 
     <!-- Main Content -->
     <main class="col-md-9">
-      <h3 class="page-header">Job Listings</h3>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+          <h1 class="panel-title" style=" font-weight: bold; font-size: 24px">Job-Listings</h1>
+        </div>
 
       {{-- <!-- Search -->
       <div class="form-group" style="margin: 20px 0;">
@@ -94,6 +97,7 @@
         @endif
     </div>
 </div>
+</div>
       
 
 
@@ -118,60 +122,81 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const categoryFilter = document.getElementById('categoryFilter');
-    const jobSearch = document.getElementById('jobSearch');
     const jobList = document.getElementById('jobList');
-    const jobItems = Array.from(document.querySelectorAll('.job-item'));
-    const applyButtons = document.querySelectorAll('.apply-btn');
-    const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
     const jobDetailsModal = $('#jobDetailsModal');
     const jobDetailsContent = document.getElementById('jobDetailsContent');
     const closeModal = document.getElementById('closeModal');
 
-    function filterJobs() {
-        const selectedCategory = categoryFilter.value;
-        const searchTerm = jobSearch.value.toLowerCase();
+    function renderJobs(jobs, categoryName = null) {
+        if (jobs.length === 0) {
+            const message = categoryName 
+                ? `No jobs found for ${categoryName}.` 
+                : 'No jobs found.';
+            return `<p>${message}</p>`;
+        }
 
-        jobItems.forEach(item => {
-            const matchesCategory = selectedCategory === '' || item.dataset.jobCategory === selectedCategory;
-            const matchesSearch = item.dataset.jobName.includes(searchTerm);
+        return jobs.map(job => `
+            <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+                <div class="media-body">
+                    <strong>${job.title || job.name}</strong><br>
+                    <small class="text-muted">${job.jobCategory ? job.jobCategory.name : (categoryName || '${categoryName}')}</small>
+                </div>
+                <div class="media-right">
+                    <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #007bff; color: white; border: 1px solid #007bff; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 12px;"
+                        onmouseover="this.style.backgroundColor='#0056b3'"
+                        onmouseout="this.style.backgroundColor='#007bff'">Apply</a>
+                </div>
+            </div>
+        `).join('');
+    }
 
-            if (matchesCategory && matchesSearch) {
-                item.style.display = 'flex';
-            } else {
-                item.style.display = 'none';
-            }
+    function attachApplyHandlers() {
+        const applyButtons = document.querySelectorAll('.apply-btn');
+        applyButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                alert('Apply clicked for job');
+            });
         });
     }
 
-    categoryFilter.addEventListener('change', filterJobs);
-    jobSearch.addEventListener('input', filterJobs);
-
-    applyButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const jobId = this.dataset.jobId;
-            alert('Apply clicked for job ID: ' + jobId);
+    function attachViewDetailsHandlers() {
+        const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+        viewDetailsButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const jobId = this.dataset.jobId;
+                fetch(`/jobs/${jobId}/details`)
+                    .then(response => response.json())
+                    .then(data => {
+                        jobDetailsContent.innerHTML = `
+                            <h4>${data.title}</h4>
+                            <p><strong>Category:</strong> ${data.jobCategory?.name || 'N/A'}</p>
+                            <p><strong>Description:</strong> ${data.description}</p>
+                            <p><strong>Available Slots:</strong> ${data.slots}</p>
+                        `;
+                        jobDetailsModal.modal('show');
+                    })
+                    .catch(() => {
+                        jobDetailsContent.innerHTML = '<p>Error loading job details</p>';
+                        jobDetailsModal.modal('show');
+                    });
+            });
         });
-    });
+    }
 
-    viewDetailsButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const jobId = this.dataset.jobId;
-            fetch(`/jobs/${jobId}/details`)
-                .then(response => response.json())
-                .then(data => {
-                    jobDetailsContent.innerHTML = `
-                        <h4>${data.title}</h4>
-                        <p><strong>Category:</strong> ${data.jobCategory?.name || 'N/A'}</p>
-                        <p><strong>Description:</strong> ${data.description}</p>
-                        <p><strong>Available Slots:</strong> ${data.slots}</p>
-                    `;
-                    jobDetailsModal.modal('show');
-                })
-                .catch(error => {
-                    jobDetailsContent.innerHTML = '<p>Error loading job details</p>';
-                    jobDetailsModal.modal('show');
-                });
-        });
+    categoryFilter.addEventListener('change', function () {
+        const categoryId = this.value;
+
+        fetch(`/jobs/filter?category_id=${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                const html = renderJobs(data.jobs);
+                jobList.querySelector('.panel-body').innerHTML = html;
+                attachApplyHandlers();
+                attachViewDetailsHandlers();
+            })
+            .catch(() => {
+                jobList.querySelector('.panel-body').innerHTML = '<p>Error loading jobs.</p>';
+            });
     });
 
     closeModal.addEventListener('click', function () {
@@ -180,4 +205,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
 @endsection
