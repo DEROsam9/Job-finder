@@ -163,4 +163,6 @@ public function index(Request $request): JsonResponse
 
         return response()->json($titles, 200);
     }
+    
+
 }

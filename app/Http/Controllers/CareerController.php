@@ -122,7 +122,7 @@ class CareerController extends Controller
             'description' => ['nullable', 'string'],
             'job_category_id' => ['required', 'exists:job_categories,id'],
             'slots' => ['required', 'integer', 'min:0'],
-            'status_id' => ['sometimes', 'exists:statuses,id'], // Add this line
+            'status_id' => ['sometimes', 'exists:statuses,id'], 
 
         ]);
 
@@ -147,7 +147,7 @@ class CareerController extends Controller
         return JobCategory::select('id', 'name')->get();
     }
 
-   public function getJobsByCategory($categoryId, Request $request)
+    public function getJobsByCategory($categoryId, Request $request)
 {
     try {
         $careers = $this->careerRepository
@@ -169,4 +169,24 @@ class CareerController extends Controller
         ], 500);
     }
 }
+
+    /**
+     * Filter jobs by category and return JSON response.
+     */
+    public function filter(Request $request)
+    {
+        $categoryId = $request->query('category_id');
+
+        $query = $this->careerRepository->with('jobCategory');
+
+        if (!empty($categoryId)) {
+            $query->where('job_category_id', $categoryId);
+        }
+
+        $jobs = $query->get();
+
+        return response()->json([
+            'jobs' => $jobs,
+        ]);
+    }
 }

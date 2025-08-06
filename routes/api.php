@@ -49,3 +49,4 @@ Route::post('/download-applications-excel', [DownloadsController::class, 'downlo
 Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPaymentsExcel']);
 
 Route::apiResource('/setting',SettingController::class);
+Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');

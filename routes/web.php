@@ -33,3 +33,6 @@ Route::get('/track-app', function () {
 
 Route::get('/job-applications', [\App\Http\Controllers\ClientController::class, 'jobapplications'])->name('job.applications');
 Route::get('/jobs/{id}/details', [ClientController::class, 'jobDetails'])->name('jobs.details');
+
+// AJAX route for filtering jobs by category
+Route::get('/jobs/filter', [CareerController::class, 'filter'])->name('jobs.filter');
