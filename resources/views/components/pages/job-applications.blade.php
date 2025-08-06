@@ -1,7 +1,9 @@
 @extends('components.layout.app')
 
 @section('content')
-<div class="container" style="padding-top: 20px;">
+{{-- <div class="container" style="padding-top: 20px;"> --}}
+<div class="job-application-wrapper container" style="padding-top: 20px;">
+
   <div class="row">
     <!-- Sidebar -->
     <aside class="col-md-3">
@@ -36,7 +38,7 @@
               <small class="text-muted">{{ $job->jobCategory->name ?? 'N/A' }}</small>
             </div>
             <div class="media-right">
-              <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #007bff; color: white; border: 1px solid #007bff;">Apply</a>
+              <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #2D78C9; color: white; border: 1px solid #007bff;">Apply</a>
             </div>
           </div>
           @endforeach
@@ -64,7 +66,7 @@
                 <div class="media" style="border-bottom: 1px solid #eee; padding: 10px 0;">
                     <div class="media-body">
                         <strong>{{ $job->title ?? $job->name }}</strong>
-                        <span class="badge badge-primary" style="margin-left: 10px; background-color: #007bff;">
+                        <span class="badge badge-primary" style="margin-left: 10px; background-color: #a4b2c0;">
                             {{ $job->slots ?? 0 }} slots
                         </span>
                         <br>
@@ -73,7 +75,7 @@
                         </small>
                     </div>
                     <div class="media-right">
-                        <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #007bff; color: white; border: 1px solid #007bff; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 12px;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">Apply</a>
+                        <a href="/application-form" class="btn btn-default btn-xs apply-btn" style="transition: all 0.3s ease; background-color: #2D78C9; color: white; border: 1px solid #007bff; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 12px;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">Apply</a>
                     </div>
                 </div>
             @endforeach
@@ -175,9 +177,104 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-@endsection
-@endsection
+<style>
+/* Scoped to job-application-wrapper to avoid affecting global header */
+.job-application-wrapper {
+    padding-top: 20px;
+}
 
-</script>
+@media screen and (max-width: 768px) {
+    .job-application-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 10px 5px !important;
+    }
+
+    .job-application-wrapper .row {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .job-application-wrapper aside.col-md-3,
+    .job-application-wrapper main.col-md-9 {
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+        clear: both !important;
+        padding: 0 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .job-application-wrapper .panel {
+        width: 100% !important;
+        margin-bottom: 15px !important;
+    }
+
+    .job-application-wrapper .media {
+        display: block !important;
+        width: 100% !important;
+        padding: 15px 0 !important;
+    }
+
+    .job-application-wrapper .media-body,
+    .job-application-wrapper .media-right {
+        display: block !important;
+        width: 100% !important;
+        text-align: left !important;
+        padding: 5px 0 !important;
+    }
+
+    .job-application-wrapper .media-right {
+        text-align: center !important;
+        margin-top: 10px !important;
+    }
+
+    .job-application-wrapper .apply-btn,
+    .job-application-wrapper .btn {
+        display: block !important;
+        width: 100% !important;
+        padding: 15px !important;
+        font-size: 16px !important;
+        margin: 10px 0 !important;
+    }
+
+    .job-application-wrapper .form-control {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 16px !important;
+    }
+
+    .job-application-wrapper .text-center .btn {
+        display: inline-block !important;
+        margin: 5px !important;
+        min-width: 44px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .job-application-wrapper {
+        padding: 5px !important;
+    }
+
+    .job-application-wrapper aside.col-md-3,
+    .job-application-wrapper main.col-md-9 {
+        padding: 0 5px !important;
+    }
+
+    .job-application-wrapper .apply-btn,
+    .job-application-wrapper .btn {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Responsive images inside job section */
+.job-application-wrapper img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+</style>
 
 @endsection
