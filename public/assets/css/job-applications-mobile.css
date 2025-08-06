@@ -1,0 +1,166 @@
+/* Mobile Responsiveness for Job Applications Page */
+/* This file adds responsive styles without modifying existing code */
+
+/* Base responsive container */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        padding-top: 10px !important;
+    }
+    
+    .row {
+        margin-left: -15px !important;
+        margin-right: -15px !important;
+    }
+    
+    /* Sidebar responsive */
+    aside.col-md-3 {
+        width: 100% !important;
+        float: none !important;
+        margin-bottom: 20px !important;
+        padding: 0 15px !important;
+    }
+    
+    /* Main content responsive */
+    main.col-md-9 {
+        width: 100% !important;
+        float: none !important;
+        padding: 0 15px !important;
+    }
+    
+    /* Panel adjustments */
+    .panel {
+        margin-bottom: 15px !important;
+    }
+    
+    .panel-heading {
+        padding: 10px 15px !important;
+    }
+    
+    .panel-title {
+        font-size: 18px !important;
+    }
+    
+    /* Media objects responsive */
+    .media {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 15px 0 !important;
+    }
+    
+    .media-body {
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .media-right {
+        width: 100% !important;
+        text-align: left !important;
+    }
+    
+    .apply-btn {
+        width: 100% !important;
+        display: block !important;
+        text-align: center !important;
+        padding: 10px !important;
+        font-size: 14px !important;
+    }
+    
+    /* Form controls responsive */
+    .form-control {
+        font-size: 16px !important;
+        padding: 10px !important;
+    }
+    
+    /* Badge responsive */
+    .badge {
+        font-size: 12px !important;
+        padding: 5px 8px !important;
+    }
+    
+    /* Pagination responsive */
+    .text-center.mt-4 {
+        margin-top: 20px !important;
+    }
+    
+    .btn {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Tablet responsive (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 100% !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    aside.col-md-3 {
+        width: 30% !important;
+        float: left !important;
+    }
+    
+    main.col-md-9 {
+        width: 70% !important;
+        float: left !important;
+    }
+}
+
+/* Small mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+    .panel-title {
+        font-size: 16px !important;
+    }
+    
+    .media-body strong {
+        font-size: 14px !important;
+    }
+    
+    .media-body small {
+        font-size: 12px !important;
+    }
+    
+    .apply-btn {
+        font-size: 12px !important;
+        padding: 8px !important;
+    }
+}
+
+/* Ensure images and media are responsive */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Prevent horizontal scrolling */
+body {
+    overflow-x: hidden !important;
+}
+
+/* Improve touch targets on mobile */
+button, .btn, .apply-btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+}
+
+/* Improve form elements on mobile */
+select, input {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Modal responsive */
+@media (max-width: 768px) {
+    .modal-dialog {
+        width: 95% !important;
+        margin: 10px auto !important;
+    }
+    
+    .modal-content {
+        border-radius: 5px !important;
+    }
+}
