@@ -114,9 +114,6 @@ trait mpesa
         try {
             $client = new Client();
 
-            Log::info($consumer_key);
-            Log::info($consumer_secret);
-
             $response = $client->get('https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', [
                 'headers' => [
                     'Authorization' => 'Basic ' . base64_encode($consumer_key . ':' . $consumer_secret),

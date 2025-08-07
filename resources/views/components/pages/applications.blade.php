@@ -438,11 +438,15 @@
 
                             <div class="form-step" data-step="2">
                                 <h3 style="color: black;">Upload Documents</h3>
+                                <br>
+                                <div>
+                                    <h4 style="color: black;">Upload Passport Photo <br><i style="color:red;">Should have a white background</i></h4>
+                                </div>
                                 <div class="upload-section">
                                     <div class="upload-box full-width">
                                         <div class="upload-content">
                                             <i class="fa fa-id-card"></i>
-                                            <p>Passport Photo</p>
+                                            <p>Passport Photo (optional)</p>
                                             <input type="file" name="passport_photo" accept="image/*,.pdf,.doc,.docx" id="passportPhotoFile">
                                             <label for="passportPhotoFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="passportPhotoInfo"></div>
@@ -454,7 +458,7 @@
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
-                                                <p>Upload ID Front</p>
+                                                <p>Upload ID Front (optional)</p>
                                                 <input type="file" name="client_id_front" accept="image/*,.pdf,.doc,.docx" id="idCardFile">
                                                 <label for="idCardFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardInfo"></div>
@@ -467,7 +471,7 @@
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-id-card"></i>
-                                                <p>Upload ID Back</p>
+                                                <p>Upload ID Back (optional)</p>
                                                 <input type="file" name="client_id_back" accept="image/*,.pdf,.doc,.docx" id="idCardBackFile">
                                                 <label for="idCardBackFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="idCardBackInfo"></div>
@@ -480,9 +484,9 @@
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
-                                                <p>Upload Passport</p>
+                                                <p>Upload Passport (optional)</p>
                                                 <input type="file" name="passport_copy" accept="image/*,.pdf,.doc,.docx" id="passportFile">
-                                                <label for="passportFile" class="upload-btn">Choose File(optional)</label>
+                                                <label for="passportFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="passportInfo"></div>
                                             </div>
                                         </div>
@@ -493,9 +497,9 @@
                                         <div class="upload-box">
                                             <div class="upload-content">
                                                 <i class="fa fa-upload"></i>
-                                                <p>Good Conduct Certificate</p>
+                                                <p>Good Conduct Certificate (optional)</p>
                                                 <input type="file" name="good_conduct" accept="image/*,.pdf,.doc,.docx" id="goodConductFile">
-                                                <label for="goodConductFile" class="upload-btn">Choose File(optional)</label>
+                                                <label for="goodConductFile" class="upload-btn">Choose File</label>
                                                 <div class="file-info" id="goodConductInfo"></div>
                                             </div>
                                         </div>
@@ -514,7 +518,7 @@
                                     <div class="upload-box full-width">
                                         <div class="upload-content">
                                             <i class="fa fa-file-text"></i>
-                                            <p>Upload CV</p>
+                                            <p>Upload CV (optional)</p>
                                             <input type="file" name="cv" accept="image/*,.pdf,.doc,.docx" id="cvFile">
                                             <label for="cvFile" class="upload-btn">Choose File</label>
                                             <div class="file-info" id="cvInfo"></div>
