@@ -28,8 +28,10 @@ class Application extends AppBaseModel
         return $this->belongsTo(Status::class);
     }
 
-    public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(ApplicationPayment::class);
-    }
+    public function payments()
+{
+    return $this->belongsToMany(Payment::class, 'application_payments')
+                ->withPivot('amount', 'balance')
+                ->withTimestamps();
+}
 }

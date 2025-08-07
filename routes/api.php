@@ -48,7 +48,11 @@ Route::get('/careers/by-category/{categoryId}', [CareerController::class, 'getJo
 Route::post('/download-applications-excel', [DownloadsController::class, 'downloadApplicationsExcel']);
 Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPaymentsExcel']);
 
-Route::apiResource('/setting',SettingController::class);
+Route::post('/download-clients-excel', [DownloadsController::class, 'downloadClientsExcel']);
+
+Route::get('/application-payments/{applicationPayment}/receipt', 
+    [DownLoadsController::class, 'downloadPaymentPdf'])
+    ->name('application-payments.receipt');Route::apiResource('/setting',SettingController::class);
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
 Route::get('/dashboard/stats', [ClientController::class, 'getStats']);
