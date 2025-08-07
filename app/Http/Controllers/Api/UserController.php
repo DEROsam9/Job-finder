@@ -21,6 +21,7 @@ class UserController extends Controller
        $users= $this->userRepository->paginate($request->get('limit', 20));
 
         return response()->json([
+            "message" => "User fetched successfully.",
                 'data' => $users,
             ], 200);
     }
@@ -36,21 +37,22 @@ class UserController extends Controller
         $user = $this->userRepository->create($validate);
 
         return response()->json([
+            "message" => "User created successfully.",
             "data"=>$user
         ], 201);
     }
 
     public function update(Request $request,$id){
         $validated = $request -> validate([
-            "name" => "sometimes|required|string",
-            "email"=> "sometimes|required|email|unique:users,email,".$id,
+            "name" => "nullable|string",
+            "email"=> "nullable|email|unique:users,email,".$id,
             "phone_number"=>"nullable|string",
-            "password"=>"sometimes|required"
         ]);
 
         $user = $this->userRepository->update($validated, $id);
 
         return response()->json([
+            "message" => "User updated successfully.",
             "data" =>$user
         ],201);
     }
@@ -76,7 +78,7 @@ class UserController extends Controller
             ],404);
         }
         $deleted = $this->userRepository->delete($id);
-        
+
         if($deleted){
             return response()->json(['message'=>'User Deleted']);
         }
