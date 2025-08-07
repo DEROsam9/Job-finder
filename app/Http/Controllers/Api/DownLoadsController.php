@@ -252,68 +252,6 @@ class DownLoadsController extends Controller
     }
 
 
-    public function downloadClientsExcel(Request $request) {
-         $clients = $this->clientRepository
-            ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
-                $query->where('first_name', 'like', "%{$request->name}%")
-                    ->orWhere('surname', 'like', "%{$request->name}%")
-                    ->orWhere('email', 'like', "%{$request->name}%")
-                    ->orWhere('phone_number', 'like', "%{$request->name}%");
-            })
-            ->when($request->has('passport_or_id') && !empty($request->get('passport_or_id')), function ($query) use ($request) {
-                $query->where('passport_number', 'like', "%{$request->passport_or_id}%")
-                    ->orWhere('id_number', 'like', "%{$request->passport_or_id}%");
-            })
-            ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
-            $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
-        })
-        ->get();
-
-
-       $timestamp = time();
-       $title = 'Clients Report';
-
-       $aggregated_clients = $clients ->groupBy(function($clients)
-       {
-        return $clients->created_at->format('jS M Y');
-       })
-
-            ->mapWithKeys(function($group, $data)
-            {
-                $rows = [];
-                foreach($group as $record) {
-                    Log::info($record);
-                    $rows[] = [
-                        'client_name' => $record->surname .' '. $record->first_name,
-                        'client_email' => $record->email,
-                        'client_phone_number' => $record->phone_number,
-                        'client_passport_number' => $record->passport_number,
-                        'client_id_number' => $record->id_number,
-                    ];
-
-                }  
-                   
-                return [
-                    $data => [
-                        'items' => $rows,
-                    ],
-                ];
-            });
-        
-        $aggregated_array = $aggregated_clients->toArray();
-        
-        $eloquentCollection = collect($aggregated_array)->map(function ($item) {
-            return (object) $item;
-        });
-
-
-
-        $eloquentCollection = new Collection($eloquentCollection);
-
-        return Excel::download(new ClientExport($eloquentCollection,$title), 'clients_report_' . $timestamp . '.xlsx');
-    }
-
-
     public function downloadPaymentPdf ($id) {
         $payments = Payment::with('client')->find($id);
 
