@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Exports\ClientExport;
 use App\Exports\PaymentsExport;
 use Illuminate\Http\JsonResponse;
+use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Exports\ApplicationsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -16,6 +19,8 @@ use App\Repositories\ClientRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Response;
+
 use Illuminate\Support\Facades\Response;
 
 
