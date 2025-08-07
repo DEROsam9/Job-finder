@@ -26,4 +26,11 @@ class Payment extends Model
     public function applicationPayment() {
         return $this->hasOne(ApplicationPayment::class, 'payment_id')->with('application');
     }
+    // app/Models/Payment.php
+public function applications()
+{
+    return $this->belongsToMany(Application::class, 'application_payments')
+                ->withPivot('amount', 'balance')
+                ->withTimestamps();
+}
 }

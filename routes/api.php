@@ -50,8 +50,9 @@ Route::post('/download-payments-excel', [DownloadsController::class, 'downloadPa
 
 Route::post('/download-clients-excel', [DownloadsController::class, 'downloadClientsExcel']);
 
-Route::get('/generate-pdf/{id}',[DownLoadsController::class, 'downloadPaymentPdf']);
-Route::apiResource('/setting',SettingController::class);
+Route::get('/application-payments/{applicationPayment}/receipt', 
+    [DownLoadsController::class, 'downloadPaymentPdf'])
+    ->name('application-payments.receipt');Route::apiResource('/setting',SettingController::class);
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
 Route::get('/jobs/filter', [JobCategoryController::class, 'filter'])->name('jobs.filter');
 Route::get('/dashboard/stats', [ClientController::class, 'getStats']);

@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Payment;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use App\Exports\ClientExport;
 use App\Exports\PaymentsExport;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\JsonResponse;
-
-
+use Illuminate\Support\Facades\DB;
 use App\Exports\ApplicationsExport;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Repositories\ClientRepository;
 use App\Repositories\PaymentRepository;
+use Illuminate\Support\Facades\Response;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Response;
-
 
 
 class DownLoadsController extends Controller
@@ -254,22 +254,37 @@ class DownLoadsController extends Controller
     }
 
 
-    public function downloadPaymentPdf ($id) {
-        $payments = Payment::with('client')->find($id);
+public function downloadPaymentPdf($applicationPaymentId)
+{
+    // Get the pivot record with all relationships
+    $applicationPayment = DB::table('application_payments')
+        ->where('id', $applicationPaymentId)
+        ->first();
 
-        $data = [
-            'payment' => $payments,
-            'clients' => $payments->client,
-        ];
-
-
-        $pdf = Pdf::loadView('components.receipts.payment_receipt',$data);
-
-        // return $pdf->download('payment_receipt_'.$payments->id. '.pdf');
-
-          return Response::make($pdf->output(), 200, [
-        'Content-Type' => 'application/pdf',
-    ]);
+    if (!$applicationPayment) {
+        abort(404, 'Payment record not found');
     }
+
+    // Load all related data
+    $application = Application::with(['client', 'career', 'status'])
+        ->find($applicationPayment->application_id);
+
+    $payment = Payment::find($applicationPayment->payment_id);
+
+    $data = [
+        'application' => $application,
+        'payment' => $payment,
+        'client' => $application->client,
+        'career' => $application->career,
+        'status' => $application->status,
+        'amount' => $applicationPayment->amount,
+        'balance' => $applicationPayment->balance,
+        'application_payment' => $applicationPayment
+    ];
+
+    $pdf = Pdf::loadView('components.receipts.payment_receipt', $data);
+    
+    return $pdf->download('receipt_'.$application->application_code.'.pdf');
+}
 
 }
