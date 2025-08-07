@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Payment;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Exports\ClientExport;
 use App\Exports\PaymentsExport;
@@ -14,6 +16,8 @@ use App\Repositories\ClientRepository;
 use App\Repositories\PaymentRepository;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Response;
+
 
 class DownLoadsController extends Controller
 {
@@ -245,4 +249,24 @@ class DownLoadsController extends Controller
 
         return Excel::download(new ClientExport($eloquentCollection,$title), 'clients_report_' . $timestamp . '.xlsx');
     }
+
+
+    public function downloadPaymentPdf ($id) {
+        $payments = Payment::with('client')->find($id);
+
+        $data = [
+            'payment' => $payments,
+            'clients' => $payments->client,
+        ];
+
+
+        $pdf = Pdf::loadView('components.receipts.payment_receipt',$data);
+
+        // return $pdf->download('payment_receipt_'.$payments->id. '.pdf');
+
+          return Response::make($pdf->output(), 200, [
+        'Content-Type' => 'application/pdf',
+    ]);
+    }
+
 }
