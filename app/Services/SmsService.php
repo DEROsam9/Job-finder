@@ -1,63 +1,91 @@
 <?php
 namespace App\Services;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 
 class SmsService
 {
-    protected string $tokenCacheKey;
-    protected string $apiUrl;
-    protected string $authUrl;
-    protected string $username;
-    protected string $password;
+    protected $client;
+    protected $authEndpoint = 'https://sms.nitext.co.ke/api/auth/get_token';
+    protected $messageEndpoint = 'https://sms.nitext.co.ke/api/send-bulk-api';
+
+    protected $sendername = 'TALENTBRDG';
 
     public function __construct()
     {
-        $this->tokenCacheKey = config('sms.cache_key', 'sms_api_token');
-        $this->apiUrl = 'https://sms.nitext.co.ke/api/send-bulk-api';
-        $this->authUrl = config('sms.auth_url', env('SMS_AUTH_URL'));
-        $this->username = env('SMS_USERNAME');
-        $this->password = env('SMS_PASSWORD');
+        $this->client = new Client();
     }
 
-    public function sendMessage(array $payload): array
+    protected function getAccessToken()
     {
-        $token = $this->getToken();
+        return Cache::remember('api_token', 1440, function () {
+            try {
+                $response = $this->client->post($this->authEndpoint, [
+                    'json' => [
+                        'email' => 'chrispine.ochieng@royalmedia.co.ke',
+                        'password' => '_Qoc:rW198x,'
+                    ],
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Accept' => 'application/json',
+                    ]
+                ]);
 
-        $response = Http::withToken($token)
-            ->post($this->apiUrl, $payload);
+                $data = json_decode($response->getBody()->getContents(), true);
 
-        if ($response->unauthorized()) {
-            // Invalidate token & retry
-            Cache::forget($this->tokenCacheKey);
-            $token = $this->getToken();
-
-            $response = Http::withToken($token)
-                ->post($this->apiUrl, $payload);
-        }
-
-        return $response->json();
-    }
-
-    protected function getToken(): string
-    {
-        return Cache::remember($this->tokenCacheKey, now()->addMinutes(), function () {
-            return $this->fetchToken();
+                return $data['data']['token'] ?? null;
+            } catch (RequestException $e) {
+                \Log::error($e);
+                throw new \Exception('Failed to fetch access token: ' . $e->getMessage());
+            }
         });
     }
 
-    protected function fetchToken(): string
+    public function sendMessage(string $recipient, string $message): \Illuminate\Http\JsonResponse
     {
-        $response = Http::post($this->authUrl, [
-            'username' => $this->username,
-            'password' => $this->password,
-        ]);
+        try {
+            $token = $this->getAccessToken();
 
-        if ($response->successful() && isset($response['access_token'])) {
-            return $response['access_token'];
+            \Log::info(now()->addSeconds(30)->format('Y-m-d H:i:s'));
+            $payload = [
+                'sendername' => $this->sendername,
+                'scheduled_time' => now()->addSeconds(30)->format('Y-m-d H:i:s'),
+                'message' => [
+                    [
+                        'recipients' => [$recipient],
+                        'body' => $message
+                    ]
+                ]
+            ];
+
+            $response = $this->client->post($this->messageEndpoint, [
+                'json' => $payload,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . $token,
+                ]
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => json_decode($response->getBody()->getContents(), true)
+            ]);
+
+        } catch (RequestException $e) {
+            \Log::error($e);
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
         }
-
-        throw new \Exception('Unable to fetch SMS API token.');
     }
 }

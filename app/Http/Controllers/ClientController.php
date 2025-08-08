@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use App\Repositories\ClientRepository;
+use App\Services\SmsService;
 use DB;
 use App\Models\Client;
 use App\Models\Payment;
@@ -44,8 +45,8 @@ class ClientController extends Controller
                     ->orWhere('id_number', 'like', "%{$request->passport_or_id}%");
             })
             ->when($request->has('from') && !empty($request->get('from')) && $request->has('to') && !empty($request->get('to')), function ($query) use ($request) {
-            $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
-        })
+                $query->whereBetween('created_at',[$request->get('from'), $request->get('to')]);
+            })
             ->paginate($request->get('limit', 20));
 
         return response()->json([
@@ -67,13 +68,13 @@ class ClientController extends Controller
             'passport_expiry_date' => 'nullable|date|after:today',
             'id_number'        => 'required|string|max:50',
 
-        // Files
-        'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            // Files
+            'cv'               => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'passport_copy'    => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'passport_photo'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'client_id_front'  => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'client_id_back'   => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'good_conduct'     => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
 
             // Job selection
             'job_title'    => 'required|array',
@@ -106,7 +107,6 @@ class ClientController extends Controller
                     'email' => $input['email'],
                     'phone_number' => $input['phone_number'],
                     'passport_number' => $input['passport_number'],
-                    // 'passport_number' => $input['passport_number'] ?? '',
                     'id_number' => $input['id_number'],
                 ]);
 
@@ -180,6 +180,14 @@ class ClientController extends Controller
                 return redirect()->back();
             }
 
+            // Message Sender
+
+            $message = 'Dear '.$client->surname. ', your application was successful submitted for reveiw, your application code is '. $application->application_code;
+
+            $message_service = new SmsService();
+
+            $message_service->sendMessage($client->phone_number, $message);
+
             DB::commit();
 
             session()->flash('success', 'Your information has been submitted successfully. Check your phone for an STK Push.');
@@ -187,7 +195,6 @@ class ClientController extends Controller
         } catch (\Exception $exception) {
             \Log::error($exception);
             DB::rollBack();
-            // session()->flash('error', 'Something went wrong. Please try again later.');
             return redirect()->back();
         }
     }
@@ -212,7 +219,7 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, $id)
     {
         $client = $this->clientRepository->find($id);
-        
+
         if (!$client) {
             return response()->json(['message' => 'Client not found'], 404);
         }
@@ -254,65 +261,58 @@ class ClientController extends Controller
         return view('components.pages.application-success', ['reference' => $reference]);
     }
     public function jobapplications()
-{
-    // dd('hello');
-    // Fetch all active job categories 
-    $categories = \App\Models\JobCategory::where('status_id', 2)  
-        ->get(['id', 'name', 'slug']);
+    {
+        $categories = \App\Models\JobCategory::where('status_id', 2)
+            ->get(['id', 'name', 'slug']);
 
-    // Fetch trending jobs 
-    $trendingJobs = \App\Models\Career::where('status_id', 2)  
-        ->orderBy('created_at', 'desc')
-        ->limit(5)
-        ->get(['id', 'name as title', 'description', 'job_category_id', 'slots', 'created_at']);
+        $trendingJobs = \App\Models\Career::where('status_id', 2)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get(['id', 'name as title', 'description', 'job_category_id', 'slots', 'created_at']);
 
-    // Fetch all active careers 
-    $jobs = \App\Models\Career::where('status_id', 2) 
-        ->with('jobCategory')
-        ->orderBy('name')
-         ->paginate(10);
+        $jobs = \App\Models\Career::where('status_id', 2)
+            ->with('jobCategory')
+            ->orderBy('name')
+            ->paginate(10);
 
-         
+        return view('components.pages.job-applications', [
+            'categories' => $categories,
+            'trendingJobs' => $trendingJobs,
+            'jobs' => $jobs,
+        ]);
+    }
 
-    return view('components.pages.job-applications', [
-        'categories' => $categories,
-        'trendingJobs' => $trendingJobs,
-        'jobs' => $jobs,
-    ]);
-}
+    public function jobDetails($id)
+    {
+        $job = \App\Models\Career::with('jobCategory')
+            ->findOrFail($id, ['id', 'name as title', 'description', 'job_category_id', 'slots']);
 
-public function jobDetails($id)
-{
-    $job = \App\Models\Career::with('jobCategory')
-        ->findOrFail($id, ['id', 'name as title', 'description', 'job_category_id', 'slots']);
+        return response()->json($job);
+    }
+    public function count()
+    {
+        return response()->json(['total' => Client::count()]);
+    }
+    public function getTotalPayment()
+    {
+        $totalPayment = \App\Models\Payment::sum('amount');
 
-    return response()->json($job);
-}
-  public function count()
-{
-    return response()->json(['total' => Client::count()]);
-}
-public function getTotalPayment()
-{
-    $totalPayment = \App\Models\Payment::sum('amount');
+        return response()->json([
+            'total' => (int) $totalPayment
+        ]);
+    }
+    public function getStats()
+    {
+        $totalApplications = Application::count();
+        $totalClients = Client::count();
+        $totalPayments = Payment::count();
+        $totalPaymentAmount = Payment::sum('amount');
 
-    return response()->json([
-        'total' => (int) $totalPayment
-    ]);
-}
-public function getStats()
-{
-    $totalApplications = Application::count();
-    $totalClients = Client::count();
-    $totalPayments = Payment::count();
-    $totalPaymentAmount = Payment::sum('amount');
-
-    return response()->json([
-        'applications' => $totalApplications,
-        'clients' => $totalClients,
-        'payments' => $totalPayments,
-        'paymentAmount' => $totalPaymentAmount,
-    ]);
-}
-
+        return response()->json([
+            'applications' => $totalApplications,
+            'clients' => $totalClients,
+            'payments' => $totalPayments,
+            'paymentAmount' => $totalPaymentAmount,
+        ]);
+    }
 }
