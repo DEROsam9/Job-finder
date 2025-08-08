@@ -47,8 +47,6 @@ class SmsService
     {
         try {
             $token = $this->getAccessToken();
-
-            \Log::info(now()->addSeconds(30)->format('Y-m-d H:i:s'));
             $payload = [
                 'sendername' => $this->sendername,
                 'scheduled_time' => now()->addSeconds(30)->format('Y-m-d H:i:s'),

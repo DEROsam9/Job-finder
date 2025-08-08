@@ -180,9 +180,7 @@ class ClientController extends Controller
                 return redirect()->back();
             }
 
-            // Message Sender
-
-            $message = 'Dear '.$client->surname. ', your application was successful submitted for reveiw, your application code is '. $application->application_code;
+            $message = 'Dear '.$client->surname. ', your application was successfully submitted for review, your application code is '. $application->application_code;
 
             $message_service = new SmsService();
 
