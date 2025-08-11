@@ -27,7 +27,7 @@ class ApplicationController extends Controller
    {
 
         $applications = $this->applicationRepository
-            ->with(['client', 'career', 'status', 'payments'])
+            ->with(['client', 'status','details.career', 'details.status', 'payments'])
             ->when($request->has('name') && !empty($request->get('name')), function ($query) use ($request) {
                 $search = $request->get('name');
                 $query->whereHas('client', function ($q) use ($search) {
@@ -78,7 +78,7 @@ class ApplicationController extends Controller
      */
     public function show($id)
 {
-    $application = $this->applicationRepository->with(['client', 'career', 'status', 'payments'])->find($id);
+    $application = $this->applicationRepository->with(['client','status' , 'details.career', 'details.status', 'payments'])->find($id);
 
     if (!$application) {
         return response()->json([

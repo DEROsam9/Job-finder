@@ -9,7 +9,7 @@ class Application extends AppBaseModel
     use HasFactory;
 
     protected $fillable = [
-        'application_code', 'client_id', 'career_id', 'status_id', 'remarks'
+        'application_code', 'client_id','status_id' , 'remarks'
     ];
 
     // Relationships
@@ -33,5 +33,10 @@ class Application extends AppBaseModel
     return $this->belongsToMany(Payment::class, 'application_payments')
                 ->withPivot('amount', 'balance')
                 ->withTimestamps();
+}
+
+public function details()
+{
+    return $this->hasMany(ApplicationDetail::class);
 }
 }

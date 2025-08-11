@@ -139,12 +139,17 @@ class ClientController extends Controller
                 }
             }
 
+            $application = Application::create([
+                'client_id' => $client->id,
+                'status_id' => Status::where('code','DRAFT')->first()->id,
+                'remarks'   => $request->get('experience_brief'),
+            ]);
+
+
             foreach ($request->job_title as $jobId) {
-                $application = Application::create([
-                    'client_id' => $client->id,
+                $application->details()->create([
                     'career_id' => $jobId,
                     'status_id' => Status::where('code','DRAFT')->first()->id,
-                    'remarks'   => $request->get('experience_brief'),
                 ]);
             }
 

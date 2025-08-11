@@ -23,4 +23,9 @@ class Career extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function applicationDetails()
+    {
+        return $this->hasMany(ApplicationDetail::class);
+    }
 }

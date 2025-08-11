@@ -277,17 +277,8 @@
 
                 {{-- Results Section --}}
                 @isset($application)
-                    <div class="row mt-4 fade-in">
-                        <div class="col-md-4 mb-4">
-                            <div class="result-card shadow-sm">
-                                <h5><i class="fas fa-briefcase mr-2 text-primary"></i><strong>Job Details</strong></h5>
-                                <p><strong>Job Category:</strong> {{ $application->career->jobCategory->name ?? 'N/A' }}</p>
-                                <p><strong>Job Title:</strong> {{ $application->career->name ?? 'N/A' }}</p>
-                                <p><strong>Job Description:</strong> {{ Str::limit($application->career->description ?? 'N/A', 100) }}</p>
-                                <a href="{{ route('careers.show', $application->career->id) }}" class="btn btn-sm btn-outline-primary mt-2">View Job</a>
-                            </div>
-                        </div>
-
+                    <div class="row mt-4 fade-in">  
+                        {{-- Applicant Info --}}
                         <div class="col-md-4 mb-4">
                             <div class="result-card shadow-sm">
                                 <h5><i class="fas fa-user mr-2 text-primary"></i><strong>Applicant Info</strong></h5>
@@ -303,6 +294,23 @@
                             </div>
                         </div>
 
+                        {{-- Job Details --}}
+                        <div class="col-md-4 mb-4">
+                            <div class="result-card shadow-sm">
+                                <h5><i class="fas fa-briefcase mr-2 text-primary"></i><strong>Job Applications</strong></h5>
+                                @foreach ($application->details as $detail)
+                                    <div class="job-detail mb-3 pb-3 border-bottom">
+                                        <p><strong>Job Category:</strong> {{ $detail->career->jobCategory->name ?? 'N/A' }}</p>
+                                        <p><strong>Job Title:</strong> {{ $detail->career->name ?? 'N/A' }}</p>
+                                        <p><strong>Job Status:</strong> {{ $detail->status->name ?? 'N/A' }}</p>
+                                        <!-- <a href="{{ route('careers.show', $detail->career->id) }}" class="btn btn-sm btn-outline-primary mt-1">View Job</a> -->
+                                    </div>
+                                    <hr>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- Application Status --}}
                         <div class="col-md-4 mb-4">
                             <div class="result-card shadow-sm">
                                 <h5><i class="fas fa-tasks mr-2 text-primary"></i><strong>Application Status</strong></h5>
@@ -311,8 +319,8 @@
                                     <i class="fas fa-info-circle text-muted mr-2"></i>
                                     <strong>Status:</strong>
                                     <span class="status-badge status-{{ strtolower($application->status->name ?? 'pending') }}">
-                                {{ $application->status->name ?? 'Pending' }}
-                            </span>
+                                        {{ $application->status->name ?? 'Pending' }}
+                                    </span>
                                 </p>
                                 @if($application->updated_at->gt($application->created_at))
                                     <p><i class="far fa-clock text-muted mr-2"></i> <strong>Last Updated:</strong> {{ \Carbon\Carbon::parse($application->updated_at)->format('d M Y') }}</p>
