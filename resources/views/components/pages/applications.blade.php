@@ -353,9 +353,48 @@
         border: 1px solid red !important;
     }
 
+   
     input[type="file"].shake {
         box-shadow: 0 0 0 2px #f87171;
     }
+
+    .file-info {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+    word-break: break-word;
+}
+
+
+.upload-content i {
+    font-size: 40px;
+    color: #2D78C9;
+    margin-bottom: 10px;
+}
+
+.upload-content p {
+    margin: 10px 0;
+    color: #666;
+}
+
+.upload-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #2D78C9;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.upload-btn:hover {
+    background: #1E5EA7;
+}
+
+input[type="file"] {
+    display: none;
+}
 </style>
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 0; left: 0; right: 0; z-index: 1050; margin: 0; border-radius: 0;">
@@ -578,6 +617,79 @@
             step.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
     }
+
+
+    // Add this code inside your DOMContentLoaded event listener or in a script section
+
+// Function to handle file input changes and display file names
+function setupFileInputs() {
+    // Passport Photo
+    document.getElementById('passportPhotoFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('passportPhotoInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+
+    // ID Front
+    document.getElementById('idCardFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('idCardInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+
+    // ID Back
+    document.getElementById('idCardBackFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('idCardBackInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+
+    // Passport
+    document.getElementById('passportFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('passportInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+
+    // Good Conduct
+    document.getElementById('goodConductFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('goodConductInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+
+    // CV
+    document.getElementById('cvFile').addEventListener('change', function(e) {
+        const infoDiv = document.getElementById('cvInfo');
+        if (this.files.length > 0) {
+            infoDiv.innerHTML = `<span style="color: green;">Selected: ${this.files[0].name}</span>`;
+        } else {
+            infoDiv.innerHTML = '';
+        }
+    });
+}
+
+// Call this function when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    setupFileInputs();
+    
+    // ... rest of your existing code ...
+});
 
     function updateProgressLine(step) {
         const progressLine = document.getElementById('progress-line');

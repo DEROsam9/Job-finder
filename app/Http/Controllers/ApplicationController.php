@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreApplicationRequest;
 use App\Http\Requests\UpdateApplicationRequest;
 use App\Models\Application;
+use App\Models\ApplicationDetail;
 use App\Repositories\ApplicationRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -128,6 +129,20 @@ class ApplicationController extends Controller
     public function count()
 {
     return response()->json(['total' => Application::count()]);
+}
+
+public function UpdateStatus(Request $request , ApplicationDetail $detail)
+{
+    $validated = $request->validate([
+        'status_id' => 'required|exists:statuses,id',
+    ]);
+
+    $detail->update($validated);
+
+    return response()->json([
+        'message' => 'Application detail Staus Updated successfully',
+        'data'=> $detail->load('status', 'career')
+    ] , 200);
 }
 
 }

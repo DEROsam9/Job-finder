@@ -26,6 +26,7 @@ Route::apiResource('clients', ClientController::class);
 Route::apiResource('application-payments', ApplicationPaymentController::class);
 Route::get('/applications/count', [ApplicationController::class, 'count']);
 Route::apiResource('applications', ApplicationController::class);
+Route::put('applicationdetails/{detail}', [ApplicationController::class , 'UpdateStatus']);
 Route::get('/payments/total', [ClientController::class, 'getTotalPayment']);
 Route::get('/payments/count', [PaymentController::class, 'count']);
 Route::apiResource('payments', PaymentController::class);

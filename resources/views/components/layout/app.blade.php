@@ -4,6 +4,7 @@
 
 <body>
     @include('components.includes.header')
+    
     <div class="application-pg">
         <main class="layout-main">
             @yield('content')
